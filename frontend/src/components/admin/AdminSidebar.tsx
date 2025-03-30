@@ -22,7 +22,7 @@ const AdminSidebar = ({
       className="shadow-sm d-flex flex-column text-white flex-shrink-0 p-4 admin-sidebar"
       style={{
         width: "280px",
-        height: "100vh",
+        height: "100%",
         position: isMobile ? "fixed" : "sticky",
         top: 0,
         left: isMobile ? (isOpen ? 0 : -280) : 0,
