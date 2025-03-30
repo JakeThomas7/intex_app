@@ -22,7 +22,7 @@ const AdminSidebar = ({
       className="shadow-sm d-flex flex-column text-white flex-shrink-0 p-4 admin-sidebar"
       style={{
         width: "280px",
-        height: "100%",
+        height: isMobile ? "100%" : "100vh",
         position: isMobile ? "fixed" : "sticky",
         top: 0,
         left: isMobile ? (isOpen ? 0 : -280) : 0,
@@ -52,6 +52,7 @@ const AdminSidebar = ({
                 `nav-link ${isActive ? 'active' : ''}`
               }
               aria-current="page"
+              onClick={onClose}
             >
               <i className={`fa-solid ${route.icon} me-2`}></i>
               {route.label}

@@ -42,7 +42,7 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="d-flex" style={{ minHeight: "100%" }}>
+    <div className="d-flex" style={{ height: "100%" }}>
       <AdminSidebar 
         isMobile={isMobile} 
         isOpen={isSidebarOpen} 
