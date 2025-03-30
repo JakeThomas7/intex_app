@@ -1,0 +1,102 @@
+// src/styles/_custom.scss
+$primary: #879fbc;
+$secondary: #82637d;
+$success: #28a745;
+$info: #17a2b8;
+$warning: #ffc107;
+$danger: #dc3545;
+$light: #f0f0f0;
+$dark: #343a40;
+
+$font-family-base: "Inter", "Helvetica Neue", "Arial", sans-serif;
+@import "bootstrap/scss/bootstrap";
+
+:root {
+    --primary: #{$primary};
+    --secondary: #{$secondary};
+    --success: #{$success};
+    --info: #{$info};
+    --warning: #{$warning};
+    --danger: #{$danger};
+    --light: #{$light};
+    --dark: #{$dark};
+
+    // Add your custom colors here
+    --background: #f0f0f0;  // Example background color
+    --text-color: #333333;  // Example text color
+    --highlight: #ff6347;   // Example highlight color
+    --navbar: #f8f9fa;
+}
+
+.navbar {
+    background-color: var(--light) !important;
+}
+.carousel-section {
+    background-color: var(--light);
+}
+.footer-section {
+    // background-color: var(--light);
+}
+
+::placeholder { 
+    color: rgba(0, 0, 0, 0.25) !important; /* Lower opacity for a more faded look */
+}
+
+
+
+
+
+body {
+    font-weight: 450;
+}
+
+html {
+    font-size: clamp(14px, 1.2vw, 16px);
+}
+
+.btn {
+    font-weight: 450;
+}
+
+.btn {
+    border-radius: 10px;  // Adjust for more or less rounding
+}
+
+.section-padding {
+    padding-right: clamp(3rem, 5vw, 6rem);
+    padding-left: clamp(3rem, 5vw, 6rem);
+}
+
+// Button get larger effect
+.grow {
+    transition: transform 0.3s ease; /* Smooth transition */
+    cursor: pointer
+}
+
+.grow:hover {
+    transform: scale(1.07); /* Slightly enlarge the element */
+}
+
+.grow-sm {
+    transition: transform 0.3s ease; /* Smooth transition */
+    cursor: pointer
+}
+
+.grow-sm:hover {
+    transform: scale(1.015); /* Slightly enlarge the element */
+}
+
+// Nav Bar
+.navbar-toggler {
+    border: none;
+}
+.navbar-brand {
+    font-size: 1.3rem !important;
+}
+.nav-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+.btn-outline-custom:hover {
+    color:var(--primary)
+}

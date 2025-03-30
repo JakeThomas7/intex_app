@@ -1,0 +1,125 @@
+.hero-section {
+    background-image: linear-gradient(
+        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.5)
+    ), url('../assets/biking2.avif');
+
+    background-size: cover;
+    background-position: center;
+    color: var(--light);
+    min-height: 85vh;
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+}
+
+.hero-section h1 {
+    font-size: clamp(4rem, 6vw, 6rem);
+    font-weight: bold;
+}
+
+.carousel-section {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+.carousel-item {
+    background-color: white;
+}
+
+.carousel-section .d-flex > .card-item {
+    max-width: 30rem; /* Default max width */
+    font-size: 1.5rem; /* Larger font size for bigger screens */
+    height: 20rem;
+}
+
+/* For small screens (max-width 768px), reduce card size */
+@media (max-width: 768px) {
+    .carousel-section .d-flex > .card-item {
+        max-width: 30rem; /* Shrinks the card */
+        font-size: 1.2rem; /* Reduces font size */
+    }
+}
+
+/* For extra small screens (max-width 480px), further reduce the size */
+@media (max-width: 480px) {
+    .carousel-section .d-flex > .card-item {
+        max-width: 22rem; /* Even smaller card size */
+        font-size: 1rem; /* Reduce font size further */
+    }
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.image-section {
+    background-image: linear-gradient(
+        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.5)
+    ), url('../assets/bikingfast.jpg');
+
+    background-size: cover;
+    background-position: center;
+    color: var(--light);
+    min-height: 60vh;
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+}
+
+.fixed-image-section {
+    min-height: 100vh;
+  }
+  
+  .sticky-image-col {
+    position: relative;
+    padding: 0;
+  }
+  
+  .sticky-image-wrapper {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  
+  .sticky-image-wrapper img {
+    max-height: 100vh;
+    width: auto;
+    object-fit: contain;
+  }
+  
+  .content-col {
+    padding: 3rem;
+  }
+  
+  .content-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem 0;
+  }
+  
+  .color-options {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  
+  .color-swatch {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .storage-options {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+  }

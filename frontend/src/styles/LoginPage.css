@@ -1,0 +1,8 @@
+.login-section {
+    height: 80vh;
+    /* background-color: var(--primary); */
+}
+
+.login-form {
+    max-width: 27rem;
+}

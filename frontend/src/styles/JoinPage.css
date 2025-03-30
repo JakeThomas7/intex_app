@@ -1,0 +1,13 @@
+.join-section {
+    height: 90vh;
+    /* background-color: var(--primary); */
+}
+
+.join-form {
+    max-width: 25rem;
+}
+
+label {
+    font-weight: normal;
+    /* font-size: 13px; */
+}
