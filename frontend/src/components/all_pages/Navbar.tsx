@@ -6,7 +6,7 @@ const NavBar = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="navbar section-padding navbar-expand-lg bg-body-tertiary sticky-top navbar-color">
+    <nav className="navbar main-navbar section-padding navbar-expand-lg bg-body-tertiary sticky-top navbar-color">
       <div className="container-fluid">
         <a className="navbar-brand grow" onClick={()=>navigate('/')}>
             Cervélo

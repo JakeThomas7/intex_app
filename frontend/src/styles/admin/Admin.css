@@ -1,0 +1,24 @@
+.admin-sidebar {
+    background-color: var(--admin-sidebar);
+}
+
+.admin-background {
+    background-color: var(--admin-background);
+}
+
+.admin-navbar {
+    background-color: var(--admin-navbar);
+}
+
+.card {
+    border: none !important;
+}
+
+.admin-sidebar .nav-link {
+    color: white;
+}
+.admin-sidebar .nav-link:hover {
+    color: white;
+    text-decoration: none;;
+    background-color: var(--primary);
+}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
+import "../../styles/admin/Admin.css"
 
 const useWindowSize = () => {
   const [windowSize, setWindowSize] = useState({
@@ -36,6 +37,7 @@ const AdminLayout = () => {
   }, [isMobile]);
 
   const toggleSidebar = () => {
+    console.log('sidebar Toggle')
     setIsSidebarOpen(!isSidebarOpen);
   };
 
@@ -44,10 +46,10 @@ const AdminLayout = () => {
       <AdminSidebar 
         isMobile={isMobile} 
         isOpen={isSidebarOpen} 
-        onClose={toggleSidebar} 
+        onClose={toggleSidebar}
       />
       
-      <div className="flex-grow-1" style={{ overflowY: "auto", height: "100vh" }}>
+      <div className="flex-grow-1 admin-background" style={{ overflowY: "auto", height: "100vh" }}>
         <AdminNavbar isMobile={isMobile} onToggleSidebar={toggleSidebar} />
         
         <div className="p-3">

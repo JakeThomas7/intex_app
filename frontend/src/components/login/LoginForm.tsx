@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import '../../styles/LoginPage.css';
 import { useNavigate } from 'react-router-dom';
+import { authenticateUser } from '../../api/UsersAPI';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     username: '',
     password: ''
   });
-  const [error, setError] = useState('sample error');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -25,30 +26,11 @@ const LoginForm = () => {
     setIsLoading(true);
 
     try {
-      // Replace with your actual API endpoint
-      const response = await fetch('https://your-api-endpoint.com/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: formData.username,
-          password: formData.password
-        })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
-
-      localStorage.setItem('authToken', data.token);
-      
-      navigate('/dashboard');
-      
+      await authenticateUser(formData.username, formData.password)
+      //localStorage.setItem('authToken', data.token);
+      navigate('/');
     } catch (err) {
-      
+      setError((err as Error).message);
     } finally {
       setIsLoading(false);
     }

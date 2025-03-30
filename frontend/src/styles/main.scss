@@ -26,9 +26,13 @@ $font-family-base: "Inter", "Helvetica Neue", "Arial", sans-serif;
     --text-color: #333333;  // Example text color
     --highlight: #ff6347;   // Example highlight color
     --navbar: #f8f9fa;
+
+    --admin-background: #f8f8f8;
+    --admin-navbar: #{$white};
+    --admin-sidebar: #{$dark};
 }
 
-.navbar {
+.main-navbar {
     background-color: var(--light) !important;
 }
 .carousel-section {
@@ -96,6 +100,7 @@ html {
 .nav-link:hover {
     text-decoration: underline;
     text-underline-offset: 4px;
+    cursor: pointer;
 }
 .btn-outline-custom:hover {
     color:var(--primary)

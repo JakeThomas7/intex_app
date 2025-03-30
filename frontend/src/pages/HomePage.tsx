@@ -5,7 +5,7 @@ import CardSection from '../components/home/CardSection'
 import FixedImageSection from '../components/home/FixedImageSection'
 import ImageSection from '../components/home/ImageSection'
 import TitleSection from '../components/home/TitleSection'
-import '../styles/HomePage.css'
+import '../styles/home/HomePage.css'
 
 const HomePage = () => {
   return (

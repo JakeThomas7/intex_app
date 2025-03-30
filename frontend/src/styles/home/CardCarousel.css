@@ -1,0 +1,42 @@
+.carousel-controls {
+    opacity: 0;
+    z-index: 20;
+    transition: opacity 0.3s ease-in-out !important;
+  }
+  
+  .carousel-section:hover .carousel-controls {
+    opacity: .7;
+  }
+  
+  .carousel-section {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+      position: relative
+  }
+  .carousel-item {
+      background-color: white;
+  }
+  
+  /* For small screens (max-width 768px), reduce card size */
+  @media (max-width: 768px) {
+      .carousel-section .d-flex > .card-item {
+          max-width: 30rem !important; /* Shrinks the card */
+          font-size: 1.2rem !important; /* Reduces font size */
+      }
+  }
+  
+  /* For extra small screens (max-width 480px), further reduce the size */
+  @media (max-width: 480px) {
+      .carousel-section .d-flex > .card-item {
+          max-width: 22rem !important; /* Even smaller card size */
+          font-size: 1rem !important; /* Reduce font size further */
+      }
+  }
+  
+  .scrollbar-hidden::-webkit-scrollbar {
+      display: none;
+  }
+  .scrollbar-hidden {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+  }
