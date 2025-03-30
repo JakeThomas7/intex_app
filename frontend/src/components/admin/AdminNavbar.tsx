@@ -1,10 +1,11 @@
 const AdminNavbar = ({ 
-  isMobile, 
+  //isMobile, 
   onToggleSidebar 
 }:{
-  isMobile: boolean;
+  //isMobile: boolean;
   onToggleSidebar: () => void;
 }) => {
+
   return (
       <div className="navbar shadow-sm admin-navbar sticky-top section-padding" style={{ zIndex: 999, height: "55px"}}>
         <div className="text-start">
