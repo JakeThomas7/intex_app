@@ -1,3 +1,4 @@
+import FingerPrint from "./FingerPrint";
 
 const Footer = () => {
   return (
@@ -51,7 +52,8 @@ const Footer = () => {
     </div>
 
     <div className="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
-      <p>© 2024 Company, Inc. All rights reserved.</p>
+      <p className="col-md-5">© 2024 Company, Inc. All rights reserved.</p>
+      <div className="col-md-5 text-end"><FingerPrint /></div>
     </div>
   </footer>
     </div>

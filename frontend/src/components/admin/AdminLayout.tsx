@@ -52,13 +52,15 @@ const AdminLayout = () => {
         onClose={toggleSidebar}
       />
       
-      <div className="flex-grow-1 admin-background" style={{ overflowY: "auto", height: "100%" }}>
-        <AdminNavbar 
-        //isMobile={isMobile} 
-        onToggleSidebar={toggleSidebar} />
-        
-        <div className="">
-          <Outlet /> {/* This is where child routes will render */}
+      <div className="flex-grow-1 admin-background" style={{ height: "100%" }}>
+        <div style={{ overflowY: "auto"}}>
+          <AdminNavbar 
+          //isMobile={isMobile} 
+          onToggleSidebar={toggleSidebar} />
+          
+          <div className="">
+            <Outlet /> {/* This is where child routes will render */}
+          </div>
         </div>
       </div>
     </div>
