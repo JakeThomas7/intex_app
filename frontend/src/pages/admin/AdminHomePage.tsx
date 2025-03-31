@@ -1,6 +1,6 @@
 const AdminHomePage = () => {
   return (
-    <div>AdminHomePage</div>
+    <div className="">AdminHomePage</div>
   )
 }
 

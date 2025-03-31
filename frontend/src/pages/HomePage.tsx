@@ -8,6 +8,7 @@ import TitleSection from '../components/home/TitleSection'
 import '../styles/home/HomePage.css'
 
 const HomePage = () => {
+
   return (
     <div>
       <NavBar />

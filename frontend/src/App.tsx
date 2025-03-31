@@ -6,6 +6,7 @@ import AdminLayout from './components/admin/AdminLayout'
 import AdminHomePage from './pages/admin/AdminHomePage'
 import ManageSitePage from './pages/admin/ManageSitePage'
 import ManageUsersPage from './pages/admin/ManageUsersPage'
+import CookieConsent from './components/all_pages/CookieConsent'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
           </Route>
         </Routes>
       </Router>
+      <CookieConsent />
     </div>
   )
 }

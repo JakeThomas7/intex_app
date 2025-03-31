@@ -32,6 +32,10 @@ $font-family-base: "Inter", "Helvetica Neue", "Arial", sans-serif;
     --admin-sidebar: #{$dark};
 }
 
+.root {
+    height: 100%;
+}
+
 .main-navbar {
     background-color: var(--light) !important;
 }

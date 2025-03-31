@@ -55,7 +55,7 @@ const CardCarousel = () => {
   {/* Navigation Buttons */}
   <button 
     onClick={scrollLeft} 
-    className="btn btn-light position-absolute top-50 translate-middle-y start-0 ms-3 carousel-controls"
+    className="btn btn-light position-absolute top-50 translate-middle-y start-0 ms-3 carousel-controls d-none d-sm-block"
   >
     <i className="fa-solid fa-chevron-left fa-lg px-2 py-4"></i>
   </button>
@@ -103,7 +103,7 @@ const CardCarousel = () => {
 
   <button 
     onClick={scrollRight} 
-    className="btn btn-light position-absolute top-50 translate-middle-y end-0 me-3 carousel-controls"
+    className="btn btn-light position-absolute top-50 translate-middle-y end-0 me-3 carousel-controls d-none d-sm-block"
   >
     <i className="fa-solid fa-chevron-right fa-xl px-2 py-4"></i>
   </button>

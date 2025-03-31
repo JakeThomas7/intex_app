@@ -42,7 +42,10 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="d-flex" style={{ height: "100%" }}>
+    <div className="d-flex flex-grow-1" 
+    style={{
+      height: "100vh",}}
+    >
       <AdminSidebar 
         isMobile={isMobile} 
         isOpen={isSidebarOpen} 
@@ -54,7 +57,7 @@ const AdminLayout = () => {
         //isMobile={isMobile} 
         onToggleSidebar={toggleSidebar} />
         
-        <div className="p-3">
+        <div className="">
           <Outlet /> {/* This is where child routes will render */}
         </div>
       </div>
