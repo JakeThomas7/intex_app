@@ -1,8 +1,11 @@
 import { useNavigate } from 'react-router-dom'
+import { logout } from '../../api/AuthenticationAPI';
+import { useAuth } from '../context/AuthContext';
 
 const NavBar = () => {
 
   const navigate = useNavigate();
+  const { isAuth , checkAuth} = useAuth(); 
 
   return (
     <nav className="navbar main-navbar section-padding navbar-expand-lg bg-body-tertiary sticky-top navbar-color">
@@ -26,8 +29,8 @@ const NavBar = () => {
             </li>
 
             <li className="nav-item me-3">
-              <a className="nav-link active" aria-current="page" onClick={()=>navigate('/')}>
-                Pagination
+              <a className="nav-link active" aria-current="page" onClick={()=>navigate('/shop')}>
+                Shop
               </a>
             </li>
 
@@ -46,25 +49,48 @@ const NavBar = () => {
 
           <ul className="navbar-nav mb-lg-0 mb-2 ms-auto">
 
-            <li className="nav-item me-3 mb-2 mb-lg-0">
-              <a className="nav-link active" aria-current="page" onClick={()=>navigate('/login')}>
-                {/* <i className="fa-solid fa-user"></i>  */}
-                Log in
-              </a>
-            </li>
+            {isAuth &&
+              <>
+                <li className="nav-item me-3 mb-2 mb-lg-0">
+                  <a className="nav-link active" aria-current="page" onClick={async () => {
+                    await logout();
+                    await checkAuth();
+                    navigate('/');
+                  }}>
+                    Sign out
+                  </a>
+                </li>
+                <li className="nav-item me-lg-3 mb-2 mb-lg-0 d-flex align-items-center">
+                  <button className='btn btn-dark text-white grow' onClick={()=>navigate('/account')}>
+                    My Account
+                  </button>
+                </li>
+              </>
+            }
+            {!isAuth &&
+              <>
+                <li className="nav-item me-3 mb-2 mb-lg-0">
+                  <a className="nav-link active" aria-current="page" onClick={()=>navigate('/login')}>
+                    {/* <i className="fa-solid fa-user"></i>  */}
+                    Log in
+                  </a>
+                </li>
+                <li className="nav-item me-lg-3 mb-2 mb-lg-0 d-flex align-items-center">
+                  <button className='btn btn-dark text-white grow' onClick={()=>navigate('/join')}>
+                    Join Now
+                  </button>
+                </li>
+              </>
+            } 
 
-            <li className="nav-item me-lg-3 mb-2 mb-lg-0 d-flex align-items-center ">
-              <button className='btn btn-dark text-white grow' onClick={()=>navigate('/join')}>
-                Join Now
-              </button>
-            </li>
-
+            {isAuth &&
             <li className="nav-item d-flex align-items-center">
               <button className='btn btn-primary text-white grow' onClick={()=>navigate('/admin')}>
                 <i className="fa-regular fa-circle-user me-2"></i>
                 Admin
               </button>
             </li>
+            }
 
           </ul>
 

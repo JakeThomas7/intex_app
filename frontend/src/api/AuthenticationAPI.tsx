@@ -1,0 +1,129 @@
+import User from "../types/User";
+
+const API_URL = 'https://localhost:5000';
+
+
+export const register = async (email: string, password: string): Promise<void> => {
+
+    const response = await fetch(`${API_URL}/register`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({email, password}),
+    });
+
+    // Handle HTTP-level errors
+    if (!response.ok) {
+        let errorMessage = "Registration failed";
+
+        console.log(response)
+        const data = await response.json();
+        console.log(data)
+
+        // Process errors field
+        if (data.errors) {
+            errorMessage = Object.entries(data.errors)
+            .map(([key, messages]) => (messages as string[]).join('\n')).join('\n');
+        }
+
+        throw new Error(errorMessage);
+    }
+}
+
+export const login = async (email: string, password: string): Promise<void> => {
+
+    const queryParams = "useCookies=true"
+
+    const response = await fetch(`${API_URL}/login?${queryParams}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({email, password})
+    });
+
+    let data = null;
+    const contentType = response.headers.get('content-type');
+
+    if (contentType?.includes('application/json') || contentType?.includes('application/problem+json')) {
+        data = await response.json();
+    }
+
+    if (response.status === 401) {
+        if (data && data.detail && data.detail == "LockedOut") {
+            throw new Error("Too many attempts. Locked Out.")
+        }
+        throw new Error('Invalid email or password.');
+    } else if (!response.ok) {
+        throw new Error('There was an unexpected error.');
+    }
+
+}
+
+export const logout = async (): Promise<void> => {
+
+    try {
+        const response = await fetch(`${API_URL}/Identity/logout`, {
+            method: 'POST',
+            credentials: 'include', // Ensure cookies are sent
+            headers: {
+            'Content-Type': 'application/json',
+            },
+        });
+        if (response.ok) {
+            console.log('logged out');
+        } else {
+            console.error('Logout failed:', response.status);
+        }
+    } catch (error) {
+        console.error('Logout error:', error);
+    }
+}   
+
+export const pingauth = async (
+    maxRetries: number = 0, 
+    retryDelay: number = 250
+  ): Promise<User> => {
+    let lastError: Error | null = null;
+    
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        const response = await fetch(`${API_URL}/Identity/pingauth`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+  
+        // Handle HTTP errors
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: Ping authentication failed`);
+        }
+  
+        // Validate response format
+        const contentType = response.headers.get('content-type');
+        if (!contentType?.includes('application/json')) {
+          throw new Error('Invalid response format');
+        }
+  
+        const data = await response.json();
+        
+        // Validate response data
+        if (!data.email) {
+          throw new Error('Invalid user session: No email found');
+        }
+  
+        return data;
+  
+      } catch (error) {
+        lastError = error as Error;
+        
+        // Only delay if we're going to retry
+        if (attempt < maxRetries) {
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
+      }
+    }
+  
+    throw lastError || new Error('Authentication failed after retries');
+  };

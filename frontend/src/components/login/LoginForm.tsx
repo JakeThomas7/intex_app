@@ -1,16 +1,19 @@
 import { useState } from 'react';
 import '../../styles/LoginPage.css';
 import { useNavigate } from 'react-router-dom';
-import { authenticateUser } from '../../api/UsersAPI';
+import { login } from '../../api/AuthenticationAPI';
+import { useAuth } from '../context/AuthContext';
+
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: ''
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const {checkAuth} = useAuth();
 
   const handleChange = (e: { target: { id: any; value: any; }; }) => {
     const { id, value } = e.target;
@@ -26,8 +29,9 @@ const LoginForm = () => {
     setIsLoading(true);
 
     try {
-      await authenticateUser(formData.username, formData.password)
+      await login(formData.email, formData.password)
       //localStorage.setItem('authToken', data.token);
+      await checkAuth();
       navigate('/');
     } catch (err) {
       setError((err as Error).message);
@@ -39,17 +43,18 @@ const LoginForm = () => {
   return (
     <div className="login-section section-padding d-flex justify-content-center align-items-center w-100">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h3>Welcome!<br/>Log in to your personal account.</h3>
+        <h3 className="mb-3">Welcome!<br/>Log in to your personal account.</h3>
+        <button className="btn btn-outline-dark w-100 mb-3"><i className="fa-brands fa-google me-2"></i>Continue with Google</button>
         <hr/>
 
         <div className="mb-3">
-          <label htmlFor="username" className="form-label">Username</label>
+          <label htmlFor="email" className="form-label">Email</label>
           <input 
             type="text" 
             className="form-control" 
-            id="username" 
-            placeholder="Enter your username..." 
-            value={formData.username}
+            id="email" 
+            placeholder="Enter your email..." 
+            value={formData.email}
             onChange={handleChange}
             required
           />

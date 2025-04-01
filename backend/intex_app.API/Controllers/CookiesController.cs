@@ -14,15 +14,15 @@ namespace intex_app.API.Controllers
             _logger = logger;
         }
         
-        [HttpGet("SendCookies")]
-        public IActionResult SendCookies()
+        [HttpPost("RecordFingerprint")]
+        public IActionResult RecordFingerprint([FromBody] string fingerprint)
         {
-            HttpContext.Response.Cookies.Append("FavoriteItems", "Item1", new CookieOptions
+            HttpContext.Response.Cookies.Append("DigitalFingerprint", fingerprint, new CookieOptions
             {
                 Expires = DateTimeOffset.UtcNow.AddDays(7),
                 HttpOnly = true,  // Prevent JavaScript access (enhanced security)
                 Secure = true,    // Send only over HTTPS
-                SameSite = SameSiteMode.Strict // Restrict cross-site requests
+                SameSite = SameSiteMode.None // Restrict cross-site requests
             });
 
             _logger.LogInformation("Cookie has been set.");

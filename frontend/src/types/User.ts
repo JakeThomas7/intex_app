@@ -1,6 +1,5 @@
-export interface User {
-    FirstName: string;
-    LastName: string;
-    Username: string;
-    Password: string;
+interface User {
+    email: string;
 }
+
+export default User

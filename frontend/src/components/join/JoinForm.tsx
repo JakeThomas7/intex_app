@@ -1,21 +1,17 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { checkUsername, createUser } from '../../api/UsersAPI'
+import { login, register } from '../../api/AuthenticationAPI'
+import { useAuth } from '../context/AuthContext';
 
 const JoinForm = () => {
     const [form, setForm] = useState({
-        FirstName: '',
-        LastName: '',
-        Username: '',
+        Email: '',
         Password: '',
         ConfirmPassword: ''
     });
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-
-    const [usernameAvailable, setUsernameAvailable] = useState(false);
-    const [usernameMessage, setUsernameMessage] = useState('');
-
+    const {checkAuth} = useAuth();
     const navigate = useNavigate();
 
     const handleChange = (e: { target: { id: any; value: any; }; }) => {
@@ -34,81 +30,54 @@ const JoinForm = () => {
         });
     };
 
-    const isAvailable = async (username: string) => {
-        try {
-            await checkUsername(username);
-            setUsernameAvailable(true)
-            setUsernameMessage('')
-        } catch (err) {
-            setUsernameMessage((err as Error).message);
-            setUsernameAvailable(false)
-        }
-    };
-
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
-        e.preventDefault();
-        setError('');
-        setIsLoading(true);
 
-        try {
-            await createUser(form);
-            navigate('/');
-        } catch (err) {
-            setError((err as Error).message);
-        } finally {
-            setIsLoading(false);
+        // validate email and passwords
+        if (!form.Email || !form.Password || !form.ConfirmPassword) {
+            setError('Please fill in all fields.');
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.Email)) {
+            setError('Please enter a valid email address.');
+        } else if (form.Password !== form.ConfirmPassword) {
+            setError('Passwords do not match.');
+        } else {
+
+            e.preventDefault();
+            setError('');
+            setIsLoading(true);
+
+            try {
+                await register(form.Email, form.Password);
+                await login(form.Email, form.Password)
+                await checkAuth();
+                navigate('/');
+            } catch (err) {
+                setError((err as Error).message);
+            } finally {
+                setIsLoading(false);
+            }
+            
         }
     };
 
     return (
         <div className="section-padding join-section d-flex justify-content-center align-items-center w-100">
-            <form className="join-form" onSubmit={handleSubmit}>
-                <h3>First time here?<br/>Create your own personal account.</h3>
+            <form className="join-form">
+                <h3 className="mb-3">First time here?<br/>Create your own personal account.</h3>
+                <button className="btn btn-outline-dark w-100 mb-3"><i className="fa-brands fa-google me-2"></i>Continue with Google</button>
+
                 <hr/>
 
                 <div className="mb-3">
-                    <label htmlFor="FirstName" className="form-label">First Name</label>
+                    <label htmlFor="Email" className="form-label">Email</label>
                     <input 
                         type="text" 
                         className="form-control" 
-                        id="FirstName" 
-                        placeholder="Enter your first name..." 
-                        value={form.FirstName}
+                        id="Email" 
+                        placeholder="Enter your email..." 
+                        value={form.Email}
                         onChange={handleChange}
                         required
                     />
-                </div>
-
-                <div className="mb-3">
-                    <label htmlFor="LastName" className="form-label">Last Name</label>
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        id="LastName" 
-                        placeholder="Enter your last name..." 
-                        value={form.LastName}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-
-                <div className="mb-3">
-                    <label htmlFor="Username" className="form-label">Username</label>
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        id="Username" 
-                        placeholder="Enter your username..." 
-                        value={form.Username}
-                        onChange={(e) => {
-                            handleChange(e);
-                            isAvailable(e.target.value);
-                        }}
-                        required
-                    />
-                </div>
-                <div className="text-center text-danger mb-3">
-                    {usernameMessage}
                 </div>
 
                 <div className="mb-3">
@@ -140,7 +109,8 @@ const JoinForm = () => {
                 <button 
                     type="submit" 
                     className="btn btn-primary text-white w-100 mb-3"
-                    disabled={isLoading || !!error || !usernameAvailable}
+                    disabled={isLoading || !!error}
+                    onClick={handleSubmit}
                 >
                     {isLoading ? (
                         <>

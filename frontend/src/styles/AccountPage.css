@@ -1,0 +1,8 @@
+.account-section {
+    height: 80vh;
+    /* background-color: var(--primary); */
+}
+
+.account-width {
+    max-width: 25rem;
+}

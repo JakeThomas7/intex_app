@@ -7,17 +7,25 @@ import AdminHomePage from './pages/admin/AdminHomePage'
 import ManageSitePage from './pages/admin/ManageSitePage'
 import ManageUsersPage from './pages/admin/ManageUsersPage'
 import CookieConsent from './components/all_pages/CookieConsent'
+import ProtectedRoute from './components/all_pages/ProtectedRoute'
+import { AuthProvider } from './components/context/AuthContext'
+import AccountPage from './pages/AccountPage'
+import ShopPage from './pages/ShopPage'
+
 
 function App() {
-
   return (
-    <div>
+    <AuthProvider>
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/shop" element={<ShopPage />} />
           <Route path="/Login" element={<LoginPage />} />
           <Route path="/Join" element={<JoinPage />} />
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route path="/account" element={<AccountPage />} />
+
+          {/* Protected Routes */}
+          <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
             <Route index element={<AdminHomePage />} />
             <Route path="site" element={<ManageSitePage />} />
             <Route path="users" element={<ManageUsersPage />} />
@@ -25,8 +33,8 @@ function App() {
         </Routes>
       </Router>
       <CookieConsent />
-    </div>
-  )
+    </AuthProvider>
+  );
 }
 
 export default App
