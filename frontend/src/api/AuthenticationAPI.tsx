@@ -22,10 +22,10 @@ export const register = async (email: string, password: string): Promise<void> =
         const data = await response.json();
         console.log(data)
 
-        // Process errors field
         if (data.errors) {
-            errorMessage = Object.entries(data.errors)
-            .map(([key, messages]) => (messages as string[]).join('\n')).join('\n');
+            errorMessage = Object.values(data.errors)
+                .flat()
+                .join('\n');
         }
 
         throw new Error(errorMessage);
