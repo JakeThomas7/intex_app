@@ -1,6 +1,7 @@
 import User from "../types/User";
 
-const API_URL = 'https://localhost:5000';
+//const API_URL = 'https://localhost:5000';
+const API_URL = 'https://intexappbackend.azurewebsites.net/''
 
 
 export const register = async (email: string, password: string): Promise<void> => {
