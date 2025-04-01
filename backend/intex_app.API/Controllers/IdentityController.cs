@@ -2,6 +2,7 @@ using intex_app.API.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 namespace intex_app.API.Controllers;
 
@@ -16,6 +17,12 @@ public class IdentityController : ControllerBase
     {
         _identityContext = temp;
         _signInManager = signInManager;
+    }
+
+    [HttpGet("getTest")]
+    public IActionResult GetTest()
+    {
+        return Ok(new { message = "Test Successful" });
     }
 
     [HttpPost("logout")]
