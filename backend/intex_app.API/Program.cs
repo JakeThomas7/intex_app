@@ -48,11 +48,11 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000")
-                //"http://localhost:3000", "https://ashy-tree-084b01c1e.6.azurestaticapps.net"
-                .AllowCredentials() // Required to allow cookies
+            policy.WithOrigins("https://ashy-tree-084b01c1e.6.azurestaticapps.net", "http://localhost:3000")
+                .AllowCredentials()
                 .AllowAnyMethod()
-                .AllowAnyHeader();
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true); // Explicitly allow the frontend
         });
 });
 var app = builder.Build();
@@ -64,9 +64,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowFrontend");
 app.UseHttpsRedirection();
 
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 

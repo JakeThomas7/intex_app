@@ -77,7 +77,7 @@ const Account = () => {
     return (
         <div className="section-padding account-section d-flex justify-content-center align-items-center w-100">
             <div className="container">
-                <div className="">
+                <div className="row">
                     {/* User Info Column */}
                     <div className="col-lg-6 col-md-12 mb-4">
                         <div className="card bg-light">
@@ -118,7 +118,7 @@ const Account = () => {
                                         <input
                                             id="firstName"
                                             placeholder="Enter your first name..."
-                                            className="form-control mb-3"
+                                            className="form-control mb-3 bg-transparent"
                                             value={formData.firstName}
                                             onChange={handleInputChange}
                                         />
@@ -131,7 +131,7 @@ const Account = () => {
                                         <input
                                             id="lastName"
                                             placeholder="Enter last name..."
-                                            className="form-control mb-3"
+                                            className="form-control mb-3 bg-transparent lead"
                                             value={formData.lastName}
                                             onChange={handleInputChange}
                                         />
