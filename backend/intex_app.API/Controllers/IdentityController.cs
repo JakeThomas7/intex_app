@@ -2,6 +2,7 @@ using intex_app.API.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.EntityFrameworkCore;
 
@@ -81,10 +82,10 @@ public class IdentityController : ControllerBase
             isAuthenticated = true
         });
     }
-
     
     // Update User Profile Endpoint
     [HttpPut("updateUserProfile")]
+    [Authorize]
     public async Task<ObjectResult> UpdateUserProfile([FromBody] User request)
     {
         // Validate the request
@@ -119,6 +120,7 @@ public class IdentityController : ControllerBase
     }
 
     [HttpGet("users")]
+    [Authorize]
     public IActionResult GetUsers(int pageSize = 10, int pageNum = 1, string sort = "asc", string search = "", int? adminStatus = null)
     {
         var query = _identityContext.Users.AsQueryable();

@@ -10,6 +10,7 @@ $dark: #343a40;
 
 $font-family-base: "Inter", "Helvetica Neue", "Arial", sans-serif;
 @import "bootstrap/scss/bootstrap";
+@import url('https://fonts.googleapis.com/css2?family=Bytesized&display=swap');
 
 :root {
     --primary: #{$primary};
@@ -57,6 +58,7 @@ $font-family-base: "Inter", "Helvetica Neue", "Arial", sans-serif;
 
 body {
     font-weight: 450;
+    //font-family: "Bytesized"
 }
 
 html {
