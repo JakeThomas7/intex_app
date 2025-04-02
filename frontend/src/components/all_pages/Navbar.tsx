@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { logout } from '../../api/AuthenticationAPI';
+import { logout, pingauth } from '../../api/AuthenticationAPI';
 import { useAuth } from '../context/AuthContext';
 
 const NavBar = () => {
@@ -43,6 +43,11 @@ const NavBar = () => {
             <li className="nav-item me-3">
               <a className="nav-link active" aria-current="page" onClick={()=>navigate('/')}>
                 Stories
+              </a>
+            </li>
+            <li className="nav-item me-3">
+              <a className="nav-link active" aria-current="page" onClick={async () => {console.log(await pingauth())}}>
+                Ping Auth
               </a>
             </li>
           </ul>

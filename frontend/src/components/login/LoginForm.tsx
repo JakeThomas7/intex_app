@@ -8,18 +8,19 @@ import { useAuth } from '../context/AuthContext';
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
+    rememberMe: false
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const {checkAuth} = useAuth();
 
-  const handleChange = (e: { target: { id: any; value: any; }; }) => {
-    const { id, value } = e.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value, checked, type } = e.target;
     setFormData(prev => ({
       ...prev,
-      [id]: value
+      [id]: type === 'checkbox' ? checked : value
     }));
   };
 
@@ -29,7 +30,7 @@ const LoginForm = () => {
     setIsLoading(true);
 
     try {
-      await login(formData.email, formData.password)
+      await login(formData.email, formData.password, formData.rememberMe);
       //localStorage.setItem('authToken', data.token);
       await checkAuth();
       navigate('/');
@@ -71,6 +72,20 @@ const LoginForm = () => {
             onChange={handleChange}
             required
           />
+        </div>
+
+        <div className="form-check mb-3">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            id="rememberMe"
+            name="rememberMe"
+            checked={formData.rememberMe}
+            onChange={handleChange}
+          />
+          <label className="form-check-label" htmlFor="rememberMe">
+            Remember password
+          </label>
         </div>
         
         <button 

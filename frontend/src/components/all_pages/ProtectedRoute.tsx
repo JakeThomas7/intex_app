@@ -25,7 +25,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }, [checkAuth, location.pathname]); // Re-run when route changes
 
   if (isChecking) {
-    return <div>Verifying authentication...</div>;
+    return <div></div>;
   }
 
   if (!isAuth) {

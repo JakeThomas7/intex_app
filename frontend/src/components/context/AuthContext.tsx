@@ -1,10 +1,7 @@
 // AuthContext.tsx
 import React, { createContext, useState, useEffect, useCallback } from 'react';
 import { pingauth } from '../../api/AuthenticationAPI';
-
-interface User {
-  email: string;
-}
+import User from '../../types/User';
 
 interface AuthContextType {
   user: User | null;
@@ -28,7 +25,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const data = await pingauth();
 
       if (data.email) {
-        setUser({ email: data.email });
+        setUser({ 
+          email: data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          adminStatus: data.adminStatus
+        });
         setIsAuth(true);
       } else {
         throw new Error('Invalid user session');

@@ -1,40 +1,39 @@
 import User from "../types/User";
 
-//const API_URL = 'https://localhost:5000';
-const API_URL = 'https://intexappbackend.azurewebsites.net'
+const API_URL = 'https://localhost:5000';
+//const API_URL = 'https://intexappbackend.azurewebsites.net'
 
 
 export const register = async (email: string, password: string): Promise<void> => {
+  const response = await fetch(`${API_URL}/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+  });
 
-    const response = await fetch(`${API_URL}/register`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({email, password}),
-    });
+  if (!response.ok) {
+      let errorMessage = "Registration failed";
 
-    // Handle HTTP-level errors
-    if (!response.ok) {
-        let errorMessage = "Registration failed";
+      try {
+          const data = await response.json();
+          console.log(data);
 
-        console.log(response)
-        const data = await response.json();
-        console.log(data)
+          if (data.errors) {
+              errorMessage = Object.values(data.errors).flat().join('\n');
+          }
+      } catch (error) {
+          console.warn("Failed to parse error response", error);
+      }
 
-        if (data.errors) {
-            errorMessage = Object.values(data.errors)
-                .flat()
-                .join('\n');
-        }
+      throw new Error(errorMessage);
+  }
+};
 
-        throw new Error(errorMessage);
-    }
-}
+export const login = async (email: string, password: string, rememberMe: boolean): Promise<void> => {
 
-export const login = async (email: string, password: string): Promise<void> => {
-
-    const queryParams = "useCookies=true"
+    const queryParams = rememberMe
+    ? 'useCookies=true'
+    : 'useSessionCookies=true';
 
     const response = await fetch(`${API_URL}/login?${queryParams}`, {
         method: 'POST',
