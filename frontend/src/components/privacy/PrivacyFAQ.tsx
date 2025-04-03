@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import "/Users/mjmikes/Downloads/Classes/INTEX2/intex_app-main/frontend/src/styles/privacy/FAQ.css"; // Ensure your CSS file is correctly linked
+import { useState } from "react";
+import "../../styles/privacy/FAQ.css";
 
-function PrivacyFAQItem({ question, children }) {
+function PrivacyFAQItem({ question, children }: { question: string; children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false); // State to handle open/close
 
   return (

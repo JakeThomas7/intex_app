@@ -315,3 +315,8 @@
 /Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/bin/Release/net8.0/publish/publish/publish/publish/publish/publish/publish/publish/publish/publish/appsettings.json
 /Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/bin/Release/net8.0/publish/publish/publish/publish/publish/publish/publish/publish/publish/publish/intex_app.API.deps.json
 /Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/bin/Release/net8.0/publish/publish/publish/publish/publish/publish/publish/publish/publish/publish/intex_app.API.runtimeconfig.json
+/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/bin/Release/net8.0/publish/publish/publish/publish/publish/publish/publish/publish/publish/publish/publish/web.config
+/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/bin/Release/net8.0/publish/publish/publish/publish/publish/publish/publish/publish/publish/publish/publish/appsettings.Development.json
+/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/bin/Release/net8.0/publish/publish/publish/publish/publish/publish/publish/publish/publish/publish/publish/appsettings.json
+/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/bin/Release/net8.0/publish/publish/publish/publish/publish/publish/publish/publish/publish/publish/publish/intex_app.API.deps.json
+/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/bin/Release/net8.0/publish/publish/publish/publish/publish/publish/publish/publish/publish/publish/publish/intex_app.API.runtimeconfig.json

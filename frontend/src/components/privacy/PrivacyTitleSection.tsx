@@ -5,7 +5,7 @@ function PrivacyTitleSection() {
     backgroundSize: "cover",
     backgroundPosition: "center",
     color: "white", // Replace with your preferred color
-    textAlign: "center",
+    //textAlign: "center",
     paddingTop: "3rem",
     paddingBottom: "3rem",
   };

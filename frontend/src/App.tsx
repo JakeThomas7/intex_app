@@ -13,6 +13,8 @@ import AccountPage from "./pages/AccountPage";
 import ShopPage from "./pages/ShopPage";
 import AdminAccountPage from "./pages/admin/AdminAccountPage";
 import PrivacyPage from "./pages/PrivacyPage";
+import DetailsPage from "./pages/DetailsPage";
+import AdminProtectedRoute from "./components/all_pages/AdminProtectedRoute";
 
 function App() {
   return (

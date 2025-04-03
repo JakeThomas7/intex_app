@@ -5,10 +5,6 @@ const RoleDropdown = ({ currentRole, onRoleChange }: any) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedRole, setSelectedRole] = useState(currentRole);
-    const [error, setError] = useState<string | null>(null);
-
-    const [confirm, setConfrim] = useState(false);
-
     const {user: CurrentUser} = useAuth();
 
 
@@ -29,7 +25,6 @@ const RoleDropdown = ({ currentRole, onRoleChange }: any) => {
     }, []);
 
     const handleRoleChange = async (role: string) => {
-        setError(null)
         setSelectedRole(role)
         setIsOpen(false);
         if (role === selectedRole) {

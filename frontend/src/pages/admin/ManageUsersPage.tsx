@@ -64,10 +64,6 @@ const ManageUsersPage = () => {
     }));
   };
 
-  const refreshData = () => {
-    setRefreshKey(prev => prev + 1);
-  };
-
 
   return (
     <div className="section-padding">
@@ -120,7 +116,6 @@ const ManageUsersPage = () => {
             <UserManagementBar 
               filters={filters}
               onFilterChange={handleFilterChange}
-              onRefresh={refreshData}
             />
 
             {/* Loading & Error State */}

@@ -9,10 +9,9 @@ interface UserManagementBarProps {
     pageSize: number;
   };
   onFilterChange: (newFilters: Partial<UserManagementBarProps['filters']>) => void;
-  onRefresh: () => void;
 }
 
-const UserManagementBar = ({ filters, onFilterChange, onRefresh }: UserManagementBarProps) => {
+const UserManagementBar = ({ filters, onFilterChange }: UserManagementBarProps) => {
   const handleSearch = () => {
     onFilterChange({ search: filters.search });
   };
