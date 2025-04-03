@@ -40,7 +40,12 @@ $font-family-base: "Inter", "Helvetica Neue", "Arial", sans-serif;
 .main-navbar {
     background-color: var(--light) !important;
 }
+
 .carousel-section {
+    background-color: var(--light);
+}
+
+.fixed-image-section {
     background-color: var(--light);
 }
 

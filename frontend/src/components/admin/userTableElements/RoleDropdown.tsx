@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 const RoleDropdown = ({ currentRole, onRoleChange }: any) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -7,6 +8,8 @@ const RoleDropdown = ({ currentRole, onRoleChange }: any) => {
     const [error, setError] = useState<string | null>(null);
 
     const [confirm, setConfrim] = useState(false);
+
+    const {user: CurrentUser} = useAuth();
 
 
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -52,7 +55,7 @@ const RoleDropdown = ({ currentRole, onRoleChange }: any) => {
 
         <div className="dropdown" ref={dropdownRef} style={{ display: 'inline-block' }}>
             <button
-                className="btn btn-primary text-white btn dropdown-toggle"
+                className={`btn btn-primary text-white btn dropdown-toggle ${CurrentUser?.role !== 'Super Admin' ? 'disabled' : ''}`}
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
                 disabled={isLoading}

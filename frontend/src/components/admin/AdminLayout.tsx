@@ -52,8 +52,8 @@ const AdminLayout = () => {
         onClose={toggleSidebar}
       />
       
-      <div className="flex-grow-1 admin-background" style={{ height: "100%" }}>
-        <div style={{ overflowY: "auto", height: "100%"}}>
+      <div className="flex-grow-1 admin-background" style={{ height: "100vh", overflowY: "auto" }}>
+        <div>
           <AdminNavbar 
           //isMobile={isMobile} 
           onToggleSidebar={toggleSidebar} />
