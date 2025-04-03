@@ -37,7 +37,8 @@ public class IdentityController : ControllerBase
         {
             HttpOnly = true,
             Secure = true,
-            SameSite = SameSiteMode.None
+            SameSite = SameSiteMode.None,
+            Domain = "byjacobthomas.com"
         });
 
         return Ok(new { message = "Logout successful" });

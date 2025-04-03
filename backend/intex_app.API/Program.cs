@@ -36,6 +36,7 @@ builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, CustomUserClaimsPr
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
+    options.Cookie.Domain = ".byjacobthomas.com";
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.None;
     options.LoginPath = "/login";
@@ -48,11 +49,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("https://ashy-tree-084b01c1e.6.azurestaticapps.net", "http://localhost:3000")
+            policy.WithOrigins("https://cervelo.byjacobthomas.com", "http://localhost:3000")
                 .AllowCredentials()
                 .AllowAnyMethod()
-                .AllowAnyHeader()
-                .SetIsOriginAllowed(origin => true); // Explicitly allow the frontend
+                .AllowAnyHeader();
         });
 });
 var app = builder.Build();
