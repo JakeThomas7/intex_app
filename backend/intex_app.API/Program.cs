@@ -26,9 +26,18 @@ builder.Services.AddIdentityApiEndpoints<User>()
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
+    // Existing configurations
     options.ClaimsIdentity.RoleClaimType = ClaimTypes.Role; // For role based authentication
     options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier;
     options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Email;
+
+    // Password settings
+    options.Password.RequireDigit = true;                   // Requires a number
+    options.Password.RequiredLength = 15;                    // Set the minimum length of the password
+    options.Password.RequireNonAlphanumeric = true;         // Requires a non-alphanumeric character
+    options.Password.RequireUppercase = false;               // Requires an uppercase letter
+    options.Password.RequireLowercase = false;               // Requires a lowercase letter
+    options.Password.RequiredUniqueChars = 0;               // Requires a number of unique characters
 });
 
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, CustomUserClaimsPrincipalFactory>();
