@@ -6,18 +6,21 @@ import User from '../../types/User';
 interface AuthContextType {
   user: User | null;
   isAuth: boolean;
+  isAdmin: boolean;
   checkAuth: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   isAuth: false,
+  isAdmin: false,
   checkAuth: async () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isAuth, setIsAuth] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const checkAuth = useCallback(async () => {
@@ -29,15 +32,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           email: data.email,
           firstName: data.firstName,
           lastName: data.lastName,
-          adminStatus: data.adminStatus
+          role: data.role
         });
+
         setIsAuth(true);
+
+        if (data.role == "Admin" || data.role == "Super Admin") {
+          setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
+        }
+
       } else {
         throw new Error('Invalid user session');
       }
     } catch (error) {
       setUser(null);
       setIsAuth(false);
+      setIsAdmin(false)
     } finally {
       setLoading(false);
     }
@@ -52,7 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isAuth, checkAuth }}>
+    <AuthContext.Provider value={{ user, isAuth, isAdmin, checkAuth }}>
       {children}
     </AuthContext.Provider>
   );

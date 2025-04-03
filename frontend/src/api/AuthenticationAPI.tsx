@@ -1,7 +1,8 @@
 import User from "../types/User";
 
-//const API_URL = 'https://localhost:5000';
-const API_URL = 'https://api.byjacobthomas.com'
+
+const API_URL = 'https://localhost:5000';
+//const API_URL = 'https://api.byjacobthomas.com'
 
 
 export const register = async (email: string, password: string): Promise<void> => {
@@ -81,6 +82,7 @@ export const logout = async (): Promise<void> => {
         console.error('Logout error:', error);
     }
 }   
+
 
 export const pingauth = async (
     maxRetries: number = 0, 

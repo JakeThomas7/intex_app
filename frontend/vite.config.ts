@@ -13,7 +13,7 @@ export default defineConfig({
         "style-src 'self' 'unsafe-inline';", // Needed for inline styles in React apps
         "img-src 'self' data:;", // Allow data URLs for images
         "font-src 'self' data:;", // Allow self-hosted and data URI fonts
-        "connect-src 'self' https://localhost:5000 https://intexappbackend.azurewebsites.net;", // Allow API calls
+        "connect-src 'self' https://localhost:5000 https://api.byjacobthomas.com;", // Allow API calls
         "frame-ancestors 'none';", // Prevent embedding in iframes
         "object-src 'none';", // Blocks Flash, ActiveX, etc.
         "base-uri 'self';",

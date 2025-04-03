@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
-using Microsoft.EntityFrameworkCore;
 
 namespace intex_app.API.Controllers;
 
@@ -12,13 +10,13 @@ namespace intex_app.API.Controllers;
 [ApiController]
 public class IdentityController : ControllerBase
 {
-    private readonly UserIdentityDbContext _identityContext;
     private readonly SignInManager<User> _signInManager;
-
-    public IdentityController(UserIdentityDbContext temp, SignInManager<User> signInManager)
+    private readonly UserManager<User> _userManager;
+    
+    public IdentityController(UserIdentityDbContext temp, SignInManager<User> signInManager, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
     {
-        _identityContext = temp;
         _signInManager = signInManager;
+        _userManager = userManager;
     }
 
     [HttpGet("getTest")]
@@ -38,123 +36,48 @@ public class IdentityController : ControllerBase
             HttpOnly = true,
             Secure = true,
             SameSite = SameSiteMode.None,
-            Domain = "byjacobthomas.com"
+            //omain = "byjacobthomas.com"
         });
 
         return Ok(new { message = "Logout successful" });
     }
 
     [HttpGet("pingauth")]
+    [Authorize] // Ensure the endpoint requires authentication
     public async Task<IActionResult> PingAuth()
     {
-        // Check authentication
-        if (!User.Identity?.IsAuthenticated ?? false)
-        {
-            return Unauthorized(new { message = "Not authenticated" });
-        }
-
-        // Get email from claims
+        // 1. Safely get email from claims
         var email = User.FindFirstValue(ClaimTypes.Email);
         if (string.IsNullOrEmpty(email))
         {
             return BadRequest(new { message = "Email claim missing" });
         }
 
-        // Query user with null checks
-        var dbUser = await _identityContext.Users
-            .AsNoTracking() // Recommended for read-only operations
-            .FirstOrDefaultAsync(u => u.Email == email);
-
-        if (dbUser == null)
+        // 2. Safely get user with roles
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
         {
-            return NotFound(new { 
+            return NotFound(new 
+            {
                 message = "User not found",
-                email = email 
+                email = email
             });
         }
 
-        // Ensure safe null handling for all properties
-        return Ok(new 
+        // 3. Safely get roles (with null check)
+        var roles = await _userManager.GetRolesAsync(user) ?? new List<string>();
+
+        // 4. Safely get first role or default to "User"
+        var primaryRole = roles.Count > 0 ? roles[0] : "User";
+
+        return Ok(new
         {
             email = email,
-            adminStatus = dbUser.AdminStatus, // int will default to 0
-            firstName = dbUser.FirstName ?? "",
-            lastName = dbUser.LastName ?? "",
-            isAuthenticated = true
+            role = primaryRole, // Safe access to first role
+            firstName = user.FirstName ?? "",
+            lastName = user.LastName ?? "",
+            isAuthenticated = true,
+            allRoles = roles // Optional: return all roles for debugging
         });
-    }
-    
-    // Update User Profile Endpoint
-    [HttpPut("updateUserProfile")]
-    [Authorize]
-    public async Task<ObjectResult> UpdateUserProfile([FromBody] User request)
-    {
-        // Validate the request
-        if (string.IsNullOrEmpty(request.Email))
-        {
-            return BadRequest(new { message = "Email is required." });
-        }
-
-        // Find the user by email
-        var user = await _identityContext.Users
-            .FirstOrDefaultAsync(u => u.Email == request.Email);
-
-        if (user == null)
-        {
-            return NotFound(new { message = "User not found" });
-        }
-
-        // Update user details
-        user.FirstName = request.FirstName ?? user.FirstName;
-        user.LastName = request.LastName ?? user.LastName;
-
-        try
-        {
-            // Save changes to the database
-            await _identityContext.SaveChangesAsync();
-            return Ok(new { message = "Profile updated successfully" });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
-        }
-    }
-
-    [HttpGet("users")]
-    [Authorize]
-    public IActionResult GetUsers(int pageSize = 10, int pageNum = 1, string sort = "asc", string search = "", int? adminStatus = null)
-    {
-        var query = _identityContext.Users.AsQueryable();
-
-        // Search Filtering (Assuming search applies to name or email)
-        if (!string.IsNullOrEmpty(search))
-        {
-            query = query.Where(u => u.FirstName.Contains(search) || u.LastName.Contains(search) || u.Email.Contains(search));
-        }
-
-        // Filter by Admin Status
-        if (adminStatus.HasValue)
-        {
-            query = query.Where(u => u.AdminStatus == adminStatus);
-        }
-
-        // Sorting (Example: Sorting by FirstName)
-        if (sort == "asc")
-        {
-            query = query.OrderBy(u => u.FirstName);
-        }
-        else if (sort == "desc")
-        {
-            query = query.OrderByDescending(u => u.FirstName);
-        }
-
-        // Pagination
-        var totalNumUsers = query.Count();
-        var users = query
-            .Skip((pageNum - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-
-        return Ok(new { Users = users, totalNumUsers = totalNumUsers });
     }
 }

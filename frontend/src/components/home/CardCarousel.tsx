@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import '../../styles/home/CardCarousel.css'
+import { useNavigate } from "react-router-dom";
 
 const CardCarousel = () => {
   // Sample product data
@@ -15,6 +16,7 @@ const CardCarousel = () => {
   // Refs for carousel and individual card
   const carouselRef = useRef<HTMLDivElement | null>(null);
   const [cardWidth, setCardWidth] = useState(0);
+  const navigate = useNavigate();
   
 
   // Update card width after component mounts
@@ -77,9 +79,10 @@ const CardCarousel = () => {
         style={{
           scrollSnapAlign: 'start',
           scrollMargin: '0 0 0 clamp(3rem, 5vw, 6rem)',
-          maxWidth: "35rem", /* Default max width */
-          height: "30rem"
+          maxWidth: "45rem", /* Default max width */
+          height: "35rem"
         }}
+        onClick={() => navigate("/details")}
       >
         {/* Inner card with hover effect */}
         <div

@@ -19,11 +19,6 @@ const AdminNavbar = ({
         </div>
 
         <div className="text-end">
-
-          <button className='btn btn-dark text-white grow'>
-            <i className="fa-regular fa-circle-user me-2"></i>
-            {user?.email}
-          </button>
         </div>
       </div>
     

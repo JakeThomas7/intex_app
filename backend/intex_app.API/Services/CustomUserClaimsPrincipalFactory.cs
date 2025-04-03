@@ -16,6 +16,17 @@ public class CustomUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<User>
     {
         var identity = await base.GenerateClaimsAsync(user);
         identity.AddClaim(new Claim(ClaimTypes.Email, user.Email ?? "")); // Ensure email claim is always present
+        
+        // -------- ADDED BY JAKE FOR ROLE AUTHENTICATION -----------
+        if (identity.Claims.All(c => c.Type != ClaimTypes.Role))
+        {
+            var roles = await UserManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                identity.AddClaim(new Claim(ClaimTypes.Role, role));
+            }
+        }
+        
         return identity;
     }
 }

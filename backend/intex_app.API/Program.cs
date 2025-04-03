@@ -7,10 +7,7 @@ using intex_app.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -23,11 +20,13 @@ builder.Services.AddDbContext<UserIdentityDbContext>(options =>
 builder.Services.AddAuthorization();
 
 builder.Services.AddIdentityApiEndpoints<User>()
+    .AddRoles<IdentityRole>() // For role based authentication
     .AddEntityFrameworkStores<UserIdentityDbContext>()
     .AddDefaultTokenProviders();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
+    options.ClaimsIdentity.RoleClaimType = ClaimTypes.Role; // For role based authentication
     options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier;
     options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Email;
 });
@@ -36,7 +35,7 @@ builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, CustomUserClaimsPr
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.Cookie.Domain = ".byjacobthomas.com";
+    //options.Cookie.Domain = ".byjacobthomas.com";
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.None;
     options.LoginPath = "/login";

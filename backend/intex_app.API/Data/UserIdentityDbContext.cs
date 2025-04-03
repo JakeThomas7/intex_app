@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,13 +24,29 @@ public class UserIdentityDbContext : IdentityDbContext<User>
                 
             entity.Property(e => e.LastName)
                 .HasMaxLength(100);  // Limit last name length
-                
-            // Configure AdminStatus with default value and check constraint
-            entity.Property(e => e.AdminStatus)
-                .HasDefaultValue(0)  // Explicit default (redundant since you set it in class, but good for DB)
-                .IsRequired();
             
         });
+        
+        builder.Entity<IdentityRole>().HasData(
+            new IdentityRole
+            {
+                Id = "3",
+                Name = "Super Admin",
+                NormalizedName = "SUPER ADMIN"
+            },
+            new IdentityRole
+            {
+                Id = "2",
+                Name = "Admin",
+                NormalizedName = "ADMIN"
+            },
+            new IdentityRole
+            {
+                Id = "1",
+                Name = "User",
+                NormalizedName = "USER"
+            }
+        );
     }
     
 }
