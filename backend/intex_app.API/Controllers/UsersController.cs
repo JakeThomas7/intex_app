@@ -63,7 +63,8 @@ public class UsersController : ControllerBase
         int pageSize = 10, 
         int pageNum = 1,
         string search = null, 
-        string role = null)
+        string role = null,
+        string sortOrder = "asc")
     {
         // Base query with user and role data in a single join
         var query = 
@@ -83,10 +84,12 @@ public class UsersController : ControllerBase
         // Apply search filter if provided
         if (!string.IsNullOrEmpty(search))
         {
+            
+            // For SQL Server
+            search = search.ToLower();
             query = query.Where(x => 
-                x.User.FirstName.Contains(search) || 
-                x.User.LastName.Contains(search) || 
-                x.User.Email.Contains(search));
+                (x.User.FirstName.ToLower() + " " + x.User.LastName.ToLower() + " " + x.User.Email.ToLower()).Contains(search)
+            );
         }
 
         // Apply role filter if provided
@@ -96,16 +99,16 @@ public class UsersController : ControllerBase
         }
 
         // Default sorting by name then email
-        var orderedQuery = query
-            .OrderBy(x => x.User.LastName)
-            .ThenBy(x => x.User.FirstName)
-            .ThenBy(x => x.User.Email);
+        //var orderedQuery = query
+        //    .OrderBy(x => x.User.FirstName)
+        //    .ThenBy(x => x.User.Email)
+        //    .ThenBy(x => x.User.LastName);
 
         // Get total count before pagination
-        var totalCount = await query.CountAsync();
+        var totalNumUsers = await query.CountAsync();
 
         // Apply pagination and final projection
-        var results = await orderedQuery
+        var results = await query
             .Skip((pageNum - 1) * pageSize)
             .Take(pageSize)
             .Select(x => new 
@@ -118,7 +121,7 @@ public class UsersController : ControllerBase
             })
             .ToListAsync();
 
-        return Ok(new { Users = results, totalNumUsers = totalCount });
+        return Ok(new { Users = results, totalNumUsers = totalNumUsers });
     }
     
     [HttpPost("assignRole")]

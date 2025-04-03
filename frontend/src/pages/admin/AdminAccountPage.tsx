@@ -1,9 +1,9 @@
-import Account from "../../components/account/Account"
+import AccountCards from "../../components/account/AccountCards"
 
 const AdminAccountPage = () => {
   return (
-    <div>
-      <Account />
+    <div className="section-padding py-4">
+      <AccountCards />
     </div>
   )
 }

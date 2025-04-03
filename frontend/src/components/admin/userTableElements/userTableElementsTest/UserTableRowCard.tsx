@@ -1,9 +1,10 @@
-import RoleDropdown from './RoleDropdown';
-import { assignRole, deleteUser } from '../../../api/UsersAPI';
-import { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useState } from "react";
+import { assignRole, deleteUser } from "../../../../api/UsersAPI";
+import { useAuth } from "../../../context/AuthContext";
+import RoleDropdown from "../RoleDropdown";
 
-const UserTableRow = ({ user, onUserDeleted }: { user: any; onUserDeleted: () => void }) => {
+
+const UserTableRowCard = ({ user, onUserDeleted }: { user: any; onUserDeleted: () => void }) => {
   const [deleteState, setDeleteState] = useState<
     'idle' | 'confirming' | 'deleting'
   >('idle');
@@ -80,28 +81,29 @@ const UserTableRow = ({ user, onUserDeleted }: { user: any; onUserDeleted: () =>
   };
 
   return (
-    <tr key={user.email}>
-      <td>
-        <div className="me-4">
+    <div className="card h-100 bg-light" key={user.email}>
+      <div className="card-body">
+        <div className="d-flex justify-content-between align-items-start">
           <div>
-            <h3 className="lead">
+            <h5 className="card-title mb-1 lead">
               {user.firstName} {user.lastName}
-            </h3>
+            </h5>
+            <p className="card-text mb-2">{user.email}</p>
           </div>
-          <h5>{user.email}</h5>
+          {renderDeleteButton()}
         </div>
-      </td>
-      <td>
+        
+        <div className="mt-3">
           <RoleDropdown 
             currentRole={user.role} 
             onRoleChange={updateRoleOnServer} 
+            variant="card" // You might want to adjust the dropdown style for cards
           />
-      </td>
-      <td>
-        {renderDeleteButton()}
-      </td>
-    </tr>
+        </div>
+      </div>
+    </div>
+
   );
 };
 
-export default UserTableRow;
+export default UserTableRowCard;

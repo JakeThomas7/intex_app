@@ -19,34 +19,32 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
-          <Route path="/Login" element={<LoginPage />} />
-          <Route path="/Join" element={<JoinPage />} />
-          <Route
-            path="/account"
-            element={
-              <ProtectedRoute>
-                <AccountPage />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/details" element={<DetailsPage />} />
+          <Route path="/login" element={<LoginPage />} />  {/* Lowercase */}
+          <Route path="/join" element={<JoinPage />} />    {/* Lowercase */}
+          
+          {/* Protected User Route */}
+          <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
 
-          {/* Protected Routes */}
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <AdminLayout />
-              </ProtectedRoute>
-            }
+          {/* Admin Routes */}
+          <Route 
+            path="/admin" 
+            element={<AdminProtectedRoute><AdminLayout /></AdminProtectedRoute>}
           >
             <Route index element={<AdminHomePage />} />
             <Route path="site" element={<ManageSitePage />} />
-            <Route path="users" element={<ManageUsersPage />} />
-            <Route path="account" element={<AdminAccountPage />} />
+            <Route path="users">
+              <Route index element={<ManageUsersPage />} />
+              <Route path="account" element={<AdminAccountPage />} />
+            </Route>
           </Route>
+
+          {/* Optional: 404 Catch-all */}
+          {/* <Route path="*" element={<NotFoundPage />} /> */}
         </Routes>
       </Router>
       <CookieConsent />

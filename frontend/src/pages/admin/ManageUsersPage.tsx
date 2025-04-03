@@ -1,26 +1,50 @@
 import { useEffect, useState } from "react";
-import { getUsers } from "../../api/UsersAPI"; // Assume updateUserRole is defined
+import { getUsers } from "../../api/UsersAPI";
 import User from "../../types/User";
-import UserTableRow from "../../components/admin/userTableElements/UserTableRow";
 import { useAuth } from "../../components/context/AuthContext";
-import RoleDropdown from "../../components/admin/userTableElements/RoleDropdown";
-
+import { useNavigate } from "react-router-dom";
+import UserTableRowCard from "../../components/admin/userTableElements/userTableElementsTest/UserTableRowCard";
+import UserManagementBar from "../../components/admin/userTableElements/UserBarManagement";
+import Pagination from "../../components/admin/tableElements/Pagination";
 const ManageUsersPage = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
   const {user} = useAuth();
+  const navigate = useNavigate();
+  const [numUsers, setNumUsers] = useState(0);
 
   const handleUserDeleted = () => {
     setRefreshKey(prev => prev + 1); // Triggers re-fetch
   };
 
+  const [filters, setFilters] = useState({
+    role: '',
+    search: '',
+    //sortBy: 'createdAt',
+    //sortDirection: 'desc',
+    pageNum: 1,
+    pageSize: 6
+  });
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const data = await getUsers();
+        setLoading(true);
+        const data = await getUsers({
+          role: filters.role,
+          pageSize: filters.pageSize,
+          pageNum: filters.pageNum,
+          //sortBy: filters.sortBy,
+          //sortDirection: filters.sortDirection,
+          search: filters.search,
+          // filters: {
+          //   role: filters.role === 'All' ? undefined : [filters.role]
+          // }
+        });
         setUsers(data.users);
+        setNumUsers(data.totalNumUsers);
       } catch (error) {
         console.error("Error fetching users:", error);
         setError("Failed to load users. Please try again later.");
@@ -30,23 +54,36 @@ const ManageUsersPage = () => {
     };
 
     fetchUsers();
-  }, [refreshKey]);
+  }, [refreshKey, filters]);
+
+  const handleFilterChange = (newFilters: Partial<typeof filters>, resetPage = true) => {
+    setFilters(prev => ({
+      ...prev,
+      ...newFilters,
+      pageNum: resetPage ? 1 : newFilters.pageNum ?? prev.pageNum
+    }));
+  };
+
+  const refreshData = () => {
+    setRefreshKey(prev => prev + 1);
+  };
+
 
   return (
     <div className="section-padding">
       <br/>
-      <h3 className="fw-bold py-2">Admin User Management</h3>
+      {/* <h3 className="fw-bold py-2">Admin User Management</h3> */}
 
       {/* Right Column */}
       <div className="row mb-3">
 
         {/* Personal Account Card - New Column */}
         <div className="col-12">
-          <div className="card shadow-sm fit-content">
+          <div className="card shadow-sm fit-content p-2">
             <div className="card-body">
               {user ? (
                 <>
-                  <>
+                  <div>
                   <div className="me-4">
                     <div>
                       <div className="lead">
@@ -55,10 +92,11 @@ const ManageUsersPage = () => {
                     </div>
                     <h5>{user.email}</h5>
                   </div>
-                  </>
-                  <>
-                    <button className='btn btn-primary disabled'>{user.role}</button>
-                  </>
+                  </div>
+                  <div>
+                    <button className='btn btn-primary disabled me-2'>{user.role}</button>
+                    <button className="btn btn-outline-dark" onClick={() => navigate('/admin/users/account')}>My Account</button>
+                  </div>
                   
                 </>
               ) : (
@@ -70,61 +108,64 @@ const ManageUsersPage = () => {
           </div>
         </div>
       </div>
+
       <div className="row">
         
         <div className="col-md-12 mb-4">
-        <div className="card shadow-sm">
+        <div className="card shadow-sm py-3">
           <div className="card-body">
-            <h4 className="fw-bold">User List</h4>
 
-            <div className="mb-3" >
-              <button className="btn btn-outline-primary me-2 py-4" onClick={() => console.log("Filter: Super Admin")}>
-                Super Admin
-              </button>
-              <button className="btn btn-outline-primary me-2 py-4" onClick={() => console.log("Filter: Admin")}>
-                Admin
-              </button>
-              <button className="btn btn-outline-primary me-2 py-4" onClick={() => console.log("Filter: Normal")}>
-                Normal
-              </button>
-              <button className="btn btn-outline-primary py-4" onClick={() => console.log("Filter: All")}>
-                All Users
-              </button>
-            </div>
+            <div className="container-fluid">
+
+            <UserManagementBar 
+              filters={filters}
+              onFilterChange={handleFilterChange}
+              onRefresh={refreshData}
+            />
 
             {/* Loading & Error State */}
-            {loading && <div className="text-center py-3">Loading users...</div>}
+            {loading && 
+              <div className="text-center text-muted py-5">
+                <h5>Loading...</h5>
+              </div>
+            }
             {error && <div className="text-center text-danger">{error}</div>}
 
             {/* User Table */}
             {!loading && !error && (
-              <table className="table mt-3 text-start text-start w-auto" >
-                <thead>
-                  <tr>
-                    <th>User</th>
-                    <th>Role</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody className="gap-2">
-                  {users.length > 0 ? (
-                    users.map((user) => (
-                      <UserTableRow key={user.email} user={user} onUserDeleted={handleUserDeleted} />
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={3} className="text-center text-muted">
-                        No users found.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+  
+            users.length > 0 ? (
+              <div>
+                <div className="my-2">
+                    Showing <strong>{users.length}</strong> of <strong>{numUsers}</strong> of {filters.role ? filters.role : 'All'}
+                </div>
+              <div className="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-4">
+                {users.map((user) => (
+                  <div className="col" key={user.email}>
+                    <UserTableRowCard user={user} onUserDeleted={handleUserDeleted} />
+                  </div>
+                ))}
+              </div>
+              <Pagination
+                  totalItems={numUsers}
+                  itemsPerPage={filters.pageSize}
+                  currentPage={filters.pageNum}
+                  onPageChange={(page) => handleFilterChange({ pageNum: page }, false)}
+              />
+              </div>
+            ) : (
+              <div className="text-center text-muted py-5">
+                <h5>No users found</h5>
+                <p className="mt-2">Try adjusting your filters.</p>
+              </div>
+            )
+
             )}
           </div>
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };
