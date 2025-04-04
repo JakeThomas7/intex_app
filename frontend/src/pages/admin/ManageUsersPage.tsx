@@ -134,7 +134,7 @@ const ManageUsersPage = () => {
                 <div className="my-2">
                     Showing <strong>{users.length}</strong> of <strong>{numUsers}</strong> of {filters.role ? filters.role : 'All'}
                 </div>
-              <div className="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-4">
+              <div className={`row row-cols-1 row-cols-md-2 ${filters.pageSize >= 12 ? "row-cols-lg-3" : "row-cols-lg-2"} g-4`}>
                 {users.map((user) => (
                   <div className="col" key={user.email}>
                     <UserTableRowCard user={user} onUserDeleted={handleUserDeleted} />
