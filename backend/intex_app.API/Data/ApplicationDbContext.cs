@@ -1,3 +1,4 @@
+using intex_app.API.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace intex_app.API.Controllers;
@@ -9,4 +10,5 @@ public class ApplicationDbContext : DbContext
         
     }
     
+    public DbSet<Headline> Headlines { get; set; }
 }
