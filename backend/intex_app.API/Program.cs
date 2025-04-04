@@ -15,7 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DBConnection")));
 
 builder.Services.AddDbContext<UserIdentityDbContext>(options =>  
-    options.UseSqlite(builder.Configuration.GetConnectionString("IdentityConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
 
 builder.Services.AddAuthorization();
 
@@ -44,7 +44,7 @@ builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, CustomUserClaimsPr
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.Cookie.Domain = ".byjacobthomas.com";
+    //options.Cookie.Domain = ".byjacobthomas.com";
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.None;
     options.LoginPath = "/login";
