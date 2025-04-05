@@ -5,11 +5,11 @@ namespace intex_app.API.Controllers;
 
 [Route("[controller]")] // This sets the base route to /api/cookies
 [ApiController]
-public class HeadLineController : ControllerBase
+public class HeadlineController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
     
-    public HeadLineController(ApplicationDbContext temp)
+    public HeadlineController(ApplicationDbContext temp)
     {
         _context = temp;
     }

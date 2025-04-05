@@ -6,7 +6,7 @@ public class Headline
 {
 
     [Key]
-    public string HeadlineId { get; set; }
+    public int HeadlineId { get; set; }
     
     public string Title { get; set; }
     

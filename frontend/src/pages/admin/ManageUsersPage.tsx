@@ -66,7 +66,7 @@ const ManageUsersPage = () => {
 
 
   return (
-    <div className="section-padding">
+    <div className="px-4">
       <br/>
       {/* <h3 className="fw-bold py-2">Admin User Management</h3> */}
 
@@ -112,6 +112,8 @@ const ManageUsersPage = () => {
           <div className="card-body">
 
             <div className="container-fluid">
+            <h4 className= "fw-bold">Manage Users</h4>
+            <hr/>
 
             <UserManagementBar 
               filters={filters}
