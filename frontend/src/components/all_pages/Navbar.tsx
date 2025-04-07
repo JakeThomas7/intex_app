@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { logout, pingauth } from '../../api/AuthenticationAPI';
+import { logout } from '../../api/AuthenticationAPI';
 import { useAuth } from '../context/AuthContext';
 
 const NavBar = () => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { fetchHeadlines, getSiteTraffic } from "../../api/HeadlinesAPI";
+import { fetchHeadlines } from "../../api/HeadlinesAPI";
 import Headline from "../../types/Headline";
 import SiteTraffic from "../../components/admin/adminSitePage/SiteTraffic";
 import SiteWidgetCard from "../../components/admin/adminSitePage/SiteWidgetCard";

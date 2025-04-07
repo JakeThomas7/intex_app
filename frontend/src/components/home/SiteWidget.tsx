@@ -4,21 +4,21 @@ import Headline from "../../types/Headline";
 import { useNavigate } from "react-router-dom";
 
 const SiteWidget = () => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  //const [loading, setLoading] = useState(true);
+  //const [error, setError] = useState<string | null>(null);
   const [headlines, setHeadlines] = useState<Headline[]>([]);
 
   useEffect(() => {
-    setLoading(true);
+    //setLoading(true);
     const getHeadlines = async () => {
       try {
         const data = await fetchHeadlines();
         setHeadlines(data);
       } catch (error) {
         console.error("Error fetching headlines:", error);
-        setError("Failed to load headlines. Please try again later.");
+        //setError("Failed to load headlines. Please try again later.");
       } finally {
-        setLoading(false);
+        //setLoading(false);
       }
     };
 

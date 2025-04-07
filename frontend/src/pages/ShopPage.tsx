@@ -4,7 +4,6 @@ import Navbar from "../components/all_pages/Navbar"
 import { useAuth } from "../components/context/AuthContext"
 import Carousel from "../components/shop/Carousel"
 import SearchResults from "../components/shop/SearchResults"
-import { FolderMinusIcon, FormInputIcon } from "lucide-react"
 
 
 const ShopPage = () => {

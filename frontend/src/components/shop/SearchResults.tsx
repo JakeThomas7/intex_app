@@ -45,7 +45,7 @@ const SearchResults = ({
     </div>
     </div>
         <div className="col-md-6 d-flex justify-content-end">
-            <Pagination totalItems={100} itemsPerPage={8} currentPage={4} onPageChange={function (page: number): void {
+            <Pagination totalItems={100} itemsPerPage={8} currentPage={4} onPageChange={function (): void {
                 throw new Error("Function not implemented.");
             }}/>
         </div>
@@ -74,7 +74,7 @@ const SearchResults = ({
         </div>
         <div className="row mb-1">
         <div className="col-md-12 d-flex justify-content-end">
-            <Pagination totalItems={100} itemsPerPage={8} currentPage={4} onPageChange={function (page: number): void {
+            <Pagination totalItems={100} itemsPerPage={8} currentPage={4} onPageChange={function (): void {
                 throw new Error("Function not implemented.");
             }}/>
         </div>
