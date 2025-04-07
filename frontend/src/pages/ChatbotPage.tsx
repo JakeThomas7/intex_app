@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Footer from "../components/all_pages/Footer";
 import NavBar from "../components/all_pages/Navbar";
-import { Form, InputGroup, Button, Container, Card } from "react-bootstrap";
 
 // Define the type for chat messages
 type ChatMessage = {
