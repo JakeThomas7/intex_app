@@ -24,7 +24,8 @@ const SiteWidgetCard = ({ headline }: { headline: Headline }) => {
   };
 
   return (
-    <div className="card shadow-sm mb-3 p-3">
+    <div className="col">
+    <div className="card bg-light p-3 h-100">
       <div className="card-body">
         {editing ? (
           <>
@@ -61,7 +62,7 @@ const SiteWidgetCard = ({ headline }: { headline: Headline }) => {
                 <p className="card-text">{text}</p>
               </div>
               <div className="col-lg-2 text-end">
-                <button className="btn btn-outline-secondary" onClick={() => setEditing(true)}>
+                <button className="btn btn-outline-secondary text-black" onClick={() => setEditing(true)}>
                   Edit
                 </button>
               </div>
@@ -69,6 +70,7 @@ const SiteWidgetCard = ({ headline }: { headline: Headline }) => {
           </>
         )}
       </div>
+    </div>
     </div>
   );
 };

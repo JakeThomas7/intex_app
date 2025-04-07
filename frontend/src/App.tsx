@@ -16,6 +16,7 @@ import PrivacyPage from "./pages/PrivacyPage";
 import DetailsPage from "./pages/DetailsPage";
 import AdminProtectedRoute from "./components/all_pages/AdminProtectedRoute";
 import ScrollToTop from "./components/all_pages/ScrollToTop";
+import ChatbotPage from "./pages/ChatbotPage";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/details" element={<DetailsPage />} />
+          <Route path="/ai" element={<ChatbotPage />} />
           <Route path="/login" element={<LoginPage />} />  {/* Lowercase */}
           <Route path="/join" element={<JoinPage />} />    {/* Lowercase */}
           

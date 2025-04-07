@@ -6,9 +6,9 @@ const ImageSection = () => {
         <div className="col-lg-6">
         <p className="lead mb-4">Designed for all-day comfort and speed, the Caledonia blends endurance geometry with race-ready performance. Tackle any road with confidence and efficiency.</p>
         <div className="d-grid gap-2 d-sm-flex">
-            <button type="button" className="btn btn-secondary text-white btn-lg px-4 gap-3 grow">Personal Training</button>
-            <button type="button" className="btn btn-secondary text-white btn-lg px-4 gap-3 grow">Our Recommendations</button>
-            <button type="button" className="btn btn-secondary text-white btn-lg px-4 gap-3 grow">More</button>
+            <button type="button" className="btn btn-light text-dark btn-lg px-4 gap-3 grow-sm">Personal Training</button>
+            <button type="button" className="btn btn-light text-dark btn-lg px-4 gap-3 grow-sm">Our Recommendations</button>
+            <button type="button" className="btn btn-light text-dark btn-lg px-4 gap-3 grow">More</button>
         </div>
         </div>
     </div>

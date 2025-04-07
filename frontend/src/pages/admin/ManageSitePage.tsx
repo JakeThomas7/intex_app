@@ -32,13 +32,9 @@ const ManageSitePage = () => {
   return (
     <div className="p-4">
 
-      <div className="mb-4">
-        <SiteTraffic />
-      </div>
-
-      <div className="card shadow-sm">
+      <div className="card shadow-sm mb-4">
         <div className="card-body">
-          <h4 className="fw-bold">Manage Widget</h4>
+          <h4 className="fw-bold">Manage Home Page Widget</h4>
           <hr/>
 
           {loading && (
@@ -56,7 +52,7 @@ const ManageSitePage = () => {
 
           {!loading && !error && (
             headlines.length > 0 ? (
-              <div className="row row-cols-1 row-cols-md-2 g-4 px-3">
+              <div className="row row-cols-1 row-cols-md-2 g-2">
                 {headlines.map((headline, index) => (
                   <SiteWidgetCard key={index} headline={headline} />
                 ))}
@@ -70,6 +66,10 @@ const ManageSitePage = () => {
           )}
         
         </div>
+      </div>
+
+      <div className="mb-4">
+        <SiteTraffic />
       </div>
     </div>
   )

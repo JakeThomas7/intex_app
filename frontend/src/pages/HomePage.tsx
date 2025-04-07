@@ -2,6 +2,7 @@ import Footer from '../components/all_pages/Footer'
 import NavBar from '../components/all_pages/Navbar'
 import RecordSiteTraffic from '../components/all_pages/RecordSiteTraffic'
 import ImageSection from '../components/home/ImageSection'
+import SiteWidget from '../components/home/SiteWidget'
 import TitleSection from '../components/home/TitleSection'
 import Carousel from '../components/shop/Carousel'
 import '../styles/home/HomePage.css'
@@ -20,9 +21,9 @@ const HomePage = () => {
     <div>
       <NavBar />
       <TitleSection />
-      <Carousel title="The reason to choose Cervelo. We make a differece" cardHeight={30} cardWidth={30} data={carouselData} />
+      <SiteWidget />
       <ImageSection />
-      {/* <SiteWidget /> */}
+      <Carousel title="The reason to choose Cervelo. We make a differece" cardHeight={30} cardWidth={30} data={carouselData} />
       {/* <FixedImageSection /> */}
       <Carousel title="Trending Now" cardWidth={22} cardHeight={21} data={carouselData} />
       <Footer />

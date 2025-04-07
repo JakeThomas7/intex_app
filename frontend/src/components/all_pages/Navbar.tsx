@@ -33,6 +33,12 @@ const NavBar = () => {
                 Recommendations
               </a>
             </li>
+
+            <li className="nav-item me-3">
+              <a className="nav-link active" aria-current="page" onClick={()=>navigate('/ai')}>
+                Chat Bot
+              </a>
+            </li>
           </ul>
 
           <ul className="navbar-nav mb-lg-0 mb-2 ms-auto">
