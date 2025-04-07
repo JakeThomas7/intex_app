@@ -32,9 +32,9 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Email;
 
     // Password settings
-    options.Password.RequireDigit = true;                   // Requires a number
-    options.Password.RequiredLength = 15;                    // Set the minimum length of the password
-    options.Password.RequireNonAlphanumeric = true;         // Requires a non-alphanumeric character
+    options.Password.RequireDigit = false;                   // Requires a number
+    options.Password.RequiredLength = 5;                    // Set the minimum length of the password
+    options.Password.RequireNonAlphanumeric = false;         // Requires a non-alphanumeric character
     options.Password.RequireUppercase = false;               // Requires an uppercase letter
     options.Password.RequireLowercase = false;               // Requires a lowercase letter
     options.Password.RequiredUniqueChars = 0;               // Requires a number of unique characters

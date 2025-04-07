@@ -50,7 +50,7 @@ const ShopPage = () => {
               <i className="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" />
               <input
                 type="search"
-                className="form-control form-control-lg ps-5"
+                className="form-control form-control-lg ps-5 py-3"
                 placeholder="Search products, categories, etc."
                 aria-label="Search products"
               />
