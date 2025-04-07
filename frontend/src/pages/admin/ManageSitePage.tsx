@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
-import { fetchHeadlines } from "../../api/HeadlinesAPI";
+import { fetchHeadlines, getSiteTraffic } from "../../api/HeadlinesAPI";
 import Headline from "../../types/Headline";
 import SiteTraffic from "../../components/admin/adminSitePage/SiteTraffic";
+import SiteWidgetCard from "../../components/admin/adminSitePage/SiteWidgetCard";
 
 
 const ManageSitePage = () => {
@@ -25,6 +26,7 @@ const ManageSitePage = () => {
     }
 
     getHeadlines();
+    
   }, [])
 
   return (
@@ -39,32 +41,26 @@ const ManageSitePage = () => {
           <h4 className="fw-bold">Manage Widget</h4>
           <hr/>
 
-          {loading && 
+          {loading && (
             <div className="text-center text-muted py-5">
               <h5>Loading...</h5>
             </div>
-          }
-          {error && 
+          )}
+
+          {error && (
             <div className="text-center text-muted py-5">
-              <h5>There was an error loading rom the database.</h5>
+              <h5>There was an error loading from the database.</h5>
               <p className="mt-2">Please try again later.</p>
             </div>
-          }
+          )}
 
           {!loading && !error && (
             headlines.length > 0 ? (
-
-              <div>
+              <div className="row row-cols-1 row-cols-md-2 g-4 px-3">
                 {headlines.map((headline, index) => (
-                  <div key={index} className="card shadow-sm mb-3">
-                    <div className="card-body">
-                      <h5 className="card-title">{headline.title}</h5>
-                      <p className="card-text">{headline.text}</p>
-                    </div>
-                  </div>
+                  <SiteWidgetCard key={index} headline={headline} />
                 ))}
-              </div> 
-              
+              </div>
             ) : (
               <div className="text-center text-muted py-5">
                 <h5>No headlines found.</h5>

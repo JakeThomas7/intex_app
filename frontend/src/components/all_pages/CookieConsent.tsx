@@ -1,4 +1,3 @@
-import { getFingerprint } from "@thumbmarkjs/thumbmarkjs";
 import { useState, useEffect } from "react";
 
 const CookieConsent = () => {
@@ -10,32 +9,6 @@ const CookieConsent = () => {
     if (!consentGiven) {
       setShowBanner(true);
     }
-  }, []);
-
-  useEffect(() => {
-    const getFingerprintAsync = async () => {
-      const fingerprint = await getFingerprint();
-
-      try{
-        const response = await fetch(`https://localhost:5000/Cookies/RecordFingerprint`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify( fingerprint ),
-          });
-      
-          if (!response.ok) {
-            throw new Error("There was an unexpected error.");
-          }
-      } catch (e) {
-        console.log(e)
-      }
-      
-    };
-  
-    getFingerprintAsync(); // Call the async function
   }, []);
 
   const acceptCookies = () => {

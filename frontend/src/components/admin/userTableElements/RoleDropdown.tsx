@@ -65,7 +65,7 @@ const RoleDropdown = ({ currentRole, onRoleChange }: any) => {
                 )}
             </button>
             
-            <div className={`dropdown-menu mt-1 ${isOpen ? 'show' : ''}`} >
+            <div className={`dropdown-menu mt-1 p-2 ${isOpen ? 'show' : ''}`} >
                 {roles.map((role) => (
                     <button
                         key={role}
@@ -77,7 +77,7 @@ const RoleDropdown = ({ currentRole, onRoleChange }: any) => {
                     >
                         {role}
                         {selectedRole === role && (
-                            <span className="ms-2">✓</span>
+                            <span className="ms-2"><i className="fa-solid fa-check fa-sm"></i></span>
                         )}
                     </button>
                 ))}

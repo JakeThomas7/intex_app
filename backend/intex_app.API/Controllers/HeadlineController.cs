@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace intex_app.API.Controllers;
 
-[Route("[controller]")] // This sets the base route to /api/cookies
+[Route("[controller]")]
 [ApiController]
 public class HeadlineController : ControllerBase
 {

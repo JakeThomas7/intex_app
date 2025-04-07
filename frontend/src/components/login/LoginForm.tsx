@@ -16,6 +16,11 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const {checkAuth} = useAuth();
 
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible); // Toggle visibility state
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value, checked, type } = e.target;
     setFormData(prev => ({
@@ -45,46 +50,69 @@ const LoginForm = () => {
     <div className="login-section section-padding d-flex justify-content-center align-items-center w-100">
       <form className="login-form" onSubmit={handleSubmit}>
         <h3 className="mb-3">Welcome!<br/>Log in to your personal account.</h3>
-        <button className="btn btn-outline-dark w-100 mb-3"><i className="fa-brands fa-google me-2"></i>Continue with Google</button>
+        {/* <button className="btn btn-outline-dark w-100 mb-3"><i className="fa-brands fa-google me-2"></i>Continue with Google</button> */}
         <hr/>
 
         <div className="mb-3">
           <label htmlFor="email" className="form-label">Email</label>
-          <input 
-            type="text" 
-            className="form-control" 
-            id="email" 
-            placeholder="Enter your email..." 
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+          <div className="position-relative">
+            <i className="fa-regular fa-envelope position-absolute top-50 translate-middle-y ms-3 text-muted" />
+            <input
+              type="email"
+              className="form-control ps-5"
+              id="email"
+              placeholder="Enter your email..."
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
         </div>
         
         <div className="mb-3">
           <label htmlFor="password" className="form-label">Password</label>
-          <input 
-            type="password" 
-            className="form-control" 
-            id="password" 
-            placeholder="Enter your password..." 
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+          <div className="position-relative">
+            <i 
+              className={`fa-regular ${isPasswordVisible ? "fa-eye" : "fa-eye-slash"} position-absolute top-50 translate-middle-y ms-3 text-muted password-toggle`}
+              style={{ cursor: "pointer", zIndex: 2 }}
+              onClick={togglePasswordVisibility} // Toggle visibility
+            />
+            <input 
+              type={isPasswordVisible ? "text" : "password"} // Dynamically set type
+              className="form-control ps-5" 
+              id="password" 
+              placeholder="Enter your password..." 
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
         </div>
 
-        <div className="form-check mb-3">
+        <div className="mb-3 d-flex align-items-center justify-content-center">
           <input
-            className="form-check-input"
             type="checkbox"
             id="rememberMe"
-            name="rememberMe"
+            className="d-none"
             checked={formData.rememberMe}
             onChange={handleChange}
           />
-          <label className="form-check-label" htmlFor="rememberMe">
-            Remember password
+          <label 
+            htmlFor="rememberMe"
+            style={{ cursor: 'pointer' }}
+            className="d-flex align-items-center gap-2"
+          >
+            <div 
+              className={`transition-all ${formData.rememberMe ? 'text-danger' : 'text-muted'}`}
+              style={{ fontSize: '1.2rem' }}
+            >
+              {formData.rememberMe ? (
+                <i className="fas fa-heart beat-animation" />
+              ) : (
+                <i className="far fa-heart" />
+              )}
+            </div>
+            <span>Remember me</span>
           </label>
         </div>
         

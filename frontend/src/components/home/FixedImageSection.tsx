@@ -5,7 +5,7 @@ const FixedImageSection = () => {
     <div className="section-padding container-fluid fixed-image-section">
       <div className="row">
         {/* Left column - fixed image */}
-        <div className="col-md-8 sticky-image-col">
+        <div className="col-md-7 sticky-image-col">
           <div className="sticky-image-wrapper">
             <img 
               src={image}
@@ -16,7 +16,7 @@ const FixedImageSection = () => {
         </div>
         
         {/* Right column - scrolling content */}
-        <div className="col-md-4 content-col">
+        <div className="col-md-5 content-col">
         <div className="content-section">
             <h2>Engineered for Performance</h2>
             <p className="lead">The Cervélo Caledonia is designed for long-distance endurance rides without sacrificing speed.</p>

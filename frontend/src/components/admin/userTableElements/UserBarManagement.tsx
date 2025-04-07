@@ -18,11 +18,12 @@ const UserManagementBar = ({ filters, onFilterChange }: UserManagementBarProps) 
 
   return (
     <div className="">
+      
       {/* Filters Row */}
       <div className="row">
-      <div className="col-md-6">
+      <div className="col-md-4">
         <button 
-          className={`btn me-2 py-3 mb-2 ${filters.role === 'Super Admin' ? 'btn-primary' : 'btn-outline-primary'}`}
+          className={`btn me-2 py-3 mb-2 ${filters.role === 'Super Admin' ? 'btn-outline-primary btn-outline-thick' : 'btn-outline-secondary text-black'}`}
           onClick={() => onFilterChange({ 
             role: filters.role === 'Super Admin' ? undefined : 'Super Admin' 
           })}
@@ -30,7 +31,7 @@ const UserManagementBar = ({ filters, onFilterChange }: UserManagementBarProps) 
           Super Admin
         </button>
         <button 
-          className={`btn me-2 py-3 mb-2 ${filters.role === 'Admin' ? 'btn-primary' : 'btn-outline-primary'}`}
+          className={`btn me-2 py-3 mb-2 ${filters.role === 'Admin' ? 'btn-outline-primary btn-outline-thick' : 'btn-outline-secondary text-black'}`}
           onClick={() => onFilterChange({ 
             role: filters.role === 'Admin' ? undefined : 'Admin' 
           })}
@@ -38,39 +39,31 @@ const UserManagementBar = ({ filters, onFilterChange }: UserManagementBarProps) 
           Admin
         </button>
         <button 
-          className={`btn py-3 mb-2 ${filters.role === 'User' ? 'btn-primary' : 'btn-outline-primary'}`}
+          className={`btn py-3 mb-2 ${filters.role === 'User' ? 'btn-outline-primary btn-outline-thick' : 'btn-outline-secondary text-black'}`}
           onClick={() => onFilterChange({ 
             role: filters.role === 'User' ? undefined : 'User' 
           })}
         >
           User
         </button>
+
       </div>
-        
-        <div className="col-sm-4 mb-2">
+
+      <div className="col-sm-8 mb-2">
+          <div className="position-relative">
+          <i className="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" />
           <input 
-              className="form-control" 
+              className="form-control ps-5" 
               type="text" 
               placeholder="Search users..."
               value={filters.search}
               onChange={(e) => onFilterChange({ search: e.target.value })}
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
           />
+          </div>
         </div>
-
-        <div className="col-sm-2 mb-2">
-          <select 
-          className="form-select" 
-          value={filters.pageSize}
-          onChange={(e) => onFilterChange({ pageSize: Number(e.target.value) })}
-          style={{ width: 'auto' }}
-          >
-              <option value="6">6</option>
-              <option value="8">8</option>
-              <option value="12">12</option>
-              <option value="24">24</option>
-          </select>
-        </div>
+        
+        
       </div>
     </div>
   );

@@ -9,8 +9,6 @@
   }
   
   .carousel-section {
-      padding-top: 4rem;
-      padding-bottom: 4rem;
       position: relative
   }
   .carousel-item {
@@ -34,7 +32,7 @@
   }
   
   .scrollbar-hidden::-webkit-scrollbar {
-      display: none;
+      display: none !important;
   }
   .scrollbar-hidden {
       -ms-overflow-style: none;

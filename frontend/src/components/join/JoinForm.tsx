@@ -14,6 +14,11 @@ const JoinForm = () => {
     const {checkAuth} = useAuth();
     const navigate = useNavigate();
 
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const togglePasswordVisibility = () => {
+        setIsPasswordVisible(!isPasswordVisible); // Toggle visibility state
+    };
+
     const handleChange = (e: { target: { id: any; value: any; }; }) => {
         const { id, value } = e.target;
         setForm(prev => {
@@ -63,47 +68,64 @@ const JoinForm = () => {
         <div className="section-padding join-section d-flex justify-content-center align-items-center w-100">
             <form className="join-form" onSubmit={handleSubmit}>
                 <h3 className="mb-3">First time here?<br/>Create your own personal account.</h3>
-                <button className="btn btn-outline-dark w-100 mb-3"><i className="fa-brands fa-google me-2"></i>Continue with Google</button>
+                {/* <button className="btn btn-outline-dark w-100 mb-3"><i className="fa-brands fa-google me-2"></i>Continue with Google</button> */}
 
                 <hr/>
 
                 <div className="mb-3">
                     <label htmlFor="Email" className="form-label">Email</label>
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        id="Email" 
-                        placeholder="Enter your email..." 
+                    <div className="position-relative">
+                        <i className="fa-regular fa-envelope position-absolute top-50 translate-middle-y ms-3 text-muted" />
+                        <input
+                        type="email"
+                        className="form-control ps-5"
+                        id="Email"
+                        placeholder="Enter your email..."
                         value={form.Email}
                         onChange={handleChange}
                         required
-                    />
+                        />
+                    </div>
                 </div>
 
                 <div className="mb-3">
                     <label htmlFor="Password" className="form-label">Password</label>
-                    <input 
-                        type="password" 
-                        className="form-control" 
+                    <div className="position-relative">
+                        <i 
+                        className={`fa-regular ${isPasswordVisible ? "fa-eye" : "fa-eye-slash"} position-absolute top-50 translate-middle-y ms-3 text-muted password-toggle`}
+                        style={{ cursor: "pointer", zIndex: 2 }}
+                        onClick={togglePasswordVisibility} // Toggle visibility
+                        />
+                        <input 
+                        type={isPasswordVisible ? "text" : "password"} // Dynamically set type
+                        className="form-control ps-5" 
                         id="Password" 
                         placeholder="Enter your password..." 
                         value={form.Password}
                         onChange={handleChange}
                         required
-                    />
+                        />
+                    </div>
                 </div>
 
                 <div className="mb-3">
                     <label htmlFor="ConfirmPassword" className="form-label">Confirm Password</label>
-                    <input 
-                        type="password" 
-                        className="form-control" 
+                    <div className="position-relative">
+                        <i 
+                        className={`fa-regular ${isPasswordVisible ? "fa-eye" : "fa-eye-slash"} position-absolute top-50 translate-middle-y ms-3 text-muted password-toggle`}
+                        style={{ cursor: "pointer", zIndex: 2 }}
+                        onClick={togglePasswordVisibility} // Toggle visibility
+                        />
+                        <input 
+                        type={isPasswordVisible ? "text" : "password"} // Dynamically set type
+                        className="form-control ps-5" 
                         id="ConfirmPassword" 
-                        placeholder="Confirm your password..." 
+                        placeholder="Enter your password..." 
                         value={form.ConfirmPassword}
                         onChange={handleChange}
                         required
-                    />
+                        />
+                    </div>
                 </div>
 
                 <button 

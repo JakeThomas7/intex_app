@@ -1,16 +1,18 @@
 // src/styles/_custom.scss
 $primary: #879fbc;
-$secondary: #82637d;
+$secondary:#DDE2E2;
 $success: #28a745;
-$info: #17a2b8;
+$info: #82637d;
 $warning: #ffc107;
-$danger: #dc3545;
+$danger: #dc3545; //#EF8354;// #dc3545;
 $light: #f0f0f0;
 $dark: #343a40;
 
 $font-family-base: "Inter", "Helvetica Neue", "Arial", sans-serif;
 @import "bootstrap/scss/bootstrap";
-@import url('https://fonts.googleapis.com/css2?family=Bytesized&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+//@import url('https://fonts.googleapis.com/css2?family=Bytesized&display=swap');
+//Testing the CSP header
 
 :root {
     --primary: #{$primary};
@@ -27,6 +29,8 @@ $font-family-base: "Inter", "Helvetica Neue", "Arial", sans-serif;
     --text-color: #333333;  // Example text color
     --highlight: #ff6347;   // Example highlight color
     --navbar: #f8f9fa;
+
+    --dark-background: #4F5D75;
 
     --admin-background: #f8f8f8;
     --admin-navbar: #{$white};
@@ -50,7 +54,7 @@ $font-family-base: "Inter", "Helvetica Neue", "Arial", sans-serif;
 }
 
 .footer-section {
-    // background-color: var(--light);
+     background-color: var(--light);
 }
 
 ::placeholder { 
@@ -70,19 +74,47 @@ html {
     font-size: clamp(14px, 1.2vw, 16px);
 }
 
+
+// BUTTON GLOW UP ----------------------------------------------
 .btn {
     font-weight: 450;
 }
-
 .btn {
-    //border-radius: 10px;  // Adjust for more or less rounding
+    border-radius: 18px;  // Adjust for more or less rounding
 }
+.form-control {
+    border-radius: 18px;
+}
+.btn-outline-primary,
+.btn-outline-secondary,
+.btn-outline-success,
+.btn-outline-info,
+.btn-outline-warning,
+.btn-outline-danger,
+.btn-outline-light,
+.btn-outline-dark {
+  //border-width: 1.5px; // Adjust thickness as needed
+}
+.btn-outline-thick {
+    border-width: 2.5px;
+}
+.pagination-button {
+    font-weight: normal !important;
+}
+
+// DROPDOWN GLOW UP ----------------------------------------------
+.dropdown-item {
+    border-radius: 5px !important;
+}
+
+
+
+
 
 .section-padding {
     padding-right: clamp(3rem, 5vw, 6rem);
     padding-left: clamp(3rem, 5vw, 6rem);
 }
-
 // Button get larger effect
 .grow {
     transition: transform 0.3s ease; /* Smooth transition */

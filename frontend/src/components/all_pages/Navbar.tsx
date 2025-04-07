@@ -8,7 +8,7 @@ const NavBar = () => {
   const { isAdmin, isAuth , checkAuth} = useAuth(); 
 
   return (
-    <nav className="navbar main-navbar section-padding navbar-expand-lg bg-body-tertiary sticky-top navbar-color">
+    <nav className="navbar main-navbar section-padding navbar-expand-lg bg-body-tertiary sticky-top navbar-color border-bottom">
       <div className="container-fluid">
         <a className="navbar-brand grow" onClick={()=>navigate('/')}>
             Cervélo
@@ -30,24 +30,7 @@ const NavBar = () => {
 
             <li className="nav-item me-3">
               <a className="nav-link active" aria-current="page" onClick={()=>navigate('/shop')}>
-                Overall
-              </a>
-            </li>
-
-            <li className="nav-item me-3">
-              <a className="nav-link active" aria-current="page" onClick={()=>navigate('/')}>
-                About
-              </a>
-            </li>
-
-            <li className="nav-item me-3">
-              <a className="nav-link active" aria-current="page" onClick={()=>navigate('/')}>
-                Stories
-              </a>
-            </li>
-            <li className="nav-item me-3">
-              <a className="nav-link active" aria-current="page" onClick={async () => {console.log(await pingauth())}}>
-                Ping Auth
+                Recommendations
               </a>
             </li>
           </ul>

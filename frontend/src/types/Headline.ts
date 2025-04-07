@@ -1,5 +1,5 @@
 interface Headline {
-    id: number
+    headlineId: number
     title: string;
     text: string;
 }

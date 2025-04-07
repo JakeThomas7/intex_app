@@ -11,4 +11,5 @@ public class ApplicationDbContext : DbContext
     }
     
     public DbSet<Headline> Headlines { get; set; }
+    public DbSet<Traffic> SiteTraffic { get; set; }
 }

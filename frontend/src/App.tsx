@@ -15,11 +15,13 @@ import AdminAccountPage from "./pages/admin/AdminAccountPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import DetailsPage from "./pages/DetailsPage";
 import AdminProtectedRoute from "./components/all_pages/AdminProtectedRoute";
+import ScrollToTop from "./components/all_pages/ScrollToTop";
 
 function App() {
   return (
     <AuthProvider>
       <Router>
+        <ScrollToTop/>  
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
@@ -44,6 +46,7 @@ function App() {
               <Route path="account" element={<AdminAccountPage />} />
             </Route>
           </Route>
+
 
           {/* Optional: 404 Catch-all */}
           {/* <Route path="*" element={<NotFoundPage />} /> */}

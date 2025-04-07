@@ -5,7 +5,8 @@ import { useAuth } from "../../components/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import UserTableRowCard from "../../components/admin/userTableElements/userTableElementsTest/UserTableRowCard";
 import UserManagementBar from "../../components/admin/userTableElements/UserBarManagement";
-import Pagination from "../../components/admin/tableElements/Pagination";
+import Pagination from "../../components/tabletools/Pagination";
+import DropdownList from "../../components/tabletools/Dropdown";
 const ManageUsersPage = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
@@ -134,9 +135,24 @@ const ManageUsersPage = () => {
             users.length > 0 ? (
               <div>
                 <div className="my-2">
-                    Showing <strong>{users.length}</strong> of <strong>{numUsers}</strong> of {filters.role ? filters.role : 'All'}
+                  <div>
+                    Showing 
+                    <div className="dropdown d-inline mx-2">
+                    <button
+                        className="btn btn-light dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        {filters.pageSize} per page
+                    </button>
+                    <DropdownList currentValue={filters.pageSize} options={[6, 8, 12, 16, 20, 24]} onChange={(value) => handleFilterChange({ pageSize: Number(value) })} label="dropdownMenuButton" />
+                    </div> 
+                    of <strong>{numUsers}</strong>
+                  </div>
                 </div>
-              <div className={`row row-cols-1 row-cols-md-2 ${filters.pageSize >= 12 ? "row-cols-lg-3" : "row-cols-lg-2"} g-4`}>
+              <div className={`row row-cols-1 row-cols-md-2 ${filters.pageSize >= 12 ? "row-cols-lg-3" : "row-cols-lg-2"} g-2`}>
                 {users.map((user) => (
                   <div className="col" key={user.email}>
                     <UserTableRowCard user={user} onUserDeleted={handleUserDeleted} />

@@ -41,24 +41,24 @@ const Pagination: React.FC<PaginationProps> = ({
   return (
     <div className="text-center my-3">
       <button 
-        className="btn btn-outline-primary mx-1" 
+        className="btn pagination-btn btn-outline-secondary text-black text-black mx-1" 
         disabled={currentPage === 1} 
         onClick={() => onPageChange(currentPage - 1)}
       >
-        <i className="fa-solid fa-caret-left"></i>
+        <i className="fa-solid fa-chevron-left fa-xs"></i>
       </button>
 
       {/* Always show first page */}
       {visiblePages[0] > 1 && (
         <>
           <button
-            className={`btn mx-1 ${currentPage === 1 ? 'btn-primary' : 'btn-outline-primary'}`}
+            className={`btn mx-1 ${currentPage === 1 ? 'btn-primary text-white' : 'pagination-btn btn-outline-secondary text-black text-black'}`}
             onClick={() => onPageChange(1)}
             disabled={currentPage === 1}
           >
             1
           </button>
-          {visiblePages[0] > 2 && <span className="mx-1">|</span>}
+          {visiblePages[0] > 2 && <span className="mx-1 text-muted">|</span>}
         </>
       )}
 
@@ -66,9 +66,9 @@ const Pagination: React.FC<PaginationProps> = ({
       {visiblePages.map(page => (
         <button
           key={page}
-          className={`btn mx-1 ${currentPage === page ? 'btn-primary' : 'btn-outline-primary'}`}
+          className={`btn mx-1 ${currentPage === page ? 'btn-primary text-white' : 'pagination-btn btn-outline-secondary text-black text-black'}`}
           onClick={() => onPageChange(page)}
-          disabled={currentPage === page}
+          //disabled={currentPage === page}
         >
           {page}
         </button>
@@ -77,9 +77,9 @@ const Pagination: React.FC<PaginationProps> = ({
       {/* Always show last page */}
       {visiblePages[visiblePages.length - 1] < totalPages && (
         <>
-          {visiblePages[visiblePages.length - 1] < totalPages - 1 && <span className="mx-1">|</span>}
+          {visiblePages[visiblePages.length - 1] < totalPages - 1 && <span className="mx-1 text-muted">|</span>}
           <button
-            className={`btn mx-1 ${currentPage === totalPages ? 'btn-primary' : 'btn-outline-primary'}`}
+            className={`btn mx-1 ${currentPage === totalPages ? 'btn-primary text-white' : 'pagination-btn btn-outline-secondary text-black text-black'}`}
             onClick={() => onPageChange(totalPages)}
             disabled={currentPage === totalPages}
           >
@@ -89,11 +89,11 @@ const Pagination: React.FC<PaginationProps> = ({
       )}
 
       <button 
-        className="btn btn-outline-primary mx-1" 
+        className="btn pagination-btn btn-outline-secondary text-black text-black mx-1" 
         disabled={currentPage === totalPages} 
         onClick={() => onPageChange(currentPage + 1)}
       >
-          <i className="fa-solid fa-caret-right"></i>
+          <i className="fa-solid fa-chevron-right fa-xs"></i>
       </button>
     </div>
   );
