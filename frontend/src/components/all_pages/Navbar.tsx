@@ -8,11 +8,11 @@ const NavBar = () => {
   const { isAdmin, isAuth , checkAuth} = useAuth(); 
 
   return (
-    <nav className="navbar main-navbar section-padding navbar-expand-lg bg-body-tertiary sticky-top navbar-color border-bottom">
+    <nav className="navbar main-navbar section-padding navbar-expand-lg bg-body-tertiary sticky-top navbar-color border-bottom thin-border">
       <div className="container-fluid">
-        <a className="navbar-brand grow" onClick={()=>navigate('/')}>
-            Cervélo
-        </a>
+      <a className="navbar-brand grow righteous-title" onClick={() => navigate('/')}>
+        CineNiche
+      </a>
         <div className="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <i className="fa-solid fa-grip-lines"></i>
         </div>
@@ -70,7 +70,7 @@ const NavBar = () => {
                   </a>
                 </li>
                 <li className="nav-item me-lg-3 mb-2 mb-lg-0 d-flex align-items-center">
-                  <button className='btn btn-dark text-white grow' onClick={()=>navigate('/join')}>
+                  <button className='btn btn-primary text-white grow' onClick={()=>navigate('/join')}>
                     Join Now
                   </button>
                 </li>
