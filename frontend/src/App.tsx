@@ -17,6 +17,9 @@ import DetailsPage from "./pages/DetailsPage";
 import AdminProtectedRoute from "./components/all_pages/AdminProtectedRoute";
 import ScrollToTop from "./components/all_pages/ScrollToTop";
 import ChatbotPage from "./pages/ChatbotPage";
+import JoinMovieUserPage from "./pages/JoinPageMovieUserPage";
+import AdminEditMoviePage from "./pages/admin/AdminEditMoviePage";
+import AdminAddTitlePage from "./pages/admin/AdminAddTitlePage";
 
 function App() {
   return (
@@ -26,12 +29,13 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
-          <Route path="/shop" element={<ShopPage />} />
+          <Route path="/browse" element={<ShopPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/details" element={<DetailsPage />} />
           <Route path="/ai" element={<ChatbotPage />} />
-          <Route path="/login" element={<LoginPage />} />  {/* Lowercase */}
-          <Route path="/join" element={<JoinPage />} />    {/* Lowercase */}
+          <Route path="/login" element={<LoginPage />} />  
+          <Route path="/join" element={<JoinPage />} />    
+          <Route path="/accountsetup" element={<JoinMovieUserPage />} />    
           
           {/* Protected User Route */}
           <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
@@ -41,7 +45,12 @@ function App() {
             path="/admin" 
             element={<AdminProtectedRoute><AdminLayout /></AdminProtectedRoute>}
           >
+  
             <Route index element={<AdminHomePage />} />
+            <Route path="add/:type" element={<AdminAddTitlePage />} />
+            <Route path="add" element={<AdminAddTitlePage />} />
+            <Route path="edit" element={<AdminEditMoviePage />} />
+
             <Route path="site" element={<ManageSitePage />} />
             <Route path="users">
               <Route index element={<ManageUsersPage />} />

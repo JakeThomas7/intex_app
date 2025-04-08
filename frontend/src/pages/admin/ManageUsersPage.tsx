@@ -5,8 +5,9 @@ import { useAuth } from "../../components/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import UserTableRowCard from "../../components/admin/userTableElements/userTableElementsTest/UserTableRowCard";
 import UserManagementBar from "../../components/admin/userTableElements/UserBarManagement";
-import Pagination from "../../components/tabletools/Pagination";
 import DropdownList from "../../components/tabletools/Dropdown";
+import Pagination from "../../components/tabletools/Pagination";
+
 const ManageUsersPage = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
@@ -163,7 +164,7 @@ const ManageUsersPage = () => {
                   totalItems={numUsers}
                   itemsPerPage={filters.pageSize}
                   currentPage={filters.pageNum}
-                  onPageChange={(page) => handleFilterChange({ pageNum: page }, false)}
+                  onPageChange={(page: any) => handleFilterChange({ pageNum: page }, false)}
               />
               </div>
             ) : (
