@@ -66,6 +66,13 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+// Add the CSP header middleware
+app.Use((context, next) =>
+{
+    context.Response.Headers.Add("Content-Security-Policy", "img-src 'self' data: https://*.blob.core.windows.net;");
+    return next();
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
