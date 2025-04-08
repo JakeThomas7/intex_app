@@ -16,7 +16,6 @@ import PrivacyPage from "./pages/PrivacyPage";
 import DetailsPage from "./pages/DetailsPage";
 import AdminProtectedRoute from "./components/all_pages/AdminProtectedRoute";
 import ScrollToTop from "./components/all_pages/ScrollToTop";
-import ChatbotPage from "./pages/ChatbotPage";
 import JoinMovieUserPage from "./pages/JoinPageMovieUserPage";
 import AdminEditMoviePage from "./pages/admin/AdminEditMoviePage";
 import AdminAddTitlePage from "./pages/admin/AdminAddTitlePage";
@@ -30,23 +29,21 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
-          <Route path="/browse" element={<ShopPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
-          <Route path="/details" element={<DetailsPage />} />
-          <Route path="/ai" element={<ChatbotPage />} />
+          {/* <Route path="/ai" element={<ChatbotPage />} /> */}
           <Route path="/login" element={<LoginPage />} />  
-          <Route path="/join" element={<JoinPage />} />    
-          <Route path="/accountsetup" element={<JoinMovieUserPage />} />    
-          
-          {/* Protected User Route */}
-          <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
+          <Route path="/join" element={<JoinPage />} />  
+
+          {/* <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} /> */}
+          <Route path="/accountsetup" element={<ProtectedRoute><JoinMovieUserPage /></ProtectedRoute>} />
+          <Route path="/details" element={<ProtectedRoute><DetailsPage /></ProtectedRoute>} />
+          <Route path="/browse" element={<ProtectedRoute><ShopPage /></ProtectedRoute>} />
 
           {/* Admin Routes */}
           <Route 
             path="/admin" 
             element={<AdminProtectedRoute><AdminLayout /></AdminProtectedRoute>}
           >
-  
             <Route index element={<AdminHomePage />} />
             <Route path="add/:type" element={<AdminAddTitlePage />} />
             <Route path="add" element={<AdminAddTitlePage />} />
@@ -61,7 +58,7 @@ function App() {
 
 
           {/* Optional: 404 Catch-all */}
-          {/* <Route path="*" element={<NotFoundPage />} /> */}
+          <Route path="*" element={<HomePage />} />
         </Routes>
       </Router>
       <CookieConsent />

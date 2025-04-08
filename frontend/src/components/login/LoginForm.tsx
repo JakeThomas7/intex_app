@@ -41,7 +41,7 @@ const LoginForm = () => {
       await login(formData.email, formData.password, formData.rememberMe);
       //localStorage.setItem('authToken', data.token);
       await checkAuth();
-      navigate('/');
+      navigate('/browse');
     } catch (err) {
       setError((err as Error).message);
     } finally {

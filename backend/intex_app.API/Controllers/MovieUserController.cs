@@ -1,4 +1,5 @@
 using intex_app.API.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +7,7 @@ namespace intex_app.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class MovieUserController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -14,7 +16,7 @@ namespace intex_app.API.Controllers
         {
             _context = context;
         }
-
+        
         [HttpGet]
         public IActionResult GetMovieUsers()
         {
@@ -56,8 +58,65 @@ namespace intex_app.API.Controllers
             return Ok(response);
         }
         
+        [HttpPost("CreateMovieUser")]
+        public IActionResult CreateMovieUser([FromBody] CreateMovieUserDto newUserDto)
+        {
+            try
+            {
+
+                // Check for existing user
+                var existingUser = _context.MovieUsers
+                    .FirstOrDefault(u => u.Email == newUserDto.Email);
+                    
+                if (existingUser != null)
+                {
+                    return Conflict("User with this email already exists");
+                }
+
+                // Create new user entity
+                var newUser = new MovieUser
+                {
+                    Name = newUserDto.Name,
+                    Email = newUserDto.Email,
+                    Phone = newUserDto.Phone,
+                    Age = newUserDto.Age,
+                    Gender = newUserDto.Gender,
+                    City = newUserDto.City,
+                    State = newUserDto.State,
+                    Zip = newUserDto.Zip,
+                    MovieUserStreamingServices = new List<MovieUserStreamingService>()
+                };
+
+                // Add streaming service relationships
+                if (newUserDto.StreamingServiceIds != null && newUserDto.StreamingServiceIds.Any())
+                {
+                    var validServices = _context.StreamingServices
+                        .Where(s => newUserDto.StreamingServiceIds.Contains(s.StreamingServiceId))
+                        .ToList();
+
+                    foreach (var service in validServices)
+                    {
+                        newUser.MovieUserStreamingServices.Add(new MovieUserStreamingService
+                        {
+                            StreamingService = service
+                        });
+                    }
+                }
+
+                _context.MovieUsers.Add(newUser);
+                _context.SaveChanges();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+        
         
         [HttpPut("{id}")]
+        [Authorize(Roles="Admin, Super Admin")]
         public IActionResult UpdateMovieUser(int id, [FromBody] MovieUser updatedUser)
         {
             var existingUser = _context.MovieUsers.Find(id);
@@ -83,6 +142,7 @@ namespace intex_app.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles="Admin, Super Admin")]
         public IActionResult DeleteMovieUser(int id)
         {
             var user = _context.MovieUsers.Find(id);

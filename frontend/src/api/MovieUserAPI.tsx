@@ -1,9 +1,10 @@
 import MovieUser from "../types/MovieUser";
 
-const API_URL = 'https://api2.byjacobthomas.com'
-//const API_URL = 'https://localhost:5000'
+//const API_URL = 'https://api2.byjacobthomas.com'
+const API_URL = 'https://localhost:5000'
 
 export const addMovieUser = async(movieUser : MovieUser) => {
+
 
     const response = await fetch(`${API_URL}/MovieUser/CreateMovieUser`, {
         method: 'POST',
@@ -15,10 +16,7 @@ export const addMovieUser = async(movieUser : MovieUser) => {
     });
 
     if (!response.ok) {
+        console.log(response.json())
         throw new Error('Failed to add movie user');
     }
-    const data = response.json()
-    console.log("RESPONSE")
-    console.log(data)
-    return data;
 }
