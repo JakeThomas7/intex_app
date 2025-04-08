@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { getUsers } from "../../api/UsersAPI";
 import User from "../../types/User";
 import { useAuth } from "../../components/context/AuthContext";
-import { useNavigate } from "react-router-dom";
 import UserTableRowCard from "../../components/admin/userTableElements/userTableElementsTest/UserTableRowCard";
 import UserManagementBar from "../../components/admin/userTableElements/UserBarManagement";
 import DropdownList from "../../components/tabletools/Dropdown";
