@@ -12,10 +12,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
 
 builder.Services.AddDbContext<UserIdentityDbContext>(options =>  
-    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityDbConnection")));
 
 builder.Services.AddAuthorization();
 
@@ -67,11 +67,11 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 // Add the CSP header middleware
-app.Use((context, next) =>
-{
-    context.Response.Headers.Add("Content-Security-Policy", "img-src 'self' data: https://*.blob.core.windows.net;");
-    return next();
-});
+// app.Use((context, next) =>
+// {
+//     context.Response.Headers.Add("Content-Security-Policy", "img-src 'self' data: https://*.blob.core.windows.net;");
+//     return next();
+// });
 
 if (app.Environment.IsDevelopment())
 {

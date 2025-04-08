@@ -22,7 +22,7 @@ public class IdentityController : ControllerBase
     [HttpGet("getTest")]
     public IActionResult GetTest()
     {
-        return Ok(new { message = "Test Successful. Version includes Movies" });
+        return Ok(new { message = "Test Successful. Version Includes Connection String. Removed Image CSP On Backend" });
     }
 
     [HttpPost("logout")]

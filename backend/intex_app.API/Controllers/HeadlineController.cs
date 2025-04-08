@@ -6,7 +6,6 @@ namespace intex_app.API.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-[Authorize(Roles="Admin, SuperAdmin")]
 public class HeadlineController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
@@ -23,7 +22,9 @@ public class HeadlineController : ControllerBase
         return Ok(headlines);
     }
 
+    
     [HttpPost("UpdateHeadline/{id}")]
+    [Authorize(Roles="Admin, SuperAdmin")]
     public IActionResult UpdateHeadline(int id, [FromBody] Headline updatedHeadline)
     {
         var headline = _context.Headlines.Find(id);
@@ -42,6 +43,7 @@ public class HeadlineController : ControllerBase
     }
 
     [HttpPost("CreateHeadline")]
+    [Authorize(Roles="Admin, SuperAdmin")]
     public IActionResult CreateHeadline([FromBody] Headline headline)
     {
         _context.Headlines.Add(headline);
@@ -50,6 +52,7 @@ public class HeadlineController : ControllerBase
     }
 
     [HttpDelete("DeleteHeadline/{id}")]
+    [Authorize(Roles="Admin, SuperAdmin")]
     public IActionResult DeleteHeadline(int id)
     {
         var headline = _context.Headlines.Find(id);
