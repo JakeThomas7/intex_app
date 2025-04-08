@@ -9,7 +9,6 @@ import ManageUsersPage from "./pages/admin/ManageUsersPage";
 import CookieConsent from "./components/all_pages/CookieConsent";
 import ProtectedRoute from "./components/all_pages/ProtectedRoute";
 import { AuthProvider } from "./components/context/AuthContext";
-import AccountPage from "./pages/AccountPage";
 import ShopPage from "./pages/ShopPage";
 import AdminAccountPage from "./pages/admin/AdminAccountPage";
 import PrivacyPage from "./pages/PrivacyPage";

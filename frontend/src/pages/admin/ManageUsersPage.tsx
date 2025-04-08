@@ -14,7 +14,6 @@ const ManageUsersPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
   const {user} = useAuth();
-  const navigate = useNavigate();
   const [numUsers, setNumUsers] = useState(0);
 
   const handleUserDeleted = () => {
