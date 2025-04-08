@@ -1,4 +1,5 @@
 using intex_app.API.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +7,7 @@ namespace intex_app.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class MoviesController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
@@ -87,6 +89,7 @@ public class MoviesController : ControllerBase
     }
     
     [HttpPost("CreateMovie")]
+    [Authorize(Roles="Admin, Super Admin")]
     public IActionResult CreateMovie([FromBody] CreateMovieDto newMovieDto)
     {
         // Map DTO to MovieUser entity
@@ -112,6 +115,7 @@ public class MoviesController : ControllerBase
     }
     
     [HttpPut("UpdateMovie/{id}")]
+    [Authorize(Roles="Admin, Super Admin")]
     public IActionResult UpdateMovie(string id, [FromBody] CreateMovieDto updatedMovieDto)
     {
         // Fetch the existing movie along with related MovieGenres
@@ -163,6 +167,7 @@ public class MoviesController : ControllerBase
 
     // DELETE: /Movies/5
     [HttpDelete("DeleteMovie/{id}")]
+    [Authorize(Roles="Admin, Super Admin")]
     public async Task<IActionResult> DeleteMovie(string id)
     {
         var movie = await _context.Movies

@@ -8,7 +8,7 @@ interface PaginationProps {
   maxVisiblePages?: number;
 }
 
-const Pagination: React.FC<PaginationProps> = ({
+const PaginationComponent: React.FC<PaginationProps> = ({
   totalItems,
   itemsPerPage,
   currentPage,
@@ -99,4 +99,4 @@ const Pagination: React.FC<PaginationProps> = ({
   );
 };
 
-export default Pagination;
+export default PaginationComponent;

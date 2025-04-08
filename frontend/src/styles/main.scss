@@ -1,6 +1,6 @@
 
 // src/styles/_custom.scss
-$primary: #5a5ba5;//rgb(8, 23, 138);
+$primary: rgb(8, 23, 138);
 $secondary:#DDE2E2;
 $success: #28a745;
 $info: #82637d;
@@ -182,6 +182,9 @@ html {
 .pagination-button {
     font-weight: normal !important;
 }
+.btn-outline-custom-text-white:hover {
+    color: var(--white);
+}
 
 // DROPDOWN GLOW UP ----------------------------------------------
 .dropdown-item {
@@ -228,6 +231,9 @@ html {
 .btn-outline-custom:hover {
     color:var(--primary)
 }
+.btn-outline-custom:hover {
+    color:var(--white)
+}
 
 .text-muted {
     color: rgba(0, 0, 0, 0.2) !important;
@@ -238,9 +244,9 @@ html {
 }
 
 /*  Input fields */
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+.login-section input[type="text"],
+.login-section input[type="email"],
+.login-section input[type="password"] {
   background-color: rgba(255, 255, 255, 0.05); 
   border: 1px solid rgba(255, 255, 255, 0.15); 
   color: #eaeaea;
@@ -261,6 +267,3 @@ input:focus {
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
   background-color: rgba(255, 255, 255, 0.08);
 }
-
-
-

@@ -1,10 +1,12 @@
 using intex_app.API.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace intex_app.API.Controllers;
 
 [Route("[controller]")]
 [ApiController]
+[Authorize(Roles="Admin, SuperAdmin")]
 public class HeadlineController : ControllerBase
 {
     private readonly ApplicationDbContext _context;

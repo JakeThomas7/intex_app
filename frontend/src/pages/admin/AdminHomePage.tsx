@@ -4,7 +4,7 @@ import Movie from "../../types/Movie";
 import { useNavigate } from "react-router-dom";
 import AdminMovieCard from "../../components/admin/adminMoviesPage/AdminMovieCard";
 import DropdownList from "../../components/tabletools/Dropdown";
-import Pagination from "../../components/tabletools/Pagination";
+import Pagination from "../../components/tabletools/PaginationComponent";
 
 const AdminHomePage = () => {
 

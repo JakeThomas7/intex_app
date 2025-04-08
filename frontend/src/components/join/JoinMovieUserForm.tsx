@@ -118,10 +118,10 @@ const MovieUserProfileForm = () => {
     return (
         <div className="section-padding join-movie-user-section d-flex justify-content-center align-items-center w-100">
             <form className="profile-form" onSubmit={handleSubmit}>
-                <h3 className="mb-3">Complete Your Profile<br/>Tell us more about yourself to personalize your experience.</h3>
+                <h3 className="mb-3 mt-2">Complete Your Profile<br/>Tell us more about yourself to personalize your experience.</h3>
                 <button 
                     type="submit" 
-                    className="btn btn-white text-dark w-100 mb-3"
+                    className="btn btn-outline-dark btn-outline-custom-white w-100 mb-3"
                     onClick={handleSubmit}
                 >Skip for now <i className="fa-solid fa-arrow-right"></i></button>
                 <hr/>
@@ -136,7 +136,7 @@ const MovieUserProfileForm = () => {
                             placeholder="First name"
                             value={form.firstName}
                             onChange={handleChange}
-                            required
+                            
                         />
                     </div>
                     <div className="col-md-6">
@@ -148,7 +148,7 @@ const MovieUserProfileForm = () => {
                             placeholder="Last name"
                             value={form.lastName}
                             onChange={handleChange}
-                            required
+                            
                         />
                     </div>
                 </div>
@@ -233,7 +233,7 @@ const MovieUserProfileForm = () => {
                 </div>
 
                 <div className="mb-4">
-                    <label className="form-label">Streaming Services*</label>
+                    <label className="form-label">Streaming Services</label>
                     <div className="d-flex flex-wrap gap-3">
                         {streamingServices.map(service => (
                             <div key={service.id} className="form-check">
