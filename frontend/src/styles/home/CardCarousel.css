@@ -38,3 +38,20 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
   }
+
+  .rank-badge {
+  position: absolute;
+  top: 50%;
+  left: -2rem; /* Position it to the left of the card */
+  transform: translateY(-50%);
+  width: 3rem;  /* Tall and skinny width */
+  height: 5rem; /* Tall height */
+  border: 2px solid white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background-color: black;
+  color: white;
+}

@@ -1,6 +1,6 @@
-import { useRef, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "../../styles/home/CardCarousel.css";
+import { useRef, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../../styles/home/CardCarousel.css';
 
 interface CarouselProps {
   title?: string;
@@ -10,10 +10,10 @@ interface CarouselProps {
 }
 
 const Carousel = ({
-  title = "",
+  title = '',
   cardWidth = 19, // Default 19rem
   cardHeight = 19, // Default 19rem
-  data
+  data,
 }: CarouselProps) => {
   const carouselRef = useRef<HTMLDivElement | null>(null);
   const [scrollDistance, setScrollDistance] = useState(0);
@@ -24,12 +24,6 @@ const Carousel = ({
       if (carouselRef.current) {
         // Calculate scroll distance (2/3 of viewport width)
         setScrollDistance(window.innerWidth * 0.66);
-        
-        // If you still need cardWidth for other calculations:
-        const firstCard = carouselRef.current.querySelector('.card-item');
-        if (firstCard) {
-          // Optional: Can remove if using prop cardWidth
-        }
       }
     };
 
@@ -49,13 +43,11 @@ const Carousel = ({
 
   return (
     <div className="carousel-section position-relative pt-4">
-      <h3 className="section-padding">
-        {title}
-      </h3>
+      <h3 className="section-padding">{title}</h3>
 
       {/* Navigation Buttons */}
-      <button 
-        onClick={() => scroll('left')} 
+      <button
+        onClick={() => scroll('left')}
         className="btn btn-light position-absolute top-50 translate-middle-y start-0 ms-3 carousel-controls d-none d-sm-block"
       >
         <i className="fa-solid fa-chevron-left fa-lg px-2 py-5"></i>
@@ -78,21 +70,58 @@ const Carousel = ({
               scrollSnapAlign: 'start',
               scrollMargin: '0 0 0 clamp(3rem, 5vw, 6rem)',
               maxWidth: `${cardWidth}rem`,
-              height: `${cardHeight}rem`
+              height: `${cardHeight}rem`,
             }}
-            onClick={() => navigate("/details")}
+            onClick={() => navigate('/details')}
           >
             <div
-              className="p-4 lead shadow grow-sm h-100"
+              className="p-4 lead shadow grow-sm h-100 position-relative"
               style={{
                 borderRadius: '18px',
-                backgroundColor: 'white',
+                backgroundColor: 'black',
+                color: 'white',
+                border: '2px solid white',
                 fontSize: '1.5rem',
                 minWidth: '200px',
                 transition: 'transform 0.3s ease',
               }}
             >
-              <p>{item.description}</p>
+              {/* Rank Number */}
+              <div
+                className="rank-badge"
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '-2rem', // Adjust left position to make it stick out
+                  transform: 'translateY(-50%)',
+                  width: '3rem', // Tall and skinny
+                  height: '5rem', // Tall height
+                  border: '2px solid white',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.5rem',
+                  backgroundColor: 'black',
+                  color: 'white',
+                }}
+              >
+                {item.rank} {/* Display rank number */}
+              </div>
+
+              {/* Movie Poster */}
+              <img
+                src={item.imagePath} // Movie poster image
+                alt={item.title}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '10px',
+                  objectFit: 'cover',
+                }}
+              />
+              <h4>{item.title}</h4>
+              <p>{item.year}</p>
             </div>
           </div>
         ))}
@@ -101,8 +130,8 @@ const Carousel = ({
         <div style={{ minWidth: '16px', flexShrink: 0 }}></div>
       </div>
 
-      <button 
-        onClick={() => scroll('right')} 
+      <button
+        onClick={() => scroll('right')}
         className="btn btn-light position-absolute top-50 translate-middle-y end-0 me-3 carousel-controls d-none d-sm-block"
       >
         <i className="fa-solid fa-chevron-right fa-xl px-2 py-5"></i>
