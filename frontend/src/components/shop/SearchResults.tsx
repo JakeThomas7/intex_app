@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import Pagination from "../tabletools/Pagination";
+import Pagination from "../tabletools/PaginationComponent";
 import { useState } from "react";
 import DropdownList from "../tabletools/Dropdown";
 

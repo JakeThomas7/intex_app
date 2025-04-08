@@ -13,7 +13,7 @@ const NavBar = () => {
       <a className="navbar-brand grow righteous-title" onClick={() => navigate('/')}>
         CineNiche
       </a>
-        <div className="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <div className="navbar-toggler text-white" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <i className="fa-solid fa-grip-lines"></i>
         </div>
 
@@ -21,24 +21,25 @@ const NavBar = () => {
 
         <ul className="navbar-nav mb-lg-0">
 
-          <li className="nav-item me-3">
+            {/* <li className="nav-item me-3">
               <a className="nav-link active" aria-current="page" onClick={()=>navigate('/')}>
-                {/* <i className="fa-solid fa-house"></i>  */}
                 Home
               </a>
-            </li>
+            </li> */}
 
+            {isAuth &&
             <li className="nav-item me-3">
-              <a className="nav-link active" aria-current="page" onClick={()=>navigate('/shop')}>
+              <a className="nav-link active" aria-current="page" onClick={()=>navigate('/browse')}>
                 Recommendations
               </a>
             </li>
+            }
 
-            <li className="nav-item me-3">
+            {/* <li className="nav-item me-3">
               <a className="nav-link active" aria-current="page" onClick={()=>navigate('/ai')}>
                 Chat Bot
               </a>
-            </li>
+            </li> */}
           </ul>
 
           <ul className="navbar-nav mb-lg-0 mb-2 ms-auto">
@@ -54,11 +55,11 @@ const NavBar = () => {
                     Sign out
                   </a>
                 </li>
-                <li className="nav-item me-lg-3 mb-2 mb-lg-0 d-flex align-items-center">
+                {/* <li className="nav-item me-lg-3 mb-2 mb-lg-0 d-flex align-items-center">
                   <button className='btn btn-dark text-white grow' onClick={()=>navigate('/account')}>
                     My Account
                   </button>
-                </li>
+                </li> */}
               </>
             }
             {!isAuth &&

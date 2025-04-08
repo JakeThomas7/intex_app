@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import UserTableRowCard from "../../components/admin/userTableElements/userTableElementsTest/UserTableRowCard";
 import UserManagementBar from "../../components/admin/userTableElements/UserBarManagement";
 import DropdownList from "../../components/tabletools/Dropdown";
-import Pagination from "../../components/tabletools/Pagination";
+import Pagination from "../../components/tabletools/PaginationComponent";
 
 const ManageUsersPage = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -92,7 +92,7 @@ const ManageUsersPage = () => {
                   </div>
                   <div>
                     <button className='btn btn-primary disabled me-2'>{user.role}</button>
-                    <button className="btn btn-outline-dark" onClick={() => navigate('/admin/users/account')}>My Account</button>
+                    {/* <button className="btn btn-outline-dark" onClick={() => navigate('/admin/users/account')}>My Account</button> */}
                   </div>
                   
                 </>

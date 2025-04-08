@@ -1,3 +1,6 @@
 .join-movie-user-section {
-    height: 100vh;
+    min-height: 100vh;
+    padding-top: 100p;
+    padding-bottom: 2rem;
+    overflow-y: 'auto';
 }
