@@ -54,7 +54,7 @@ const JoinForm = () => {
                 await register(form.Email, form.Password);
                 await login(form.Email, form.Password, false)
                 await checkAuth();
-                navigate('/');
+                navigate('/accountsetup');
             } catch (err) {
                 setError((err as Error).message);
             } finally {

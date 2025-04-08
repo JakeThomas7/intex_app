@@ -16,12 +16,11 @@ const RouteBreadcrumbs = () => {
         
         return (
           <span key={name}>
-           
-            {isLast ? (
-              <span className="current">{capitalizeFirstLetter(name)}</span>
-            ) : (
-              <Link to={routeTo}>{capitalizeFirstLetter(name)}</Link>
-            )}
+              {isLast ? (
+                <span className="current">{capitalizeFirstLetter(name)}</span>
+              ) : (
+                <Link to={routeTo}>{capitalizeFirstLetter(name)}</Link>
+              )}
              <span className="separator"><i className="fa-solid fa-chevron-right fa-xs mx-2"></i></span>
           </span>
         );
