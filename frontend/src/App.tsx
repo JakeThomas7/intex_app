@@ -18,6 +18,7 @@ import AdminProtectedRoute from "./components/all_pages/AdminProtectedRoute";
 import ScrollToTop from "./components/all_pages/ScrollToTop";
 import ChatbotPage from "./pages/ChatbotPage";
 
+
 function App() {
   return (
     <AuthProvider>

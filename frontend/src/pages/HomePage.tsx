@@ -21,11 +21,11 @@ const HomePage = () => {
     <div>
       <NavBar />
       <TitleSection />
+      <Carousel title="Trending Now" cardWidth={22} cardHeight={21} data={carouselData} />
       <SiteWidget />
       <ImageSection />
-      <Carousel title="The reason to choose Cervelo. We make a differece" cardHeight={30} cardWidth={30} data={carouselData} />
+      <Carousel title="The reason to choose CineNiche. We make a differece" cardHeight={30} cardWidth={30} data={carouselData} />
       {/* <FixedImageSection /> */}
-      <Carousel title="Trending Now" cardWidth={22} cardHeight={21} data={carouselData} />
       <Footer />
       <RecordSiteTraffic />
     </div>

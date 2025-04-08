@@ -3,6 +3,9 @@ import '../../styles/LoginPage.css';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../api/AuthenticationAPI';
 import { useAuth } from '../context/AuthContext';
+import moviesBackground from '../../assets/Movies.jpg';
+
+
 
 
 const LoginForm = () => {
@@ -47,9 +50,17 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="login-section section-padding d-flex justify-content-center align-items-center w-100">
+    <div
+    className="login-section section-padding d-flex justify-content-center align-items-center w-100"
+    style={{
+    backgroundImage: `linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url(${moviesBackground})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    minHeight: '100vh'
+    }}
+    >
       <form className="login-form" onSubmit={handleSubmit}>
-        <h3 className="mb-3">Welcome!<br/>Log in to your personal account.</h3>
+        <h3 className="mb-3">Sign In</h3>
         {/* <button className="btn btn-outline-dark w-100 mb-3"><i className="fa-brands fa-google me-2"></i>Continue with Google</button> */}
         <hr/>
 

@@ -1,66 +1,104 @@
+/* 🌑 SITE WIDGET DARK THEME */
+
+.site-widget-container {
+  background-color: #000000; /* Solid black background */
+  color: rgb(245, 245, 247); /* Apple-style white text */
+  font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", Arial, sans-serif;
+}
+
 /* Base styles for all devices */
-
-  
 .mobile-image {
-    margin-bottom: 2rem;
-    text-align: center;
-  }
-  
-  .mobile-image img {
-    max-width: 100%;
-    border-radius: 20px;
-  }
-  
-  
-  /* Desktop-specific styles */
-  @media (min-width: 768px) {
-    .site-widget-container {
-      min-height: 100vh;
-    }
-    
-    .sticky-image-col {
-      position: relative;
-      padding: 0;
-    }
-    
-    .sticky-image-wrapper {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
-    
-    .sticky-image-wrapper img {
-      max-height: 100vh;
-      width: auto;
-      object-fit: contain;
-    }
-    
-    .content-col {
-      padding: 3rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-  }
-  
-  /* Mobile adjustments */
-  @media (max-width: 767px) {
-    .content-col {
-      padding: 1rem;
-    }
-    
-    .content-section {
-    padding: .5rem 0;
-    }
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.mobile-image img {
+  max-width: 100%;
+  border-radius: 20px;
+}
+
+/* 🖥️ Desktop-specific styles */
+@media (min-width: 768px) {
+  .site-widget-container {
+    min-height: 100vh;
   }
 
-  .content-section {
+  .sticky-image-col {
+    position: relative;
+    padding: 0;
+  }
+
+  .sticky-image-wrapper {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .sticky-image-wrapper img {
+    max-height: 100vh;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .content-col {
+    padding: 3rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 1rem 0;
   }
+}
+
+/* 📱 Mobile adjustments */
+@media (max-width: 767px) {
+  .content-col {
+    padding: 1rem;
+  }
+
+  .content-section {
+    padding: 0.5rem 0;
+  }
+}
+
+/* 📝 Content layout */
+.content-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+/* 📌 Headline styling */
+.content-section h2 {
+  color: rgb(245, 245, 247);
+  font-weight: 600;
+  font-size: 1.75rem;
+}
+
+.content-section p {
+  color: rgb(220, 220, 225); /* Slightly dimmer for body text */
+  font-size: 1.1rem;
+}
+
+/* 🎯 Optional dark card styling (if used) */
+.content-section .card,
+.content-section .box {
+  background-color: #1a1a1a;
+  color: rgb(245, 245, 247);
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+/* 🔗 Optional Apple-style link styling */
+.site-widget-container a {
+  color: rgba(245, 245, 247, 0.85);
+  text-decoration: none;
+}
+
+.site-widget-container a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}

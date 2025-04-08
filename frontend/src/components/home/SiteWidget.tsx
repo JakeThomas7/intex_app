@@ -25,7 +25,7 @@ const SiteWidget = () => {
   }, []);
 
   return (
-    <div className="section-padding">
+    <div className="section-padding site-widget-container">
       {/* Mobile-first image (shown on small screens) */}
       <div className="mobile-image d-md-none mt-4">
         <img 
