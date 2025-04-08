@@ -1,54 +1,70 @@
-.fixed-image-section {
-    min-height: 100vh;
-  }
-  
-  .sticky-image-col {
-    position: relative;
-    padding: 0;
-  }
-  
-  .sticky-image-wrapper {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-  }
-  
-  .sticky-image-wrapper img {
-    max-height: 100vh;
-    width: auto;
-    object-fit: contain;
-  }
-  
-  .content-col {
-    padding: 3rem;
-  }
-  
-  .content-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 2rem 0;
-  }
-  
-  .color-options {
-    display: flex;
-    gap: 1rem;
-    margin: 1rem 0;
-  }
-  
-  .color-swatch {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-  
-  .storage-options {
-    display: flex;
-    gap: 1rem;
-    margin: 1rem 0;
-  }
+.details-hero {
+  height: 100vh;
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: flex-start; /* Align to top */
+  justify-content: flex-start;
+  padding-top: 6rem; /* Push content down */
+  color: #f5f5f7;
+  font-family: "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  position: relative;
+}
+
+.details-overlay {
+  max-width: 700px;
+  padding-top: 2rem; /* Extra breathing space */
+}
+
+.movie-subinfo {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #ccc;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.movie-title {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+}
+
+.genre-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.genre-tag {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: #f5f5f7;
+  backdrop-filter: blur(4px);
+}
+
+.movie-description {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  max-width: 40%;
+}
+
+.movie-actions .btn {
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+}
+
+.details-carousels {
+  background-color: #000;
+  color: white;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
