@@ -69,12 +69,17 @@ public class MoviesController : ControllerBase
                 m.Country,
                 m.Type,
                 m.Rating,
+                m.image_url_suffix,
                 // Add other movie properties...
                 Genres = m.MovieGenres.Select(mg => new 
                 {
                     mg.GenreId, // or mg.Genre.Id if it's a navigation property
                     GenreName = mg.Genre.GenreName // or mg.Genre.Name if it's a navigation property
-                }).ToList()
+                }).ToList(),
+                // Calculate the average rating if there are any ratings
+                AverageRating = m.MovieRatings.Any() 
+                ? Math.Round(m.MovieRatings.Average(r => r.Rating), 1) 
+                : 0
             })
             .ToListAsync();
 

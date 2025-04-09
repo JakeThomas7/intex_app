@@ -18,6 +18,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Movie> Movies { get; set; }
     public DbSet<Genre> Genres { get; set; }
     public DbSet<MovieGenre> MovieGenres { get; set; }
+    public DbSet<MovieRating> MovieRatings { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -50,6 +51,19 @@ public class ApplicationDbContext : DbContext
             .HasOne(mus => mus.StreamingService)
             .WithMany(ss => ss.MovieUserStreamingServices)
             .HasForeignKey(mus => mus.StreamingServiceId);
+        
+        modelBuilder.Entity<MovieRating>()
+            .HasKey(r => new { r.ShowId, r.UserId });
+
+        modelBuilder.Entity<MovieRating>()
+            .HasOne(r => r.Movie)
+            .WithMany(m => m.MovieRatings)
+            .HasForeignKey(r => r.ShowId);
+
+        modelBuilder.Entity<MovieRating>()
+            .HasOne(r => r.MovieUser)
+            .WithMany(u => u.MovieRatings)
+            .HasForeignKey(r => r.UserId);
 
         // Seed default streaming services
         modelBuilder.Entity<StreamingService>().HasData(

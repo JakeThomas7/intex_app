@@ -11,6 +11,7 @@ interface Movie {
     rating?: string;
     duration?: string;
     description?: string;
+    image_url_suffix? : string;
     genres?: Genre[];
 }
 

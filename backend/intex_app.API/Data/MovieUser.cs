@@ -17,6 +17,7 @@ namespace intex_app.API.Data
         public int? Zip { get; set; }
         
         public ICollection<MovieUserStreamingService> MovieUserStreamingServices { get; set; }
+        public ICollection<MovieRating> MovieRatings { get; set; }
     }
     
     public class CreateMovieUserDto

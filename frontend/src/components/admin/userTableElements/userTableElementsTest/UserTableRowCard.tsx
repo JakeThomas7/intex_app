@@ -52,7 +52,7 @@ const UserTableRowCard = ({ user, onUserDeleted }: { user: any; onUserDeleted: (
               onClick={handleConfirmDelete}
               aria-label="Confirm deletion"
             >
-              Delete
+              Confirm
             </button>
           </div>
         );
