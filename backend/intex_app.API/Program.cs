@@ -18,7 +18,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
 
 builder.Services.AddDbContext<UserIdentityDbContext>(options =>  
-    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityDbConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
 
 builder.Services.AddAuthorization();
 
