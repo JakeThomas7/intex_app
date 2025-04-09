@@ -7,7 +7,6 @@ namespace intex_app.API.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-[Authorize(Roles="Admin, Super Admin")]
 public class TrafficController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
@@ -17,6 +16,7 @@ public class TrafficController : ControllerBase
         _context = temp;
     }
 
+    [Authorize(Roles="Admin, Super Admin")]
     [HttpGet("GetTraffic")]
     public IActionResult GetTraffic()
     {

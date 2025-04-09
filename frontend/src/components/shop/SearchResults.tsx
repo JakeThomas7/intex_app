@@ -1,84 +1,141 @@
-import { useNavigate } from "react-router-dom";
-import Pagination from "../tabletools/PaginationComponent";
-import { useState } from "react";
-import DropdownList from "../tabletools/Dropdown";
+import { useEffect, useState } from "react";
+import GenreFilter from "./GenreFilter";
+import Genre from "../../types/Genre";
+import { fetchGenres } from "../../api/MoviesAPI";
+import SiteWidget from "../home/SiteWidget";
+import TitleSection from "../home/TitleSection";
 
-interface SearchResultsProps {
-    // Include Search Parameters
-    data: Array<any>; // Your product data
-}
+const SearchResults = () => {
 
-const SearchResults = ({
-  data
-} : SearchResultsProps) => {
-
-    const [numPerPage, setNumPerPage] = useState(8);
-    const navigate = useNavigate();
-
-    // Define the options for the dropdown
-    const dropdownOptions = [8, 12, 16, 20, 24];
-    // Callback function to handle dropdown changes
-    const handleDropdownChange = (value: number) => {
-        setNumPerPage(value);
+    // PUTTING TOGETHER SEARCHING / FILTERING CONTROLS -----------
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
+    const [searchedMovies, setSearchedMovies] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
+    const [isSearched, setIsSearched] = useState(false);
+  
+    const [genres, setGenres] = useState<Genre[]>([]);
+  
+    useEffect(() => {
+        const getGenres = async () => {
+          try {
+            const data = await fetchGenres();
+            setGenres(data);
+          } catch (error) {
+            console.error('Error fetching genres:', error);
+          }
+        };
+        getGenres();
+    }, []);
+  
+    const containerStyle = {
+      overflow: "hidden",
+      maxHeight: isOpen ? "300px" : "0", // Adjust the maxHeight based on your content
+      transition: "max-height 0.3s ease-in-out", // Smooth transition effect
     };
+
+    const searchStyle = {
+        // overflow: "hidden",
+        // maxHeight: isSearched ? "auto" : "0", // Adjust the maxHeight based on your content
+        // transition: "max-height 0.3s ease-in-out", // Smooth transition effect
+      };
+  
+    const removeGenre = (genre: Genre) => {
+      setSelectedGenres(selectedGenres.filter((g) => g !== genre));
+    };
+  
+    function setSearching(arg0: boolean) {
+        throw new Error("Function not implemented.");
+    }
+
+    //   const handleSearch = async () => {
+    //     try {
+    //       const data = await fetchMovies({ search: searchQuery, categories: [genre] });
+    //       setMovies(data.data);
+    //       setNumMovies(data.totalCount);
+    //     } catch (error) {
+    //       console.error("Error fetching headlines:", error);
+    //       setError("Failed to load headlines. Please try again later.");
+    //     } finally {
+    //       setLoading(false);
+    //     }
+    //   }
+  
+
 
 
   return (
-    <div className="section-padding pt-4 pb-4 bg-light">
-    <div className="row mb-1">
-    <div className="col-md-6 d-flex align-items-center">
     <div>
-        Showing 
-        <div className="dropdown d-inline mx-2">
-        <button
-            className="btn btn-primary dropdown-toggle text-white"
-            type="button"
-            id="dropdownMenuButton"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-        >
-            {numPerPage} per page
-        </button>
-        <DropdownList currentValue={numPerPage} options={dropdownOptions} onChange={handleDropdownChange} label="dropdownMenuButton" />
-        </div> 
-        of <strong>30</strong>
-    </div>
-    </div>
-        <div className="col-md-6 d-flex justify-content-end">
-            <Pagination totalItems={100} itemsPerPage={8} currentPage={4} onPageChange={function (): void {
-                throw new Error("Function not implemented.");
-            }}/>
-        </div>
-    </div>
-
-    <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 g-3">
-        {data.slice(0, numPerPage).map((item, index) => (
-        <div
-            key={index}
-            className="col" // Important - makes each item a grid column
-            onClick={() => navigate("/details")}
-        >
-            <div
-            className="p-4 lead shadow h-100"
-            style={{
-                borderRadius: '18px',
-                backgroundColor: 'white',
-                fontSize: '1.5rem',
-                transition: 'transform 0.3s ease',
-            }}
-            >
-            <p>{item.description}</p>
+    <div className="d-flex flex-column align-items-center w-100" onSubmit={(event) => {
+        event?.preventDefault();
+        setIsSearched(true);
+      }}>
+          {/* Search Bar and Filter */}
+          <div className="w-75">
+            <div className="d-flex justify-content-between align-items-center mt-4">
+              <form className="position-relative w-100 me-3">
+                <i className="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" />
+                <input
+                  type="search"
+                  className="form-control form-control-lg ps-5 py-3"
+                  placeholder="Search products, categories, etc."
+                  aria-label="Search products"
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </form>
             </div>
-        </div>
-        ))}
-        </div>
-        <div className="row mb-1">
-        <div className="col-md-12 d-flex justify-content-end">
-            <Pagination totalItems={100} itemsPerPage={8} currentPage={4} onPageChange={function (): void {
-                throw new Error("Function not implemented.");
-            }}/>
-        </div>
-    </div>
+
+            {/* Filter Genres Button */}
+            <div className="d-flex justify-content-start w-100 mt-3 flex-wrap gap-2">
+              <button className="btn btn-outline-light w-auto d-flex align-items-center me-2"
+               onClick = {() => setIsOpen(!isOpen)}
+              >
+                Filter Genres
+                <i className="ms-3 fa-solid fa-chevron-right" />
+              </button>
+              {selectedGenres.map((genre) => (
+                <button
+                  key={genre.genreId}
+                  className="btn btn-sm btn-light d-flex align-items-center"
+                  onClick={() => removeGenre(genre)}
+                >
+                  {genre.genreName}
+                  <i className="fa-solid fa-xmark fa-sm ms-2" />
+                </button>
+              ))}
+            </div>
+            
+
+            {/* Genre Filter Dropdown */}
+          <div style={containerStyle} className="w-100 mt-2">
+            {isOpen && (
+              <GenreFilter
+                genres={genres}
+                setSelectedGenres={setSelectedGenres}
+                selectedGenres={selectedGenres}
+              />
+            )}
+          </div>
+
+          </div>
+          
+      </div>
+       <div style={searchStyle}>
+            {isSearched && 
+            <div className="w-75 text-white" >
+            <div className="d-flex flex-wrap gap-2 justify-content-start overflow-x">  
+              <TitleSection />
+              <TitleSection />
+              <TitleSection />
+              <TitleSection />
+              <TitleSection />
+              <TitleSection />
+  
+            </div>
+          </div>
+            }
+            
+        </div> 
     </div>
   )
 }
