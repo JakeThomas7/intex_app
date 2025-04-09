@@ -74,9 +74,11 @@
 /Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/publish/NuGet.ProjectModel.dll
 /Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/publish/NuGet.Protocol.dll
 /Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/publish/NuGet.Versioning.dll
+/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/publish/SendGrid.dll
 /Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/publish/SQLitePCLRaw.batteries_v2.dll
 /Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/publish/SQLitePCLRaw.core.dll
 /Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/publish/SQLitePCLRaw.provider.e_sqlite3.dll
+/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/publish/StarkbankEcdsa.dll
 /Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/publish/Swashbuckle.AspNetCore.Swagger.dll
 /Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/publish/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/publish/Swashbuckle.AspNetCore.SwaggerUI.dll
