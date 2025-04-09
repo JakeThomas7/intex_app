@@ -1,14 +1,15 @@
 import User from "../types/User";
 
 
-const API_URL = 'https://localhost:5000';
-//const API_URL = 'https://api2.byjacobthomas.com'
+//const API_URL = 'https://localhost:5000';
+const API_URL = 'https://api2.byjacobthomas.com'
 
 
 export const register = async (email: string, password: string): Promise<void> => {
   const response = await fetch(`${API_URL}/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({ email, password }),
   });
 
