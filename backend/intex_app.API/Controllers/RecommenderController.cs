@@ -17,12 +17,62 @@ public class RecommenderController : ControllerBase
         _context = context;
     }
 
-    // GET: /Recommender/ItemHybrid
+    // GET: /Recommender/ItemHybrid?id=123
     [HttpGet("ItemHybrid")]
-    public async Task<IActionResult> ItemHybrid([FromQuery] int id)
+    public async Task<IActionResult> ItemHybrid([FromQuery] string id)
     {
-        var recommendations = _context.Movies.Find(id);
+        var recommendationRow = await _context.MovieDetailsRecommender
+            .FirstOrDefaultAsync(r => r.ShowId == id);
 
-        return Ok(recommendations);
+        if (recommendationRow == null)
+        {
+            return NotFound($"No recommendations found for show ID {id}");
+        }
+
+        var recommendedIds = new List<string?>
+        {
+            recommendationRow.RecId1,
+            recommendationRow.RecId2,
+            recommendationRow.RecId3,
+            recommendationRow.RecId4,
+            recommendationRow.RecId5,
+            recommendationRow.RecId6,
+            recommendationRow.RecId7,
+            recommendationRow.RecId8,
+            recommendationRow.RecId9,
+            recommendationRow.RecId10
+        };
+
+        var validIds = recommendedIds
+            .Where(id => !string.IsNullOrWhiteSpace(id))
+            .Distinct()
+            .ToList();
+
+        var movies = await _context.Movies
+            .Where(m => validIds.Contains(m.ShowId))
+            .Select(m => new
+            {
+                m.ShowId,
+                m.Title,
+                m.ReleaseYear,
+                m.Director,
+                m.Cast,
+                m.Description,
+                m.Duration,
+                m.Country,
+                m.Type,
+                m.Rating,
+                m.image_url_suffix,
+                Genres = m.MovieGenres.Select(mg => new
+                {
+                    mg.GenreId,
+                    GenreName = mg.Genre.GenreName
+                }).ToList(),
+                AverageRating = m.MovieRatings.Any()
+                    ? Math.Round(m.MovieRatings.Average(r => r.Rating), 1)
+                    : 0
+            })
+            .ToListAsync();
+        return Ok(movies);
     }
 }

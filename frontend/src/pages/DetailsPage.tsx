@@ -6,7 +6,16 @@ import '../styles/DetailsPage.css';
 import placeholder from '../assets/sanddust.jpg';
 import Movie from '../types/Movie';
 import SimpleFooter from '../components/all_pages/SimpleFooter';
+import { getItemHybridRecommender } from '../api/RecommenderAPI';
 // import { useAuth } from '../components/context/AuthContext';
+
+interface CarouselMovie {
+  title: string;
+  imagePath: string;
+  year: number;
+  rank: number;
+  id: string;
+}
 
 const DetailsPage = () => {
   const location = useLocation();
@@ -14,12 +23,33 @@ const DetailsPage = () => {
   const [movie, setMovie] = useState<Movie | null>(initialMovie || null);
   const [loading, setLoading] = useState(!initialMovie);
   const [selectedRating, setSelectedRating] = useState<number>(0);
+  const [recommendations, setRecommendations] = useState<CarouselMovie[]>([]);
 
-  const data = [
-    { description: 'Recommended movie 1' },
-    { description: 'Recommended movie 2' },
-    { description: 'Recommended movie 3' },
-  ];
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      if (!movie?.showId) return;
+
+      try {
+        const recs = await getItemHybridRecommender(movie.showId);
+
+        const mapped = recs.map((m, idx) => ({
+          title: m.title ?? 'Untitled',
+          imagePath: m.image_url_suffix
+            ? `https://intex2movieposters.blob.core.windows.net/movie-postersv2/${m.image_url_suffix}`
+            : 'https://intex2movieposters.blob.core.windows.net/movie-postersv2/default.jpg',
+          year: m.releaseYear ?? 0,
+          rank: idx + 1,
+          id: m.showId ?? `unknown-${idx}`,
+        }));
+
+        setRecommendations(mapped);
+      } catch (error) {
+        console.error('Error fetching hybrid recommendations:', error);
+      }
+    };
+
+    fetchRecommendations();
+  }, [movie?.showId]); // more precise dependency
 
   useEffect(() => {
     if (initialMovie) {
@@ -91,13 +121,13 @@ const DetailsPage = () => {
           title="More like this"
           cardWidth={25}
           cardHeight={21}
-          data={data}
+          data={recommendations}
         />
         <Carousel
           title="Trending Now"
           cardWidth={19}
           cardHeight={19}
-          data={data}
+          data={recommendations}
         />
       </div>
 
