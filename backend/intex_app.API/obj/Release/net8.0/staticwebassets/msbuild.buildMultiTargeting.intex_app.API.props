@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/intex_app.API.props" />
+</Project>
