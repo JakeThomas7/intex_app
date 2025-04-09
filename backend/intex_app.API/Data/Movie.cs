@@ -15,6 +15,7 @@ namespace intex_app.API.Data
         public string? Rating { get; set; }
         public string? Duration { get; set; }
         public string? Description { get; set; }
+        public string? image_url_suffix { get; set; }
         
         public ICollection<MovieGenre> MovieGenres { get; set; }
     }
@@ -32,6 +33,7 @@ namespace intex_app.API.Data
         public string? Rating { get; set; }
         public string? Duration { get; set; }
         public string? Description { get; set; }
+        public string? image_url_suffix { get; set; }
         
         public List<int>? GenreIds { get; set; }
     }

@@ -49,6 +49,7 @@ const AdminHomePage = () => {
       }
   
       getMovies();
+      console.log(movies)
       
     }, [params, refreshKey])
   

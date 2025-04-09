@@ -8,6 +8,11 @@ import SearchResults from "../components/shop/SearchResults"
 
 const ShopPage = () => {
 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [genre, setGenre] = useState('');
+
+  
+
   const {user} = useAuth();
 
   const categories = [

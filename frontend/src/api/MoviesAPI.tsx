@@ -1,8 +1,8 @@
 import Genre from "../types/Genre";
 import Movie from "../types/Movie";
 
-const API_URL = 'https://api2.byjacobthomas.com';
-//const API_URL = 'https://localhost:5000';
+//const API_URL = 'https://api2.byjacobthomas.com';
+const API_URL = 'https://localhost:5000';
 
 interface MovieParams {
     pageNum?: number;
@@ -10,7 +10,7 @@ interface MovieParams {
     search?: string;
     categories?: string[]; // Changed from "genre" to match your frontend
 }
-
+//
 export const fetchMovies = async (params: MovieParams): Promise<any> => {
     // Convert parameters to URL query string
     const queryParams = new URLSearchParams();

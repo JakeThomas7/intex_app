@@ -32,8 +32,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Email;
 
     // Password settings
-    options.Password.RequireDigit = false;                   // Requires a number
-    options.Password.RequiredLength = 5;                    // Set the minimum length of the password
+    options.Password.RequireDigit = true;                   // Requires a number
+    options.Password.RequiredLength = 12;                    // Set the minimum length of the password
     options.Password.RequireNonAlphanumeric = false;         // Requires a non-alphanumeric character
     options.Password.RequireUppercase = false;               // Requires an uppercase letter
     options.Password.RequireLowercase = false;               // Requires a lowercase letter
@@ -57,7 +57,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("https://cervelo.byjacobthomas.com", "https://cervelo2.byjacobthomas.com", "http://localhost:3000")
+            policy.WithOrigins("https://cervelo.byjacobthomas.com", "https://cervelo2.byjacobthomas.com", "http://localhost:3000", "https://cineniche.byjacobthomas.com")
                 .AllowCredentials()
                 .AllowAnyMethod()
                 .AllowAnyHeader();

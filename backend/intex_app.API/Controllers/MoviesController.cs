@@ -7,7 +7,6 @@ namespace intex_app.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize]
 public class MoviesController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
@@ -69,6 +68,7 @@ public class MoviesController : ControllerBase
                 m.Country,
                 m.Type,
                 m.Rating,
+                m.image_url_suffix,
                 // Add other movie properties...
                 Genres = m.MovieGenres.Select(mg => new 
                 {
