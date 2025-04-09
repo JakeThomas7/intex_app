@@ -37,6 +37,7 @@ function App() {
           {/* <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} /> */}
           <Route path="/accountsetup" element={<ProtectedRoute><JoinMovieUserPage /></ProtectedRoute>} />
           <Route path="/details" element={<ProtectedRoute><DetailsPage /></ProtectedRoute>} />
+          <Route path="/details/:movieId" element={<DetailsPage />} />
           <Route path="/browse" element={<ProtectedRoute><ShopPage /></ProtectedRoute>} />
 
           {/* Admin Routes */}

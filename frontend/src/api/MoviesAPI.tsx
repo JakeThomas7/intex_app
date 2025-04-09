@@ -1,8 +1,8 @@
 import Genre from "../types/Genre";
 import Movie from "../types/Movie";
 
-//const API_URL = 'https://api2.byjacobthomas.com';
-const API_URL = 'https://localhost:5000';
+const API_URL = 'https://api2.byjacobthomas.com';
+// const API_URL = 'https://localhost:5000';
 
 interface MovieParams {
     pageNum?: number;
@@ -37,6 +37,23 @@ export const fetchMovies = async (params: MovieParams): Promise<any> => {
         throw new Error('Failed to fetch movies');
     }
     
+    return response.json();
+}
+
+export const fetchMovieById = async (movieId: string | undefined): Promise<Movie> => {
+    if (!movieId) {
+        throw new Error('Movie ID is required');
+    }
+
+    const response = await fetch(`${API_URL}/Movies/GetMovie/${movieId}`, {
+        method: 'GET',
+        credentials: 'include'
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch movie');
+    }
+
     return response.json();
 }
 

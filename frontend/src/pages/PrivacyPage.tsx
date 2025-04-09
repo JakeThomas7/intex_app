@@ -1,5 +1,5 @@
-import Footer from "../components/all_pages/Footer";
 import NavBar from "../components/all_pages/Navbar";
+import SimpleFooter from "../components/all_pages/SimpleFooter";
 import PrivacyFAQ from "../components/privacy/PrivacyFAQ";
 import PrivacyTitleSection from "../components/privacy/PrivacyTitleSection";
 import "../styles/privacy/FAQ.css"; 
@@ -11,7 +11,7 @@ function PrivacyPage() {
       <NavBar />
       <PrivacyTitleSection />
       <PrivacyFAQ />
-      <Footer />
+      <SimpleFooter />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import Footer from '../components/all_pages/Footer'
 import NavBar from '../components/all_pages/Navbar'
 import RecordSiteTraffic from '../components/all_pages/RecordSiteTraffic'
+import SimpleFooter from '../components/all_pages/SimpleFooter'
 import ImageSection from '../components/home/ImageSection'
 import SiteWidget from '../components/home/SiteWidget'
 import TitleSection from '../components/home/TitleSection'
@@ -26,7 +27,7 @@ const HomePage = () => {
       <ImageSection />
       <Carousel title="The reason to choose CineNiche. We make a differece" cardHeight={30} cardWidth={30} data={carouselData} />
       {/* <FixedImageSection /> */}
-      <Footer />
+      <SimpleFooter />
       <RecordSiteTraffic />
     </div>
   )
