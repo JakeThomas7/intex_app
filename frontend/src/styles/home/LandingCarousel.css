@@ -1,0 +1,73 @@
+/* Overall container for the carousel and heading */
+.carousel-section-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  height: 80vh; /* Adjust the height */
+  overflow: hidden; /* Hide anything outside of the container */
+  margin-bottom: -250px;
+}
+
+/* Heading section */
+.carousel-heading {
+  flex: 3; /* The heading section takes up 40% of the space */
+  text-align: left;
+  padding-left: 20px;
+  width: 40%; /* Ensure it takes up 40% of the screen */
+}
+
+.carousel-heading h1 {
+  font-size: 4.5rem; /* Increase the font size for more impact */
+  color: white;
+  font-weight: bold;
+  line-height: 1.2; /* Adjust line height for a more balanced look */
+}
+
+/* The carousel section */
+.carousel-section {
+  flex: 7; /* The carousel section takes up 60% of the space */
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Hide the horizontal overflow */
+}
+
+/* The container that holds the items */
+.carousel-container {
+  display: flex;
+  transition: transform 0.5s ease-in-out; /* Smooth transition */
+}
+
+/* Card styling */
+.card-item {
+  flex-shrink: 0;
+  min-width: 19rem; /* Ensure card width */
+  height: 19rem; /* Ensure card height */
+  margin-right: 1rem; /* Space between cards */
+  cursor: pointer;
+}
+
+/* For small screens */
+@media (max-width: 768px) {
+  .carousel-heading h1 {
+    font-size: 3rem; /* Adjust font size for small screens */
+  }
+}
+
+/* For extra small screens */
+@media (max-width: 480px) {
+  .carousel-heading h1 {
+    font-size: 2.5rem; /* Adjust font size for very small screens */
+  }
+}
+
+/* Hide scrollbar */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none !important;
+}
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
