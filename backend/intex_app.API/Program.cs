@@ -15,10 +15,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
 
 builder.Services.AddDbContext<UserIdentityDbContext>(options =>  
-    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityDbConnection")));
 
 builder.Services.AddAuthorization();
 
@@ -32,8 +32,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier;
     options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Email;
 
-    options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 5;
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 12;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false;
@@ -56,7 +56,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("https://cervelo.byjacobthomas.com", "https://cervelo2.byjacobthomas.com", "http://localhost:3000")
+        policy.WithOrigins("https://cineniche.byjacobthomas.com", "https://cervelo2.byjacobthomas.com", "http://localhost:3000")
             .AllowCredentials()
             .AllowAnyMethod()
             .AllowAnyHeader();

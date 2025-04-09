@@ -8,6 +8,7 @@ const API_URL = 'https://api2.byjacobthomas.com'
 export const register = async (email: string, password: string): Promise<void> => {
   const response = await fetch(`${API_URL}/register`, {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
   });

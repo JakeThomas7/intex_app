@@ -40,7 +40,7 @@ const DeleteButton = ({ handleConfirmDelete }: DeleteButtonProps) => {
             onClick={handleConfirm}
             aria-label="Confirm deletion"
           >
-            Delete
+            Confirm
           </button>
         </div>
       );
