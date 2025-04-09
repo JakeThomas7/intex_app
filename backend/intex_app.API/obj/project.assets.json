@@ -8589,19 +8589,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/jacobthomas/.nuget/packages/": {}
+    "/Users/mjmikes/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/intex_app.API.csproj",
+      "projectUniqueName": "/Users/mjmikes/Downloads/Classes/INTEX2/real-intex/intex_app/backend/intex_app.API/intex_app.API.csproj",
       "projectName": "intex_app.API",
-      "projectPath": "/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/intex_app.API.csproj",
-      "packagesPath": "/Users/jacobthomas/.nuget/packages/",
-      "outputPath": "/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/obj/",
+      "projectPath": "/Users/mjmikes/Downloads/Classes/INTEX2/real-intex/intex_app/backend/intex_app.API/intex_app.API.csproj",
+      "packagesPath": "/Users/mjmikes/.nuget/packages/",
+      "outputPath": "/Users/mjmikes/Downloads/Classes/INTEX2/real-intex/intex_app/backend/intex_app.API/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/jacobthomas/.nuget/NuGet/NuGet.Config"
+        "/Users/mjmikes/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -8624,7 +8624,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -8682,6 +8683,20 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.11, 8.0.11]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.osx-arm64",
+            "version": "[8.0.11, 8.0.11]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.11, 8.0.11]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -8690,7 +8705,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.405/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
