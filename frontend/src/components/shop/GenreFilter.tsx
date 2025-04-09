@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { fetchGenres } from "../../api/MoviesAPI";
 import Genre from "../../types/Genre";
 
 interface Props {

@@ -48,8 +48,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     } catch (error) {
       setUser(null);
-      setIsAuth(true);
-      setIsAdmin(true)
+      setIsAuth(false);
+      setIsAdmin(false)
     } finally {
       setLoading(false);
     }
