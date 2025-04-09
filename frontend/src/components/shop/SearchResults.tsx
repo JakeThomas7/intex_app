@@ -2,21 +2,19 @@ import { useEffect, useState } from "react";
 import GenreFilter from "./GenreFilter";
 import Genre from "../../types/Genre";
 import { fetchGenres } from "../../api/MoviesAPI";
-import SiteWidget from "../home/SiteWidget";
-import TitleSection from "../home/TitleSection";
 
 const SearchResults = () => {
 
     // PUTTING TOGETHER SEARCHING / FILTERING CONTROLS -----------
-    const [searchQuery, setSearchQuery] = useState('');
+    //const [searchQuery, setSearchQuery] = useState('');
     const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
-    const [searchedMovies, setSearchedMovies] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [isSearched, setIsSearched] = useState(false);
   
     const [genres, setGenres] = useState<Genre[]>([]);
   
     useEffect(() => {
+
         const getGenres = async () => {
           try {
             const data = await fetchGenres();
@@ -44,9 +42,9 @@ const SearchResults = () => {
       setSelectedGenres(selectedGenres.filter((g) => g !== genre));
     };
   
-    function setSearching(arg0: boolean) {
-        throw new Error("Function not implemented.");
-    }
+    // function setSearching(arg0: boolean) {
+    //     throw new Error("Function not implemented.");
+    // }
 
     //   const handleSearch = async () => {
     //     try {
@@ -80,7 +78,7 @@ const SearchResults = () => {
                   className="form-control form-control-lg ps-5 py-3 me-2"
                   placeholder="Search products, categories, etc."
                   aria-label="Search products"
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                //   onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <button className="btn btn-primary w-25" form="search-movies" type="submit">Search Movies</button>
               </form>
