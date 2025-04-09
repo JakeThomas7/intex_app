@@ -19,15 +19,15 @@ const CarouselBackground = styled.div`
   opacity: 0.5; /* Darken the background */
 `;
 
-const OverlayContent = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: white;
-  z-index: 1;
-`;
+// const OverlayContent = styled.div`
+//   position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+//   text-align: center;
+//   color: white;
+//   z-index: 1;
+// `;
 
 const LandingClose = ({ carouselData }: { carouselData: Array<any> }) => {
   return (

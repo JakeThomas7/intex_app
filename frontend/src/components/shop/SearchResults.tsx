@@ -61,7 +61,7 @@ const SearchResults = () => {
         setDisplayResults(true);
       } catch (error) {
         console.error("Error fetching headlines:", error);
-        setError("Failed to load headlines. Please try again later.");
+        //setError("Failed to load headlines. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -191,7 +191,7 @@ const SearchResults = () => {
             
                   <div className="d-flex">
                   <span>
-                    {movie.averageRating > 0 && (
+                    {movie.averageRating && movie.averageRating > 0 && (
                       <>
                         {movie.averageRating}
                         <i className="fa-solid fa-star ms-1" style={{ color: "#FFD43B" }}></i>

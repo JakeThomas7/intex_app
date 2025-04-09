@@ -13,6 +13,7 @@ interface Movie {
     description?: string;
     image_url_suffix? : string;
     genres?: Genre[];
+    averageRating?: number;
 }
 
 export default Movie
