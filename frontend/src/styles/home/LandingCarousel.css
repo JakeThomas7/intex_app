@@ -7,7 +7,8 @@
   padding: 20px;
   height: 80vh; /* Adjust the height */
   overflow: hidden; /* Hide anything outside of the container */
-  margin-bottom: -250px;
+  margin-bottom: -100px;
+  overflow-y: hidden;
 }
 
 /* Heading section */
