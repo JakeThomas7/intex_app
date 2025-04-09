@@ -14,7 +14,7 @@ const TitleSection = () => {
       Your gateway to curated cinematic treasures. Discover hand-picked cult classics, indie masterpieces, international gems, and niche documentaries unavailable anywhere else. Personalized recommendations bring hidden stories straight to you. Dive into a streaming experience designed for true film enthusiasts.
     </p>
     <div className="d-grid gap-2 d-sm-flex justify-content-center">
-      {isAuth && (
+      {!isAuth && (
         <>
         <button
         type="button"
@@ -33,7 +33,7 @@ const TitleSection = () => {
       </>
       )}
 
-      {!isAuth && (
+      {isAuth && (
         <>
         <button
         type="button"

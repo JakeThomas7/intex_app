@@ -8,17 +8,17 @@ export default defineConfig({
     port: 3000,
     headers: {
       'Content-Security-Policy': [
-        "default-src 'self';",
-        "script-src 'self' 'unsafe-inline';", // Remove 'unsafe-inline' if possible
-        "style-src 'self' 'unsafe-inline' fonts.googleapis.com;", // Needed for inline styles in React apps
-        "img-src 'self' data:;", // Allow data URLs for images
-        "font-src 'self' fonts.gstatic.com data:;", // Allow self-hosted and data URI fonts
-        "connect-src 'self' https://localhost:5000 https://api.byjacobthomas.com https://api2.byjacobthomas.com https://api.openai.com/v1/chat/completions;", // Allow API calls
-        "frame-ancestors 'none';", // Prevent embedding in iframes
-        "object-src 'none';", // Blocks Flash, ActiveX, etc.
-        "base-uri 'self';",
-        "form-action 'self';"
-      ].join(" ")
+        "default-src 'self'",  // Remove trailing ;
+        "script-src 'self' 'unsafe-inline'",
+        "style-src 'self' 'unsafe-inline' fonts.googleapis.com",
+        "img-src 'self' data: https://intex2movieposters.blob.core.windows.net", // <-- Key fix
+        "font-src 'self' fonts.gstatic.com data:",
+        "connect-src 'self' https://localhost:5000 https://api.byjacobthomas.com https://api2.byjacobthomas.com https://api.openai.com/v1/chat/completions",
+        "frame-ancestors 'none'",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self'"
+      ].join("; ")
     }
   }
 });
