@@ -25,7 +25,7 @@ public class IdentityController : ControllerBase
     [HttpGet("getTest")]
     public IActionResult GetTest()
     {
-        return Ok(new { message = "Test Successful. 04 10:08" });
+        return Ok(new { message = "Test Successful. 04/09 12:04" });
     }
 
     [HttpPost("logout")]
@@ -39,7 +39,7 @@ public class IdentityController : ControllerBase
             HttpOnly = true,
             Secure = true,
             SameSite = SameSiteMode.None,
-            Domain = ".byjacobthomas.com"
+            //Domain = ".byjacobthomas.com"
         });
 
         return Ok(new { message = "Logout successful" });
