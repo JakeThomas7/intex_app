@@ -18,6 +18,8 @@ namespace intex_app.API.Data
         public string? image_url_suffix { get; set; }
         
         public ICollection<MovieGenre> MovieGenres { get; set; }
+        
+        public ICollection<MovieRating> MovieRatings { get; set; }
     }
     
     public class CreateMovieDto

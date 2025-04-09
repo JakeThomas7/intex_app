@@ -22,7 +22,7 @@ public class IdentityController : ControllerBase
     [HttpGet("getTest")]
     public IActionResult GetTest()
     {
-        return Ok(new { message = "Test Successful. Version Cors Fix" });
+        return Ok(new { message = "Test Successful. CineNiche." });
     }
 
     [HttpPost("logout")]
@@ -36,7 +36,7 @@ public class IdentityController : ControllerBase
             HttpOnly = true,
             Secure = true,
             SameSite = SameSiteMode.None,
-            Domain = "byjacobthomas.com"
+            Domain = ".byjacobthomas.com"
         });
 
         return Ok(new { message = "Logout successful" });

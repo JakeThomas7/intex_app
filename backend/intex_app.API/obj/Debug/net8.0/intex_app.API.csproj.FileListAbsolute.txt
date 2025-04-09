@@ -291,3 +291,8 @@
 /Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/obj/Debug/net8.0/intex_app.API.pdb
 /Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/obj/Debug/net8.0/intex_app.API.genruntimeconfig.cache
 /Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/obj/Debug/net8.0/ref/intex_app.API.dll
+/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/bin/Debug/net8.0/publish/web.config
+/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/bin/Debug/net8.0/publish/appsettings.Development.json
+/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/bin/Debug/net8.0/publish/appsettings.json
+/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/bin/Debug/net8.0/publish/intex_app.API.deps.json
+/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/bin/Debug/net8.0/publish/intex_app.API.runtimeconfig.json

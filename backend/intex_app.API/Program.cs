@@ -12,10 +12,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
 
 builder.Services.AddDbContext<UserIdentityDbContext>(options =>  
-    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityDbConnection")));
 
 builder.Services.AddAuthorization();
 
@@ -57,7 +57,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins("https://cervelo.byjacobthomas.com", "https://cervelo2.byjacobthomas.com", "http://localhost:3000", "https://cineniche.byjacobthomas.com")
+            policy.WithOrigins("https://cineniche.byjacobthomas.com", "https://cervelo2.byjacobthomas.com", "http://localhost:3000")
                 .AllowCredentials()
                 .AllowAnyMethod()
                 .AllowAnyHeader();
