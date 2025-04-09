@@ -57,7 +57,7 @@ public class MoviesController : ControllerBase
             .OrderBy(m => m.ReleaseYear)
             .Skip((pageNum - 1) * pageSize)
             .Take(pageSize)
-            .Select(m => new 
+            .Select(m => new
             {
                 m.ShowId,
                 m.Title,
@@ -69,12 +69,17 @@ public class MoviesController : ControllerBase
                 m.Country,
                 m.Type,
                 m.Rating,
+                m.image_url_suffix,
                 // Add other movie properties...
-                Genres = m.MovieGenres.Select(mg => new 
+                Genres = m.MovieGenres.Select(mg => new
                 {
                     mg.GenreId, // or mg.Genre.Id if it's a navigation property
                     GenreName = mg.Genre.GenreName // or mg.Genre.Name if it's a navigation property
-                }).ToList()
+                }).ToList(),
+                // Calculate the average rating if there are any ratings
+                AverageRating = m.MovieRatings.Any() 
+                ? Math.Round(m.MovieRatings.Average(r => r.Rating), 1) 
+                : 0
             })
             .ToListAsync();
 
@@ -87,9 +92,9 @@ public class MoviesController : ControllerBase
 
         return Ok(response);
     }
-    
+
     [HttpPost("CreateMovie")]
-    [Authorize(Roles="Admin, Super Admin")]
+    [Authorize(Roles = "Admin, Super Admin")]
     public IActionResult CreateMovie([FromBody] CreateMovieDto newMovieDto)
     {
         // Map DTO to MovieUser entity
@@ -113,20 +118,20 @@ public class MoviesController : ControllerBase
         _context.SaveChanges();
         return Ok();
     }
-    
+
     [HttpPut("UpdateMovie/{id}")]
-    [Authorize(Roles="Admin, Super Admin")]
+    [Authorize(Roles = "Admin, Super Admin")]
     public IActionResult UpdateMovie(string id, [FromBody] CreateMovieDto updatedMovieDto)
     {
         // Fetch the existing movie along with related MovieGenres
         var existingMovie = _context.Movies
             .Include(m => m.MovieGenres)
-            .ThenInclude(mg => mg.Genre)  // Include Genre to load associated Genre entities
+            .ThenInclude(mg => mg.Genre) // Include Genre to load associated Genre entities
             .FirstOrDefault(m => m.ShowId == id);
 
         if (existingMovie == null)
         {
-            return NotFound();  // Return 404 if the movie is not found
+            return NotFound(); // Return 404 if the movie is not found
         }
 
         // Map the updated data from the DTO to the existing movie entity
@@ -161,13 +166,13 @@ public class MoviesController : ControllerBase
         _context.Movies.Update(existingMovie);
         _context.SaveChanges();
 
-        return Ok();  // Return 200 OK after successfully updating the movie
+        return Ok(); // Return 200 OK after successfully updating the movie
     }
-    
+
 
     // DELETE: /Movies/5
     [HttpDelete("DeleteMovie/{id}")]
-    [Authorize(Roles="Admin, Super Admin")]
+    [Authorize(Roles = "Admin, Super Admin")]
     public async Task<IActionResult> DeleteMovie(string id)
     {
         var movie = await _context.Movies
@@ -185,11 +190,13 @@ public class MoviesController : ControllerBase
 
         return NoContent();
     }
-    
+
     [HttpGet("GetGenres")]
     public IActionResult GetGenres()
     {
         var categories = _context.Genres.ToList();
         return Ok(categories);
     }
+
+    
 }

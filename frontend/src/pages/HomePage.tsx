@@ -1,6 +1,7 @@
 import Footer from '../components/all_pages/Footer';
 import NavBar from '../components/all_pages/Navbar';
 import RecordSiteTraffic from '../components/all_pages/RecordSiteTraffic';
+// import SimpleFooter from '../components/all_pages/SimpleFooter';
 import ImageSection from '../components/home/ImageSection';
 import SiteWidget from '../components/home/SiteWidget';
 import TitleSection from '../components/home/TitleSection';
@@ -10,25 +11,28 @@ import '../styles/home/HomePage.css';
 const HomePage = () => {
   // Updated carousel data with movie posters and details
   const carouselData = [
-  {
-    title: '1 Chance 2 Dance',
-    year: 2021,
-    imagePath: 'https://intex2movieposters.blob.core.windows.net/movie-postersv2/1%20Chance%202%20Dance.jpg', // Use the direct URL here
-    rank: 1,
-  },
-  {
-    title: '1 Mile to You',
-    year: 2020,
-    imagePath: 'https://intex2movieposters.blob.core.windows.net/movie-postersv2/1%20Mile%20to%20You.jpg', // Update with the correct URL for each image
-    rank: 2,
-  },
-  {
-    title: '1BR',
-    year: 2023,
-    imagePath: 'https://intex2movieposters.blob.core.windows.net/movie-postersv2/1BR.jpg',
-    rank: 3,
-  },
-  // Add more movies with their correct URLs
+    {
+      title: '1 Chance 2 Dance',
+      year: 2021,
+      imagePath:
+        'https://intex2movieposters.blob.core.windows.net/movie-postersv2/1%20Chance%202%20Dance.jpg', // Use the direct URL here
+      rank: 1,
+    },
+    {
+      title: '1 Mile to You',
+      year: 2020,
+      imagePath:
+        'https://intex2movieposters.blob.core.windows.net/movie-postersv2/1%20Mile%20to%20You.jpg', // Update with the correct URL for each image
+      rank: 2,
+    },
+    {
+      title: '1BR',
+      year: 2023,
+      imagePath:
+        'https://intex2movieposters.blob.core.windows.net/movie-postersv2/1BR.jpg',
+      rank: 3,
+    },
+    // Add more movies with their correct URLs
 
     {
       title: '1Oct',

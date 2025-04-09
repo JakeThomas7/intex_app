@@ -4,15 +4,18 @@ using intex_app.API.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using intex_app.API.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Adding services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
 
 builder.Services.AddDbContext<UserIdentityDbContext>(options =>  
     options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
@@ -26,25 +29,23 @@ builder.Services.AddIdentityApiEndpoints<User>()
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    // Existing configurations
-    options.ClaimsIdentity.RoleClaimType = ClaimTypes.Role; // For role based authentication
+    options.ClaimsIdentity.RoleClaimType = ClaimTypes.Role;
     options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier;
     options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Email;
 
-    // Password settings
-    options.Password.RequireDigit = false;                   // Requires a number
-    options.Password.RequiredLength = 5;                    // Set the minimum length of the password
-    options.Password.RequireNonAlphanumeric = false;         // Requires a non-alphanumeric character
-    options.Password.RequireUppercase = false;               // Requires an uppercase letter
-    options.Password.RequireLowercase = false;               // Requires a lowercase letter
-    options.Password.RequiredUniqueChars = 0;               // Requires a number of unique characters
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 12;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequiredUniqueChars = 0;
 });
 
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, CustomUserClaimsPrincipalFactory>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.Cookie.Domain = ".byjacobthomas.com";
+    //options.Cookie.Domain = ".byjacobthomas.com";
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.None;
     options.LoginPath = "/login";
@@ -52,19 +53,28 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
+//Commented out CORS section
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
-        policy =>
-        {
-            policy.WithOrigins("https://cervelo.byjacobthomas.com", "https://cervelo2.byjacobthomas.com", "http://localhost:3000")
-                .AllowCredentials()
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-        });
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy
+            .WithOrigins("https://cineniche.byjacobthomas.com", "https://cervelo2.byjacobthomas.com", "http://localhost:3000")
+            .AllowCredentials()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
 });
+
+// SendGrid Email Configuration
+builder.Services.AddSingleton<IEmailSender>(new SendGridEmailSender(builder.Configuration["SendGridApiKey"]));
+
+// Register TwoFactorAuthService
+builder.Services.AddScoped<TwoFactorAuthService>();
+
 var app = builder.Build();
 
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -72,12 +82,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+// Commented out CORS middleware
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 app.MapIdentityApi<User>();
-
 app.Run();
+

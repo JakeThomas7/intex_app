@@ -116,7 +116,7 @@ const MovieUserProfileForm = () => {
     };
 
     return (
-        <div className="section-padding join-movie-user-section d-flex justify-content-center align-items-center w-100">
+        <div className="section-padding join-movie-user-section d-flex justify-content-center align-items-center w-100 bg-white">
             <form className="profile-form" onSubmit={handleSubmit}>
                 <h3 className="mb-3 mt-2">Complete Your Profile<br/>Tell us more about yourself to personalize your experience.</h3>
                 <button 
