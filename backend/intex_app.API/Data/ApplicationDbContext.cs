@@ -18,7 +18,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Movie> Movies { get; set; }
     public DbSet<Genre> Genres { get; set; }
     public DbSet<MovieGenre> MovieGenres { get; set; }
-    public DbSet<ItemHybridRecommender> MovieDetailsRecommender { get; set; }
+    public DbSet<Recommender> MovieDetailsRecommender { get; set; }
+    public DbSet<Recommender> ItemContentRecommender { get; set; }
     public DbSet<MovieRating> MovieRatings { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)

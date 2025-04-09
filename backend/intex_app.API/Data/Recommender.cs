@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace intex_app.API.Data;
 
-public class ItemHybridRecommender
+public class Recommender
 {
     [Key]
     public string ShowId { get; set; }

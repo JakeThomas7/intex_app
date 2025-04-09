@@ -20,3 +20,22 @@ export const getItemHybridRecommender = async (
   const data = await response.json();
   return data;
 };
+
+export const getItemContentRecommender = async (
+  showId: string
+): Promise<Movie[]> => {
+  const response = await fetch(
+    `${API_URL}/Recommender/ItemContent?id=${encodeURIComponent(showId)}`,
+    {
+      method: 'GET',
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to get Item Content Recommender');
+  }
+
+  const data = await response.json();
+  return data;
+};
