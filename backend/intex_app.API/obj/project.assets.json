@@ -8523,19 +8523,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/jacobthomas/.nuget/packages/": {}
+    "/Users/1jose/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/intex_app.API.csproj",
+      "projectUniqueName": "/Users/1jose/Documents/GitHub/intex_app/backend/intex_app.API/intex_app.API.csproj",
       "projectName": "intex_app.API",
-      "projectPath": "/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/intex_app.API.csproj",
-      "packagesPath": "/Users/jacobthomas/.nuget/packages/",
-      "outputPath": "/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/obj/",
+      "projectPath": "/Users/1jose/Documents/GitHub/intex_app/backend/intex_app.API/intex_app.API.csproj",
+      "packagesPath": "/Users/1jose/.nuget/packages/",
+      "outputPath": "/Users/1jose/Documents/GitHub/intex_app/backend/intex_app.API/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/jacobthomas/.nuget/NuGet/NuGet.Config"
+        "/Users/1jose/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -8620,7 +8620,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.405/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.406/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
