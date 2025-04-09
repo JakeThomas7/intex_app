@@ -32,15 +32,15 @@ namespace intex_app.API.Services
             string otp = GenerateOtp();
             var expirationTime = DateTime.UtcNow.AddMinutes(5);  // OTP expires in 5 minutes
 
-            // Check if there's an existing OTP for this email that hasn't been verified or expired
+            // Delete any existing OTP for the email
             var existingOtp = await _context.UserOtp
-                .Where(u => u.Email == userEmail && !u.IsVerified && DateTime.UtcNow <= u.ExpirationTime)
-                .FirstOrDefaultAsync();
+                .Where(u => u.Email == userEmail)
+                .FirstOrDefaultAsync(); // Get the first record that matches the email, regardless of expiration or verification
 
             if (existingOtp != null)
             {
-                // If an OTP exists and it's still valid, delete the old OTP
-                _context.UserOtp.Remove(existingOtp);  // Remove the old OTP record
+                // If an OTP exists, delete the old OTP record
+                _context.UserOtp.Remove(existingOtp);
                 await _context.SaveChangesAsync();  // Save changes (delete old OTP)
             }
 
@@ -62,6 +62,7 @@ namespace intex_app.API.Services
 
             await _emailSender.SendEmailAsync(userEmail, subject, content);  // Send email
         }
+
 
         // Verify OTP
         public async Task<bool> VerifyOtpAsync(string userEmail, string enteredOtp)
@@ -85,11 +86,9 @@ namespace intex_app.API.Services
 
             // Mark OTP as verified
             userOtp.IsVerified = true;
-
-            // Optionally, delete the OTP after successful verification
-            _context.UserOtp.Remove(userOtp);
-
-            await _context.SaveChangesAsync();
+            
+            // Save changes to update the IsVerified flag in the database
+            await _context.SaveChangesAsync(); // This will persist the changes
 
             return true; // OTP is valid
         }
