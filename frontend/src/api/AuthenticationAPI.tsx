@@ -130,3 +130,29 @@ export const pingauth = async (
   
     throw lastError || new Error('Authentication failed after retries');
   };
+
+  export const sendOtp = async (UserEmail: string): Promise<void> => {
+    await fetch(`${API_URL}/Auth/send-otp`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ UserEmail }),
+    });
+  };
+
+  export const verifyOtp = async (UserEmail: string, otp: string): Promise<void> => {
+    const response = await fetch(`${API_URL}/Auth/verify-otp`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ UserEmail, otp }),
+    });
+  
+    if (!response.ok) {
+      throw new Error('Invalid or expired OTP.');
+    }
+  };

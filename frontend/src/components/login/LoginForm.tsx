@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import '../../styles/LoginPage.css';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../api/AuthenticationAPI';
+import { login, sendOtp } from '../../api/AuthenticationAPI';
 import { useAuth } from '../context/AuthContext';
 import moviesBackground from '../../assets/Movies.jpg';
 
@@ -40,8 +40,10 @@ const LoginForm = () => {
     try {
       await login(formData.email, formData.password, formData.rememberMe);
       //localStorage.setItem('authToken', data.token);
-      await checkAuth();
-      navigate('/browse');
+      await sendOtp(formData.email);
+      navigate('/mfa', {
+        state: { email: formData.email, type: 'login' }
+      });
     } catch (err) {
       setError((err as Error).message);
     } finally {
