@@ -22,7 +22,8 @@ builder.Services.AddDbContext<UserIdentityDbContext>(options =>
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddIdentity<User, IdentityRole>()
+builder.Services.AddIdentityApiEndpoints<User>()
+    .AddRoles<IdentityRole>() // For role based authentication
     .AddEntityFrameworkStores<UserIdentityDbContext>()
     .AddDefaultTokenProviders();
 
@@ -87,5 +88,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapIdentityApi<User>();
 app.Run();
+
