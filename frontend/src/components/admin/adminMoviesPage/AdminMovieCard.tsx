@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import Movie from "../../../types/Movie";
 import DeleteButton from "../../tabletools/DeleteButton";
 import { deleteMovie } from "../../../api/MoviesAPI";
-import './AdminMovieCard.css'
 // Import your API delete function or define it here
 
 const AdminMovieCard = ({

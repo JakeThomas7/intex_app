@@ -599,3 +599,5 @@
 /Users/mjmikes/Downloads/Classes/INTEX2/real-intex/intex_app/backend/intex_app.API/obj/Debug/net8.0/intex_app.API.pdb
 /Users/mjmikes/Downloads/Classes/INTEX2/real-intex/intex_app/backend/intex_app.API/obj/Debug/net8.0/intex_app.API.genruntimeconfig.cache
 /Users/mjmikes/Downloads/Classes/INTEX2/real-intex/intex_app/backend/intex_app.API/obj/Debug/net8.0/ref/intex_app.API.dll
+/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/bin/Debug/net8.0/SendGrid.dll
+/Users/jacobthomas/Documents/byu_classes/winter_2025/intex/intex_app/backend/intex_app.API/bin/Debug/net8.0/StarkbankEcdsa.dll
