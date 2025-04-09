@@ -45,7 +45,7 @@ builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, CustomUserClaimsPr
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.Cookie.Domain = ".byjacobthomas.com";
+    //options.Cookie.Domain = ".byjacobthomas.com";
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.None;
     options.LoginPath = "/login";
@@ -53,18 +53,18 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
-// Commented out CORS section
-// builder.Services.AddCors(options =>
-// {
-//     options.AddPolicy("AllowFrontend", policy =>
-//     {
-//         policy
-//             .WithOrigins("https://cineniche.byjacobthomas.com", "https://cervelo2.byjacobthomas.com", "http://localhost:3000")
-//             .AllowCredentials()
-//             .AllowAnyMethod()
-//             .AllowAnyHeader();
-//     });
-// });
+//Commented out CORS section
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy
+            .WithOrigins("https://cineniche.byjacobthomas.com", "https://cervelo2.byjacobthomas.com", "http://localhost:3000")
+            .AllowCredentials()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 
 // SendGrid Email Configuration
 builder.Services.AddSingleton<IEmailSender>(new SendGridEmailSender(builder.Configuration["SendGridApiKey"]));
@@ -83,7 +83,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 // Commented out CORS middleware
-// app.UseCors("AllowFrontend");
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
