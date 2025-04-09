@@ -30,9 +30,9 @@ namespace intex_app.API.Controllers
 
         // Endpoint to verify OTP
         [HttpPost("verify-otp")]
-        public IActionResult VerifyOtp([FromBody] VerifyOtpRequest request)
+        public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpRequest request)
         {
-            bool isValid = _twoFactorAuthService.VerifyOtp(request.UserEmail, request.Otp);
+            bool isValid = await _twoFactorAuthService.VerifyOtpAsync(request.UserEmail, request.Otp);
             if (isValid)
             {
                 return Ok("OTP verified successfully.");
@@ -44,15 +44,15 @@ namespace intex_app.API.Controllers
         }
     }
 
-    // Request model for OTP verification
+    // Request models for OTP
     public class VerifyOtpRequest
     {
         public string UserEmail { get; set; }
         public string Otp { get; set; }
     }
-}
 
-public class SendOtpRequest
-{
-    public string UserEmail { get; set; }
+    public class SendOtpRequest
+    {
+        public string UserEmail { get; set; }
+    }
 }

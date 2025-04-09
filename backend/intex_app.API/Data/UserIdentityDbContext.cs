@@ -10,7 +10,9 @@ public class UserIdentityDbContext : IdentityDbContext<User>
     {
         
     }
-    
+
+    public DbSet<UserOtp> UserOtp { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
