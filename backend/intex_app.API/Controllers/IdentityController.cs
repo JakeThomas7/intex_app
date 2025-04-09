@@ -73,7 +73,7 @@ public class IdentityController : ControllerBase
         if (!otpVerified)
         {
             // User needs to verify OTP
-            return new RedirectResult("/verify-otp"); // Redirect to OTP verification page
+            return Unauthorized(new { message = "OTP verification is required" });
         }
 
         // 4. Safely get roles (with null check)

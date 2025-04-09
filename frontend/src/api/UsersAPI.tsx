@@ -1,6 +1,6 @@
 import User from "../types/User";
 
-// const API_URL = 'https://localhost:5000';
+//const API_URL = 'https://localhost:5000';
 const API_URL = 'https://api2.byjacobthomas.com'
 
 export const updateProfile = async (user: User | null): Promise<void> => {

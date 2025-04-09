@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import '../../styles/LoginPage.css';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../api/AuthenticationAPI';
-import { useAuth } from '../context/AuthContext';
+import { login, sendOtp } from '../../api/AuthenticationAPI';
 import moviesBackground from '../../assets/Movies.jpg';
 
 
@@ -17,7 +16,6 @@ const LoginForm = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const {checkAuth} = useAuth();
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const togglePasswordVisibility = () => {
@@ -40,8 +38,10 @@ const LoginForm = () => {
     try {
       await login(formData.email, formData.password, formData.rememberMe);
       //localStorage.setItem('authToken', data.token);
-      await checkAuth();
-      navigate('/browse');
+      await sendOtp(formData.email);
+      navigate('/mfa', {
+        state: { email: formData.email, type: 'login' }
+      });
     } catch (err) {
       setError((err as Error).message);
     } finally {
