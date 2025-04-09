@@ -125,10 +125,25 @@ const DetailsPage = () => {
           ) : (
             <>
               <p className="movie-subinfo">
-                {movie?.releaseYear || 'N/A'} • {movie?.duration || 'N/A'} • {movie?.rating || 'N/A'}
+                  {movie?.rating || 'N/A'}
               </p>
               <h1 className="movie-title">{movie?.title || 'Movie Title'}</h1>
-              <p className="text-warning fw-bold fs-5">⭐ Average Rating: {movie?.averageRating}</p>
+
+              <div className="movie-stats d-flex align-items-center gap-3 flex-wrap mb-3">
+              <span className="stat-pill">
+                <i className="fas fa-star me-1 text-warning"></i>
+                {movie?.averageRating?.toFixed(1) ?? "0.0"}
+              </span>
+              <span className="stat-pill">
+                <i className="fas fa-calendar-alt me-1"></i>
+                {movie?.releaseYear || 'N/A'}
+              </span>
+              <span className="stat-pill">
+                <i className="fas fa-clock me-1"></i>
+                {movie?.duration || 'N/A'}
+              </span>
+  
+            </div>              
               <div className="genre-tags">
                 {movie?.genres?.map((genre, index) => (
                   <span key={index} className="genre-tag">
@@ -142,24 +157,28 @@ const DetailsPage = () => {
               </p>
 
               <div className="movie-actions">
-                <button className="btn btn-primary text-white me-3">Watch Now</button>
-                <button
-                  className="btn btn-outline-secondary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#ratingModal"
-                >
-                  <i className="fas fa-star me-2"></i>Rate
-                </button>
-                {userRating !== null && (
-                  <p className="text-white mt-2">Your Rating: ⭐ {userRating}</p>
-                )}
-              </div>
+  <button className="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center me-3" style={{ width: '48px', height: '48px', borderWidth: '2px'}}>
+              <i className="fas fa-play"></i>
+            </button>
+            
+            <button
+              className="btn btn-outline-secondary"
+              data-bs-toggle="modal"
+              data-bs-target="#ratingModal"
+            >
+              <i className="fas fa-star me-2"></i>Rate
+            </button>
+            {userRating !== null && (
+              <p className="text-white mt-2">Your Rating: ⭐ {userRating}</p>
+            )}
+          </div>
+
             </>
           )}
         </div>
       </div>
 
-      <div className="details-carousels section-padding">
+      <div className="carousel-title section-padding">
         <Carousel
           title="More like this"
           cardWidth={25}
