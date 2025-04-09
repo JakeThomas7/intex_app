@@ -32,16 +32,16 @@ namespace intex_app.API.Services
             string otp = GenerateOtp();
             var expirationTime = DateTime.UtcNow.AddMinutes(5);  // OTP expires in 5 minutes
 
-            // Delete all OTP records for this email
-            var existingOtps = await _context.UserOtp
-                .Where(u => u.Email == userEmail)
-                .ToListAsync();
+            // Check if there's an existing OTP for this email that hasn't been verified or expired
+            var existingOtp = await _context.UserOtp
+                .Where(u => u.Email == userEmail && !u.IsVerified && DateTime.UtcNow <= u.ExpirationTime)
+                .FirstOrDefaultAsync();
 
-            if (existingOtps.Any())
+            if (existingOtp != null)
             {
-                // Remove all OTP records for this email
-                _context.UserOtp.RemoveRange(existingOtps);
-                await _context.SaveChangesAsync();  // Save changes (delete old OTPs)
+                // If an OTP exists and it's still valid, delete the old OTP
+                _context.UserOtp.Remove(existingOtp);  // Remove the old OTP record
+                await _context.SaveChangesAsync();  // Save changes (delete old OTP)
             }
 
             // Create a new OTP record
@@ -62,9 +62,6 @@ namespace intex_app.API.Services
 
             await _emailSender.SendEmailAsync(userEmail, subject, content);  // Send email
         }
-
-
-
 
         // Verify OTP
         public async Task<bool> VerifyOtpAsync(string userEmail, string enteredOtp)
@@ -95,6 +92,18 @@ namespace intex_app.API.Services
             await _context.SaveChangesAsync();
 
             return true; // OTP is valid
+        }
+
+        // Check if OTP is verified and valid
+        public async Task<bool> IsOtpVerifiedAsync(string userEmail)
+        {
+            // Query to check if the OTP is verified and has not expired
+            var userOtp = await _context.UserOtp
+                .Where(u => u.Email == userEmail && u.IsVerified && DateTime.UtcNow <= u.ExpirationTime)
+                .FirstOrDefaultAsync();
+
+            // If a valid, verified OTP is found, return true, else return false
+            return userOtp != null;
         }
     }
 }
