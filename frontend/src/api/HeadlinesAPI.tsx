@@ -1,8 +1,8 @@
 import Headline from "../types/Headline";
 import Traffic from "../types/Traffic";
 
-const API_URL = 'https://localhost:5000';
-//const API_URL = 'https://api2.byjacobthomas.com'
+//const API_URL = 'https://localhost:5000';
+const API_URL = 'https://api2.byjacobthomas.com'
 
 export const fetchHeadlines = async (): Promise<Headline[]> => {
 
