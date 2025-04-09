@@ -1,0 +1,22 @@
+import Movie from '../types/Movie';
+
+const API_URL = 'https://api2.byjacobthomas.com';
+// const API_URL = 'https://localhost:5000';
+export const getItemHybridRecommender = async (
+  showId: string
+): Promise<Movie[]> => {
+  const response = await fetch(
+    `${API_URL}/Recommender/ItemHybrid?id=${encodeURIComponent(showId)}`,
+    {
+      method: 'GET',
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to get Item Hybrid Recommender');
+  }
+
+  const data = await response.json();
+  return data;
+};

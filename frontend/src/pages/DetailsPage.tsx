@@ -6,7 +6,20 @@ import '../styles/DetailsPage.css';
 import placeholder from '../assets/sanddust.jpg';
 import Movie from '../types/Movie';
 import SimpleFooter from '../components/all_pages/SimpleFooter';
+import { getItemHybridRecommender } from '../api/RecommenderAPI';
 // import { useAuth } from '../components/context/AuthContext';
+import { submitRating } from '../api/MoviesAPI';
+import { useAuth } from '../components/context/AuthContext';
+
+const API_URL = 'https://api2.byjacobthomas.com';
+
+interface CarouselMovie {
+  title: string;
+  imagePath: string;
+  year: number;
+  rank: number;
+  id: string;
+}
 
 const DetailsPage = () => {
   const location = useLocation();
@@ -14,21 +27,82 @@ const DetailsPage = () => {
   const [movie, setMovie] = useState<Movie | null>(initialMovie || null);
   const [loading, setLoading] = useState(!initialMovie);
   const [selectedRating, setSelectedRating] = useState<number>(0);
+  const [recommendations, setRecommendations] = useState<CarouselMovie[]>([]);
+  const [averageRating, setAverageRating] = useState<number>(0);
+  const [userRating, setUserRating] = useState<number | null>(null);
+  const [userId, setUserId] = useState<number | null>(null); // ✅ added
 
-  const data = [
-    { description: 'Recommended movie 1' },
-    { description: 'Recommended movie 2' },
-    { description: 'Recommended movie 3' },
-  ];
+  const { user } = useAuth();
+
+  const handleSubmitRating = async () => {
+    if (!movie?.showId || !selectedRating || userId === null) return;
+
+    try {
+      await submitRating(userId, movie.showId, selectedRating);
+      setUserRating(selectedRating); // ✅ update UI
+      alert("Rating submitted successfully!");
+    } catch (err) {
+      console.error("Failed to submit rating:", err);
+      alert("Error submitting rating.");
+    }
+  };
+
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      if (!movie?.showId) return;
+
+      try {
+        const recs = await getItemHybridRecommender(movie.showId);
+
+        const mapped = recs.map((m, idx) => ({
+          title: m.title ?? 'Untitled',
+          imagePath: m.image_url_suffix
+            ? `https://intex2movieposters.blob.core.windows.net/movie-postersv2/${m.image_url_suffix}`
+            : 'https://intex2movieposters.blob.core.windows.net/movie-postersv2/default.jpg',
+          year: m.releaseYear ?? 0,
+          rank: idx + 1,
+          id: m.showId ?? `unknown-${idx}`,
+        }));
+
+        setRecommendations(mapped);
+      } catch (error) {
+        console.error('Error fetching hybrid recommendations:', error);
+      }
+    };
+
+    fetchRecommendations();
+  }, [movie?.showId]); // more precise dependency
 
   useEffect(() => {
     if (initialMovie) {
       setMovie(initialMovie);
       setLoading(false);
+
+      const fetchRatingData = async () => {
+        try {
+          const response = await fetch(`${API_URL}/MovieRating/GetMovieDetailsPage/${initialMovie.showId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify("patrick59@gmail.com")
+          });
+
+          if (!response.ok) throw new Error('Failed to fetch rating data');
+
+          const result = await response.json();
+          setAverageRating(result.Movie.AverageRating);
+          setUserRating(result.UserRating);
+          setUserId(result.User.UserId); // ✅ capture user ID
+        } catch (err) {
+          console.error("❌ Error fetching average rating:", err);
+        }
+      };
+
+      fetchRatingData();
     } else {
-      console.warn(
-        "⚠️ No movie found in route state. Movie won't be displayed."
-      );
+      console.warn("⚠️ No movie found in route state. Movie won't be displayed.");
     }
   }, [initialMovie]);
 
@@ -42,7 +116,7 @@ const DetailsPage = () => {
       <div
         className="details-hero"
         style={{
-          backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.85) 20%, rgba(0, 0, 0, 0.2) 70%, rgba(255, 255, 255, 0.1) 100%), url(${placeholder})`,
+          backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.85) 20%, rgba(0, 0, 0, 0.2) 70%, rgba(255, 255, 255, 0.1) 100%), url(${`https://intex2movieposters.blob.core.windows.net/movie-postersv2/${movie?.image_url_suffix}`})`,
         }}
       >
         <div className="details-overlay container">
@@ -51,11 +125,10 @@ const DetailsPage = () => {
           ) : (
             <>
               <p className="movie-subinfo">
-                {movie?.releaseYear || 'N/A'} • {movie?.duration || 'N/A'} •{' '}
-                {movie?.rating || 'N/A'}
+                {movie?.releaseYear || 'N/A'} • {movie?.duration || 'N/A'} • {movie?.rating || 'N/A'}
               </p>
               <h1 className="movie-title">{movie?.title || 'Movie Title'}</h1>
-
+              <p className="text-warning fw-bold fs-5">⭐ Average Rating: {movie?.averageRating}</p>
               <div className="genre-tags">
                 {movie?.genres?.map((genre, index) => (
                   <span key={index} className="genre-tag">
@@ -65,14 +138,11 @@ const DetailsPage = () => {
               </div>
 
               <p className="movie-description">
-                {movie?.description ||
-                  'This is a brief description of the movie.'}
+                {movie?.description || 'This is a brief description of the movie.'}
               </p>
 
               <div className="movie-actions">
-                <button className="btn btn-primary text-white me-3">
-                  Watch Now
-                </button>
+                <button className="btn btn-primary text-white me-3">Watch Now</button>
                 <button
                   className="btn btn-outline-secondary"
                   data-bs-toggle="modal"
@@ -80,6 +150,9 @@ const DetailsPage = () => {
                 >
                   <i className="fas fa-star me-2"></i>Rate
                 </button>
+                {userRating !== null && (
+                  <p className="text-white mt-2">Your Rating: ⭐ {userRating}</p>
+                )}
               </div>
             </>
           )}
@@ -91,13 +164,13 @@ const DetailsPage = () => {
           title="More like this"
           cardWidth={25}
           cardHeight={21}
-          data={data}
+          data={recommendations}
         />
         <Carousel
           title="Trending Now"
           cardWidth={19}
           cardHeight={19}
-          data={data}
+          data={recommendations}
         />
       </div>
 
@@ -112,9 +185,7 @@ const DetailsPage = () => {
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content bg-dark text-white">
             <div className="modal-header">
-              <h5 className="modal-title" id="ratingModalLabel">
-                Rate this Movie
-              </h5>
+              <h5 className="modal-title" id="ratingModalLabel">Rate this Movie</h5>
               <button
                 type="button"
                 className="btn-close btn-close-white"
@@ -141,14 +212,18 @@ const DetailsPage = () => {
                 Cancel
               </button>
               <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() =>
-                  console.log(`Submitted rating: ${selectedRating}`)
-                }
-              >
-                Submit
-              </button>
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => {
+                    handleSubmitRating();
+                    const modalElement = document.getElementById("ratingModal");
+                    const modalInstance = window.bootstrap?.Modal.getInstance(modalElement!);
+                    modalInstance?.hide();
+                  }}
+                >
+                  Submit
+                </button>
+
             </div>
           </div>
         </div>

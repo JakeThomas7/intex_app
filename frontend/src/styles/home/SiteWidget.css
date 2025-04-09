@@ -4,6 +4,7 @@
   background-color: #000000; /* Solid black background */
   color: rgb(245, 245, 247); /* Apple-style white text */
   font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", Arial, sans-serif;
+  margin-bottom: px;
 }
 
 /* Base styles for all devices */

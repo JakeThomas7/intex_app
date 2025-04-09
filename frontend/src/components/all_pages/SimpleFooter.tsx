@@ -5,10 +5,6 @@ const SimpleFooter = () => {
         <p className="col-md-4 mb-0">© 2025 CineNiche, Inc</p>
         <ul className="nav col-md-4 justify-content-end">
           <li className="nav-item"><a href="#" className="nav-link px-2">Home</a></li>
-          <li className="nav-item"><a href="#" className="nav-link px-2">Features</a></li>
-          <li className="nav-item"><a href="#" className="nav-link px-2">Pricing</a></li>
-          <li className="nav-item"><a href="#" className="nav-link px-2">FAQs</a></li>
-          <li className="nav-item"><a href="#" className="nav-link px-2">About</a></li>
           <li className="nav-item"><a href="/Privacy" className="nav-link px-2">Privacy</a></li>
         </ul>
       </footer>
