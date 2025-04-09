@@ -65,7 +65,7 @@ const JoinForm = () => {
     };
 
     return (
-        <div className="section-padding join-section d-flex justify-content-center align-items-center w-100">
+        <div className="section-padding join-section d-flex justify-content-center align-items-center w-100 bg-white">
             <form className="join-form" onSubmit={handleSubmit}>
                 <h3 className="mb-3">First time here?<br/>Create your own personal account.</h3>
                 {/* <button className="btn btn-outline-dark w-100 mb-3"><i className="fa-brands fa-google me-2"></i>Continue with Google</button> */}

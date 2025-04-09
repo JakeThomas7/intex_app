@@ -73,21 +73,22 @@ const SearchResults = () => {
           {/* Search Bar and Filter */}
           <div className="w-75">
             <div className="d-flex justify-content-between align-items-center mt-4">
-              <form className="position-relative w-100 me-3">
+              <form id="search-movies"className="position-relative w-100 me-3 d-flex justify-content-center">
                 <i className="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" />
                 <input
                   type="search"
-                  className="form-control form-control-lg ps-5 py-3"
+                  className="form-control form-control-lg ps-5 py-3 me-2"
                   placeholder="Search products, categories, etc."
                   aria-label="Search products"
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
+                <button className="btn btn-primary w-25" form="search-movies" type="submit">Search Movies</button>
               </form>
             </div>
 
             {/* Filter Genres Button */}
             <div className="d-flex justify-content-start w-100 mt-3 flex-wrap gap-2">
-              <button className="btn btn-outline-light w-auto d-flex align-items-center me-2"
+              <button className="btn btn-outline-light w-auto d-flex align-items-center w-25 me-2"
                onClick = {() => setIsOpen(!isOpen)}
               >
                 Filter Genres
@@ -124,13 +125,7 @@ const SearchResults = () => {
             {isSearched && 
             <div className="w-75 text-white" >
             <div className="d-flex flex-wrap gap-2 justify-content-start overflow-x">  
-              <TitleSection />
-              <TitleSection />
-              <TitleSection />
-              <TitleSection />
-              <TitleSection />
-              <TitleSection />
-  
+                Top Restults
             </div>
           </div>
             }
