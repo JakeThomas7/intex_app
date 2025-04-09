@@ -19,6 +19,7 @@ import ScrollToTop from './components/all_pages/ScrollToTop';
 import JoinMovieUserPage from './pages/JoinPageMovieUserPage';
 import AdminEditMoviePage from './pages/admin/AdminEditMoviePage';
 import AdminAddTitlePage from './pages/admin/AdminAddTitlePage';
+import MFAPage from './pages/MFAPage';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/privacy" element={<PrivacyPage />} />
           {/* <Route path="/ai" element={<ChatbotPage />} /> */}
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/mfa" element={<MFAPage />} />
           <Route path="/join" element={<JoinPage />} />
 
           {/* <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} /> */}
