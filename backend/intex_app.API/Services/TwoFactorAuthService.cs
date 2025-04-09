@@ -10,13 +10,13 @@ namespace intex_app.API.Services
     public class TwoFactorAuthService
     {
         private readonly UserIdentityDbContext _context;
-        private readonly IEmailSender _emailSender;  // Add IEmailSender
+        private readonly IEmailSender _emailSender; // Add IEmailSender
 
         // Modify constructor to accept IEmailSender
         public TwoFactorAuthService(UserIdentityDbContext context, IEmailSender emailSender)
         {
             _context = context;
-            _emailSender = emailSender;  // Inject IEmailSender
+            _emailSender = emailSender; // Inject IEmailSender
         }
 
         // Generate OTP (6-digit random number)
@@ -39,25 +39,22 @@ namespace intex_app.API.Services
 
             if (existingOtp != null)
             {
-                // If an OTP exists and it's still valid, update it
-                existingOtp.OtpCode = otp;
-                existingOtp.ExpirationTime = expirationTime;  // Update expiration time
-                _context.UserOtp.Update(existingOtp);  // Update existing record
-            }
-            else
-            {
-                // If no valid OTP exists, create a new record
-                var userOtp = new UserOtp
-                {
-                    Email = userEmail,
-                    OtpCode = otp,
-                    ExpirationTime = expirationTime,
-                    IsVerified = false
-                };
-                _context.UserOtp.Add(userOtp);  // Add new OTP
+                // If an OTP exists and it's still valid, delete the old OTP
+                _context.UserOtp.Remove(existingOtp);  // Remove the old OTP record
+                await _context.SaveChangesAsync();  // Save changes (delete old OTP)
             }
 
-            await _context.SaveChangesAsync();  // Save changes
+            // Create a new OTP record
+            var userOtp = new UserOtp
+            {
+                Email = userEmail,
+                OtpCode = otp,
+                ExpirationTime = expirationTime,
+                IsVerified = false
+            };
+
+            _context.UserOtp.Add(userOtp);  // Add the new OTP
+            await _context.SaveChangesAsync();  // Save changes (insert new OTP)
 
             // Send OTP email using IEmailSender (SendGridEmailSender)
             string subject = "Your OTP Code";
@@ -65,6 +62,7 @@ namespace intex_app.API.Services
 
             await _emailSender.SendEmailAsync(userEmail, subject, content);  // Send email
         }
+
 
 
         // Verify OTP
@@ -76,22 +74,26 @@ namespace intex_app.API.Services
 
             if (userOtp == null)
             {
-                return false;  // OTP not found or already verified
+                return false; // OTP not found or already verified
             }
 
             // Check if OTP has expired
             if (DateTime.UtcNow > userOtp.ExpirationTime)
             {
-                _context.UserOtp.Remove(userOtp);  // Remove expired OTP
+                _context.UserOtp.Remove(userOtp); // Remove expired OTP
                 await _context.SaveChangesAsync();
                 return false;
             }
 
             // Mark OTP as verified
             userOtp.IsVerified = true;
+
+            // Optionally, delete the OTP after successful verification
+            _context.UserOtp.Remove(userOtp);
+
             await _context.SaveChangesAsync();
 
-            return true;  // OTP is valid
+            return true; // OTP is valid
         }
     }
 }
