@@ -96,6 +96,17 @@ const AdminMovieCard = ({
             >
               Edit <i className="fa-solid fa-chevron-right fa-sm"></i>
             </button>
+            <button
+                className="btn btn-outline-primary"
+                // onClick={() => navigate(`/details/${movie.showId}`)}>
+                onClick={() =>
+                navigate("/details", {
+                  state: { movie }, // Pass the entire movie object to the next page
+                }) 
+              } >
+                View Movie <i className="fa-solid fa-chevron-right fa-sm"></i>
+              
+              </button>
             <DeleteButton handleConfirmDelete={() => handleDeleteMovie()} />
           </div>
         </div>
