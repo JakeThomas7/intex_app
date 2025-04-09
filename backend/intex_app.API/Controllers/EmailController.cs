@@ -1,23 +1,32 @@
-[ApiController]
-[Route("api/[controller]")]
-public class AuthController : ControllerBase
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using intex_app.API.Services;
+
+namespace intex_app.API.Controllers
 {
-    private readonly EmailService _emailService;
-
-    public AuthController(EmailService emailService)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class EmailController : ControllerBase
     {
-        _emailService = emailService;
+        private readonly EmailService _emailService;
+
+        public EmailController(EmailService emailService)
+        {
+            _emailService = emailService;
+        }
+
+        [HttpPost("send")]
+        public async Task<IActionResult> SendEmail([FromBody] EmailRequest emailRequest)
+        {
+            if (string.IsNullOrEmpty(emailRequest.Email) || string.IsNullOrEmpty(emailRequest.Subject) || string.IsNullOrEmpty(emailRequest.Body))
+            {
+                return BadRequest("Invalid email request");
+            }
+
+            await _emailService.SendEmailAsync(emailRequest.Email, emailRequest.Subject, emailRequest.Body);
+
+            return Ok(new { message = "Email sent successfully" });
+        }
     }
-
-    [HttpPost("send-2fa")]
-    public async Task<IActionResult> SendTwoFactorCode([FromBody] UserLoginModel model)
-    {
-        // Generate the 2FA code (example: a simple GUID)
-        var code = Guid.NewGuid().ToString("N");
-
-        // Send the 2FA code to the user's email
-        await _emailService.SendEmailAsync(model.Email, "Your 2FA Code", $"Your 2FA code is: {code}");
-
-        return Ok(new { Message = "2FA code sent" });
-    }
+    
 }

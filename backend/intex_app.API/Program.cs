@@ -4,9 +4,12 @@ using intex_app.API.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using intex_app.API.Services;
+using Azure.Communication.Email;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add controllers, Swagger, etc.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -26,18 +29,23 @@ builder.Services.AddIdentityApiEndpoints<User>()
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    // Existing configurations
     options.ClaimsIdentity.RoleClaimType = ClaimTypes.Role; // For role based authentication
     options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier;
     options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Email;
 
     // Password settings
-    options.Password.RequireDigit = false;                   // Requires a number
-    options.Password.RequiredLength = 5;                    // Set the minimum length of the password
-    options.Password.RequireNonAlphanumeric = false;         // Requires a non-alphanumeric character
-    options.Password.RequireUppercase = false;               // Requires an uppercase letter
-    options.Password.RequireLowercase = false;               // Requires a lowercase letter
-    options.Password.RequiredUniqueChars = 0;               // Requires a number of unique characters
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 5;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequiredUniqueChars = 0;
+    
+    // Enable email-based 2FA
+    options.SignIn.RequireConfirmedEmail = true; // Ensure email is confirmed before login
+
+    // 2FA settings for login
+    options.Tokens.ProviderMap.Add("Email", new TokenProviderDescriptor(typeof(Microsoft.AspNetCore.Identity.EmailTokenProvider<User>)));
 });
 
 builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, CustomUserClaimsPrincipalFactory>();
@@ -63,9 +71,20 @@ builder.Services.AddCors(options =>
                 .AllowAnyHeader();
         });
 });
+
+// Registering the Azure Communication Services Email Client
+builder.Services.AddSingleton<EmailClient>(serviceProvider =>
+{
+    var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+    string connectionString = configuration.GetValue<string>("AzureCommunicationServices:ConnectionString");
+    return new EmailClient(connectionString);
+});
+
+// Registering the EmailService that uses ACS Email Client
+builder.Services.AddScoped<EmailService>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 // Add the CSP header middleware
 app.Use((context, next) =>
 {
