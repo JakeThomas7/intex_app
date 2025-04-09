@@ -61,13 +61,7 @@ const HomePage = () => {
        'https://intex2movieposters.blob.core.windows.net/movie-postersv2/The%20Great%20British%20Baking%20Show.jpg',
      rank: 9,
    },
-   {
-     title: 'The Starling',
-     year: 2021,
-     imagePath:
-       'https://intex2movieposters.blob.core.windows.net/movie-postersv2/The%20Starling.jpg',
-     rank: 10,
-   },
+
    {
      title: 'Intrusion',
      year: 2021,
@@ -158,7 +152,7 @@ const HomePage = () => {
      imagePath:
        'https://intex2movieposters.blob.core.windows.net/movie-postersv2/Sweet%20Girl.jpg',
      rank: 28,
-   },
+   }
  ];
 
 
