@@ -88,7 +88,7 @@ const SearchResults = () => {
 
             {/* Filter Genres Button */}
             <div className="d-flex justify-content-start w-100 mt-3 flex-wrap gap-2">
-              <button className="btn btn-outline-light w-auto d-flex align-items-center w-25 me-2"
+              <button className="btn btn-outline-light w-auto d-flex align-items-center w-25 me-2 "
                onClick = {() => setIsOpen(!isOpen)}
               >
                 Filter Genres
