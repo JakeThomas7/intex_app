@@ -67,10 +67,10 @@ const LoginForm = () => {
         <div className="mb-3">
           <label htmlFor="email" className="form-label">Email</label>
           <div className="position-relative">
-            <i className="fa-regular fa-envelope position-absolute top-50 translate-middle-y ms-3 text-muted" />
+            <i className="fa-regular fa-envelope position-absolute top-50 translate-middle-y ms-3" />
             <input
               type="email"
-              className="form-control ps-5"
+              className="form-control ps-5 bg-dark"
               id="email"
               placeholder="Enter your email..."
               value={formData.email}
@@ -84,13 +84,13 @@ const LoginForm = () => {
           <label htmlFor="password" className="form-label">Password</label>
           <div className="position-relative">
             <i 
-              className={`fa-regular ${isPasswordVisible ? "fa-eye" : "fa-eye-slash"} position-absolute top-50 translate-middle-y ms-3 text-muted password-toggle`}
+              className={`fa-regular ${isPasswordVisible ? "fa-eye" : "fa-eye-slash"} position-absolute top-50 translate-middle-y ms-3 password-toggle`}
               style={{ cursor: "pointer", zIndex: 2 }}
               onClick={togglePasswordVisibility} // Toggle visibility
             />
             <input 
               type={isPasswordVisible ? "text" : "password"} // Dynamically set type
-              className="form-control ps-5" 
+              className="form-control ps-5 bg-dark text-white" 
               id="password" 
               placeholder="Enter your password..." 
               value={formData.password}
