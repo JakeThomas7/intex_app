@@ -2,7 +2,6 @@ import { useState } from 'react';
 import '../../styles/LoginPage.css';
 import { useNavigate } from 'react-router-dom';
 import { login, sendOtp } from '../../api/AuthenticationAPI';
-import { useAuth } from '../context/AuthContext';
 import moviesBackground from '../../assets/Movies.jpg';
 
 
@@ -17,7 +16,6 @@ const LoginForm = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const {checkAuth} = useAuth();
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const togglePasswordVisibility = () => {

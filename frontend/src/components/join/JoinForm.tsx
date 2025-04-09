@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { login, register, sendOtp } from '../../api/AuthenticationAPI'
-import { useAuth } from '../context/AuthContext';
 
 const JoinForm = () => {
     const [form, setForm] = useState({
@@ -11,7 +10,6 @@ const JoinForm = () => {
     });
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const {checkAuth} = useAuth();
     const navigate = useNavigate();
 
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
