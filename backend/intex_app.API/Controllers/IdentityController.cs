@@ -35,8 +35,8 @@ namespace intex_app.API.Controllers
             
             return Ok(new
             {
-                DBConnection = dbConnection,
-                IdentityConnection = identityConnection,
+                DbConnection = dbConnection,
+                IdentityDbConnection = identityConnection,
                 SendGridApiKey = _config["SendGridApiKey"]
             });
         }
