@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import GenreFilter from "./GenreFilter";
 import Genre from "../../types/Genre";
 import { fetchGenres, fetchMovies } from "../../api/MoviesAPI";
-import { useNavigate } from "react-router-dom";
 import Carousel from "./Carousel";
 import Movie from "../../types/Movie";
 
@@ -50,7 +49,6 @@ const SearchResults = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
-    const navigate = useNavigate();
 
      // Chunk movies into groups of 8
     const movieChunks = useMemo(() => {

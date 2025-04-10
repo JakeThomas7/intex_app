@@ -3,7 +3,6 @@ import Navbar from "../components/all_pages/Navbar"
 import { useAuth } from "../components/context/AuthContext"
 import AllMovies from "../components/shop/AllMovies"
 import Carousel from "../components/shop/Carousel"
-import MoviesInfiniteScroll from "../components/shop/MoviesInfiniteScroll"
 import SearchResults from "../components/shop/SearchResults"
 
 
