@@ -50,6 +50,7 @@ const SearchResults = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
 
+
      // Chunk movies into groups of 8
     const movieChunks = useMemo(() => {
       const chunks = [];
