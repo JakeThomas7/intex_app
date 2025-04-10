@@ -255,4 +255,46 @@ public class RecommenderController : ControllerBase
         return Ok(movies);
     }
 
+    // GET: UserTopRated?userId=123
+    [HttpGet("UserTopRated")]
+    public async Task<IActionResult> GetUserTopRated([FromQuery] int userId)
+    {
+        var topMovies = await _context.MovieRatings
+            .Where(r => r.UserId == userId)
+            .OrderByDescending(r => r.Rating)
+            .Select(r => r.ShowId)
+            .Distinct()
+            .Take(3)
+            .ToListAsync();
+
+        var movies = await _context.Movies
+            .Where(m => topMovies.Contains(m.ShowId))
+            .Select(m => new
+            {
+                m.ShowId,
+                m.Title,
+                m.ReleaseYear,
+                m.Director,
+                m.Cast,
+                m.Description,
+                m.Duration,
+                m.Country,
+                m.Type,
+                m.Rating,
+                m.image_url_suffix,
+                Genres = m.MovieGenres.Select(mg => new
+                {
+                    mg.GenreId,
+                    GenreName = mg.Genre.GenreName
+                }).ToList(),
+                AverageRating = m.MovieRatings.Any()
+                    ? Math.Round(m.MovieRatings.Average(r => r.Rating), 1)
+                    : 0
+            })
+            .ToListAsync();
+
+        return Ok(movies);
+    }
+
+
 }

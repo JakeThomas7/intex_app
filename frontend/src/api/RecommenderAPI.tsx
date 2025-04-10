@@ -77,3 +77,21 @@ export const getUserDemographicRecommender = async (
   const data = await response.json();
   return data;
 };
+
+export const getUserTopRatedMovies = async (
+  userId: number
+): Promise<Movie[]> => {
+  const response = await fetch(
+    `${API_URL}/UserTopRated?userId=${encodeURIComponent(userId)}`, // you’ll add this backend route below
+    {
+      method: 'GET',
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to get user’s top-rated movies');
+  }
+
+  return await response.json();
+};
