@@ -4,7 +4,9 @@
   background-color: #000000; /* Solid black background */
   color: rgb(245, 245, 247); /* Apple-style white text */
   font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", Arial, sans-serif;
-  margin-bottom: px;
+  margin-top: 4rem;   /* ✅ Add space from the carousel above */
+  padding-top: 2rem;  /* ✅ Optional: add internal spacing at top */
+  padding-bottom: 2rem;
 }
 
 /* Base styles for all devices */

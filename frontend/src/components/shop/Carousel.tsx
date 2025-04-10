@@ -4,25 +4,31 @@ import '../../styles/home/CardCarousel.css';
 
 interface CarouselProps {
   title?: string;
-  cardWidth?: number; // in rem
-  cardHeight?: number; // in rem
-  data: Array<any>; // Your product data
+  cardWidth?: number;
+  cardHeight?: number;
+  data: Array<any>;
 }
+
+const fallbackImage = 'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg';
+
+const sanitizeTitleForURL = (title: string): string => {
+  return title.replace(/[^a-zA-Z0-9 ]/g, '').trim().replace(/\s+/g, '%20');
+};
 
 const Carousel = ({
   title = '',
-  cardWidth = 19, // Default 19rem
-  cardHeight = 19, // Default 19rem
+  cardWidth = 22,
+  cardHeight = 32,
   data,
 }: CarouselProps) => {
   const carouselRef = useRef<HTMLDivElement | null>(null);
   const [scrollDistance, setScrollDistance] = useState(0);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const updateDimensions = () => {
       if (carouselRef.current) {
-        // Calculate scroll distance (2/3 of viewport width)
         setScrollDistance(window.innerWidth * 0.66);
       }
     };
@@ -31,6 +37,35 @@ const Carousel = ({
     window.addEventListener('resize', updateDimensions);
     return () => window.removeEventListener('resize', updateDimensions);
   }, []);
+
+  useEffect(() => {
+    const preloadImages = async () => {
+      const urls = await Promise.all(
+        data.map(async (item) => {
+          if (item.image_url_suffix) {
+            return `https://intex2movieposters.blob.core.windows.net/movie-postersv2/${item.image_url_suffix}`;
+          } else if (item.title) {
+            const sanitized = sanitizeTitleForURL(item.title);
+            const testUrl = `https://intex2movieposters.blob.core.windows.net/movie-postersv2/${sanitized}.jpg`;
+
+            const isValid = await new Promise<boolean>((resolve) => {
+              const img = new Image();
+              img.src = testUrl;
+              img.onload = () => resolve(true);
+              img.onerror = () => resolve(false);
+            });
+
+            return isValid ? testUrl : fallbackImage;
+          } else {
+            return fallbackImage;
+          }
+        })
+      );
+      setImageUrls(urls);
+    };
+
+    preloadImages();
+  }, [data]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
@@ -45,7 +80,6 @@ const Carousel = ({
     <div className="carousel-section position-relative pt-4">
       <h3 className="section-padding">{title}</h3>
 
-      {/* Navigation Buttons */}
       <button
         onClick={() => scroll('left')}
         className="btn btn-light position-absolute top-50 translate-middle-y start-0 ms-3 carousel-controls d-none d-sm-block"
@@ -53,7 +87,6 @@ const Carousel = ({
         <i className="fa-solid fa-chevron-left fa-lg px-2 py-5"></i>
       </button>
 
-      {/* Carousel Container */}
       <div
         ref={carouselRef}
         className="d-flex overflow-x-auto pt-2 pb-4 scrollbar-hidden section-padding"
@@ -68,34 +101,30 @@ const Carousel = ({
             className="flex-shrink-0 mx-2 card-item"
             style={{
               scrollSnapAlign: 'start',
-              scrollMargin: '0 0 0 clamp(3rem, 5vw, 6rem)',
               maxWidth: `${cardWidth}rem`,
               height: `${cardHeight}rem`,
             }}
-            onClick={() => navigate('/details')}
+            onClick={() => navigate('/details', { state: { movie: item } })}
           >
             <div
-              className="p-4 lead shadow grow-sm h-100 position-relative"
+              className="shadow grow-sm h-100 d-flex flex-column justify-content-between position-relative"
               style={{
                 borderRadius: '18px',
                 backgroundColor: 'black',
                 color: 'white',
                 border: '2px solid white',
-                fontSize: '1.5rem',
-                minWidth: '200px',
-                transition: 'transform 0.3s ease',
+                overflow: 'hidden',
               }}
             >
-              {/* Rank Number */}
               <div
                 className="rank-badge"
                 style={{
                   position: 'absolute',
                   top: '50%',
-                  left: '-2rem', // Adjust left position to make it stick out
+                  left: '-2rem',
                   transform: 'translateY(-50%)',
-                  width: '3rem', // Tall and skinny
-                  height: '5rem', // Tall height
+                  width: '3rem',
+                  height: '5rem',
                   border: '2px solid white',
                   borderRadius: '8px',
                   display: 'flex',
@@ -106,27 +135,59 @@ const Carousel = ({
                   color: 'white',
                 }}
               >
-                {item.rank} {/* Display rank number */}
+                {item.rank}
               </div>
 
-              {/* Movie Poster */}
-              <img
-                src={item.imagePath} // Movie poster image
-                alt={item.title}
+              {/* Image (75% height) */}
+              <div style={{ height: '75%' }}>
+                <img
+                  src={imageUrls[index] || fallbackImage}
+                  alt={item.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    borderRadius: '10px 10px 0 0',
+                  }}
+                />
+              </div>
+
+              {/* Text (25% height) */}
+              <div
+                className="px-3 py-2 text-center"
                 style={{
-                  width: '100%',
-                  height: 'auto',
-                  borderRadius: '10px',
-                  objectFit: 'cover',
+                  height: '25%',
+                  backgroundColor: '#111',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
                 }}
-              />
-              <h4>{item.title}</h4>
-              <p>{item.year}</p>
+              >
+                <h4
+                  style={{
+                    fontSize: '1.5rem',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    marginBottom: '0.25rem',
+                  }}
+                >
+                  {item.title}
+                </h4>
+                <p
+                  style={{
+                    fontSize: '1rem',
+                    color: '#bbb',
+                    margin: 0,
+                  }}
+                >
+                  {item.year}
+                </p>
+              </div>
             </div>
           </div>
         ))}
 
-        {/* Last spacer */}
         <div style={{ minWidth: '16px', flexShrink: 0 }}></div>
       </div>
 
