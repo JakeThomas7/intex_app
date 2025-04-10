@@ -5,9 +5,7 @@ import { deleteMovie } from '../../../api/MoviesAPI';
 
 // Function to sanitize the movie title by removing special characters (except spaces)
 const sanitizeTitleForURL = (title: string): string => {
-  return title
-    .replace(/[^a-zA-Z0-9 ]/g, '')
-    .trim();
+  return title.replace(/[^a-zA-Z0-9 ]/g, '').trim();
 };
 
 const AdminMovieCard = ({
@@ -116,11 +114,7 @@ const AdminMovieCard = ({
             </button>
             <button
               className="btn btn-outline-primary"
-              onClick={() =>
-                navigate('/details', {
-                  state: { movie }, // Pass the entire movie object to the next page
-                })
-              }
+              onClick={() => navigate(`/details/${movie.showId}`)}
             >
               View Movie <i className="fa-solid fa-chevron-right fa-sm"></i>
             </button>

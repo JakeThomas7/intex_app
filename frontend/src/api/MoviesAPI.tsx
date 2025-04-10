@@ -34,20 +34,21 @@ export const fetchMovies = async (params: MovieParams): Promise<any> => {
   return response.json();
 };
 
-// Fetch movie by ID
-export const fetchMovieById = async (
-  movieId: string | undefined
-): Promise<Movie> => {
-  if (!movieId) throw new Error('Movie ID is required');
+// export const getMovieByShowId = async (showId: string): Promise<Movie> => {
+//   const response = await fetch(
+//     `${API_URL}/Movies/GetMovieById?showId=${encodeURIComponent(showId)}`,
+//     {
+//       method: 'GET',
+//       credentials: 'include', // assuming you're using cookies/auth
+//     }
+//   );
 
-  const response = await fetch(`${API_URL}/Movies/GetMovie/${movieId}`, {
-    method: 'GET',
-    credentials: 'include',
-  });
+//   if (!response.ok) {
+//     throw new Error(`Failed to fetch movie with showId ${showId}`);
+//   }
 
-  if (!response.ok) throw new Error('Failed to fetch movie');
-  return response.json();
-};
+//   return await response.json();
+// };
 
 // Create movie
 export const createMovie = async (newMovie: Movie): Promise<void> => {
@@ -119,10 +120,10 @@ export const fetchGenres = async (): Promise<Genre[]> => {
 
 // Fetch movie details including average and user rating
 export const fetchMovieDetailsWithRating = async (
-  movieId: string
+  showId: string
 ): Promise<any> => {
   const response = await fetch(
-    `${API_URL}/MovieRating/GetMovieDetailsPage/${movieId}`,
+    `${API_URL}/MovieRating/GetMovieDetailsPage/${showId}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

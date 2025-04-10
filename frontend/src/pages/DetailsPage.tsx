@@ -1,18 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Navbar from '../components/all_pages/Navbar';
 import Carousel from '../components/shop/Carousel';
 import '../styles/DetailsPage.css';
 import Movie from '../types/Movie';
 import SimpleFooter from '../components/all_pages/SimpleFooter';
 import { getItemHybridRecommender } from '../api/RecommenderAPI';
-import { submitRating } from '../api/MoviesAPI';
+import { fetchMovieDetailsWithRating, submitRating } from '../api/MoviesAPI';
 import CookieFavoriteGenre from '../components/all_pages/CookieRecorder/CookieFavoriteGenre';
 //import { useAuth } from '../components/context/AuthContext';
-
-
-const API_URL = 'https://api2.byjacobthomas.com';
-
 interface CarouselMovie {
   title: string;
   imagePath: string;
@@ -27,10 +23,9 @@ const sanitizeTitleForURL = (title: string): string => {
 };
 
 const DetailsPage = () => {
-  const location = useLocation();
-  const initialMovie = location.state?.movie;
-  const [movie, setMovie] = useState<Movie | null>(initialMovie || null);
-  const [loading, setLoading] = useState(!initialMovie);
+  const { showId } = useParams();
+  const [movie, setMovie] = useState<Movie | null>(null);
+  const [loading, setLoading] = useState(true);
   const [selectedRating, setSelectedRating] = useState<number>(0);
   const [recommendations, setRecommendations] = useState<CarouselMovie[]>([]);
   const [userRating, setUserRating] = useState<number | null>(null);
@@ -82,41 +77,23 @@ const DetailsPage = () => {
   }, [movie?.showId]);
 
   useEffect(() => {
-    if (initialMovie) {
-      setMovie(initialMovie);
-      setLoading(false);
+    const fetchDetails = async () => {
+      if (!showId) return;
 
-      const fetchRatingData = async () => {
-        try {
-          const response = await fetch(
-            `${API_URL}/MovieRating/GetMovieDetailsPage/${initialMovie.showId}`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              credentials: 'include',
-              body: JSON.stringify('patrick59@gmail.com'),
-            }
-          );
+      try {
+        const result = await fetchMovieDetailsWithRating(showId);
+        setMovie(result); // result should include movie + rating + genres
+        setUserRating(result.UserRating);
+        setUserId(result.User.UserId);
+      } catch (err) {
+        console.error('❌ Error fetching movie details with rating:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-          if (!response.ok) throw new Error('Failed to fetch rating data');
-
-          const result = await response.json();
-          setUserRating(result.UserRating);
-          setUserId(result.User.UserId); // Capture user ID
-        } catch (err) {
-          console.error('❌ Error fetching average rating:', err);
-        }
-      };
-
-      fetchRatingData();
-    } else {
-      console.warn(
-        "⚠️ No movie found in route state. Movie won't be displayed."
-      );
-    }
-  }, [initialMovie]);
+    fetchDetails();
+  }, [showId]);
 
   // Sanitize the movie title
   const sanitizedTitle = sanitizeTitleForURL(movie?.title || 'Untitled Movie');
@@ -252,7 +229,7 @@ const DetailsPage = () => {
           </div>
         </div>
       </div>
-      <CookieFavoriteGenre genre={movie?.genres?.[0]?.genreName} />            
+      <CookieFavoriteGenre genre={movie?.genres?.[0]?.genreName} />
       <SimpleFooter />
     </div>
   );
