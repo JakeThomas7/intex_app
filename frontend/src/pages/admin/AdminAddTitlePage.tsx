@@ -8,22 +8,22 @@ import GenreSelect2 from '../../components/tabletools/GenreSelect2';
 const AdminAddTitlePage = () => {
   const { type } = useParams<{ type?: string }>();
   const navigate = useNavigate();
-  
+
   // State management
   const [formData, setFormData] = useState<Movie>({
-    showId: "",
-    type: "",
-    title: "",
-    director: "",
-    cast: "",
-    country: "",
+    showId: '',
+    type: '',
+    title: '',
+    director: '',
+    cast: '',
+    country: '',
     releaseYear: undefined,
-    rating: "",
-    duration: "",
-    description: "",
-    genres: []
+    rating: '',
+    duration: '',
+    description: '',
+    genres: [],
   });
-  
+
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,34 +33,39 @@ const AdminAddTitlePage = () => {
   const isOther = type === 'other';
 
   // Form handlers
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { id, value } = e.target;
     setFormData((prev: any) => ({
       ...prev,
-      [id]: id === 'rating' ? Number(value) : value
+      [id]: id === 'rating' ? Number(value) : value,
     }));
   };
 
-  const formatDuration = (duration: string, isMovie: boolean, isShow: boolean) => {
+  const formatDuration = (
+    duration: string,
+    isMovie: boolean,
+    isShow: boolean
+  ) => {
     return `${duration} ${isMovie ? 'minutes' : isShow ? 'seasons' : ''}`;
   };
-  
+
   const handleDurationChange = (duration: string) => {
     setFormData((prev: any) => ({
       ...prev,
       duration: formatDuration(duration, isMovie, isShow),
     }));
   };
-  
+
   const handleGenreChange = (selectedOptions: Genre[]) => {
     setFormData((prev: any) => ({
       ...prev,
-      genres: selectedOptions
+      genres: selectedOptions,
     }));
 
     console.log(formData);
   };
-
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -70,7 +75,7 @@ const AdminAddTitlePage = () => {
     try {
       const payload = {
         ...formData,
-        type: isOther ? formData.type : isMovie ? 'Movie' : 'TV Show'
+        type: isOther ? formData.type : isMovie ? 'Movie' : 'TV Show',
       };
 
       await createMovie(payload);
@@ -87,7 +92,7 @@ const AdminAddTitlePage = () => {
       <div className="card shadow-sm mb-4">
         <div className="card-body">
           <h4 className="fw-bold">Add Title</h4>
-          <hr/>
+          <hr />
           <div className="d-flex gap-2 mb-3 flex-wrap">
             <button
               type="button"
@@ -121,7 +126,9 @@ const AdminAddTitlePage = () => {
           <hr />
           <div className="row g-3">
             <div className="col-md-6">
-              <label htmlFor="title" className="form-label">Title</label>
+              <label htmlFor="title" className="form-label">
+                Title
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -132,7 +139,9 @@ const AdminAddTitlePage = () => {
             </div>
 
             <div className="col-md-6">
-              <label htmlFor="type" className="form-label">Type</label>
+              <label htmlFor="type" className="form-label">
+                Type
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -142,7 +151,9 @@ const AdminAddTitlePage = () => {
             </div>
 
             <div className="col-12">
-              <label htmlFor="description" className="form-label">Description</label>
+              <label htmlFor="description" className="form-label">
+                Description
+              </label>
               <textarea
                 className="form-control"
                 id="description"
@@ -157,61 +168,68 @@ const AdminAddTitlePage = () => {
 
       <div className="row mb-4">
         <div className="col-md-6">
-      {/* Production Details Card */}
-      <div className="card shadow-sm h-100">
-        <div className="card-body">
-          <h4 className="fw-bold mb-4">Production Details</h4>
-          <hr />
-            <div className="mb-3">
-              <label htmlFor="director" className="form-label">Director</label>
-              <input
-                type="text"
-                className="form-control"
-                id="director"
-                onChange={handleChange}
-              />
-            </div>
+          {/* Production Details Card */}
+          <div className="card shadow-sm h-100">
+            <div className="card-body">
+              <h4 className="fw-bold mb-4">Production Details</h4>
+              <hr />
+              <div className="mb-3">
+                <label htmlFor="director" className="form-label">
+                  Director
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="director"
+                  onChange={handleChange}
+                />
+              </div>
 
-            <div className="mb-3">
-              <label htmlFor="cast" className="form-label">Cast</label>
-              <textarea
-                className="form-control"
-                id="cast"
-                rows={4}
-                onChange={handleChange}
-                placeholder="Comma separated list"
-              />
-            </div>
+              <div className="mb-3">
+                <label htmlFor="cast" className="form-label">
+                  Cast
+                </label>
+                <textarea
+                  className="form-control"
+                  id="cast"
+                  rows={4}
+                  onChange={handleChange}
+                  placeholder="Comma separated list"
+                />
+              </div>
 
-            <div className="mb-3">
-              <label htmlFor="country" className="form-label">Country</label>
-              <input
-                type="text"
-                className="form-control"
-                id="country"
-                onChange={handleChange}
-              />
+              <div className="mb-3">
+                <label htmlFor="country" className="form-label">
+                  Country
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="country"
+                  onChange={handleChange}
+                />
+              </div>
             </div>
+          </div>
         </div>
-      </div>
-      
-      </div>
-      <div className="col-md-6 ">
-        {/* Media Info Card */}
-        <div className="card shadow-sm mb-4 h-100">
-          <div className="card-body">
-            <h4 className="fw-bold mb-4">Media Information</h4>
-            <hr />
+        <div className="col-md-6 ">
+          {/* Media Info Card */}
+          <div className="card shadow-sm mb-4 h-100">
+            <div className="card-body">
+              <h4 className="fw-bold mb-4">Media Information</h4>
+              <hr />
 
-            <div className="w-100 mb-3">
-              <label className="form-label">Genre</label>
-                <GenreSelect2 
-                  onChange={handleGenreChange} 
-                  selectedValues={formData.genres ?? []} 
+              <div className="w-100 mb-3">
+                <label className="form-label">Genre</label>
+                <GenreSelect2
+                  onChange={handleGenreChange}
+                  selectedValues={formData.genres ?? []}
                 />
               </div>
               <div className="mb-3">
-                <label htmlFor="releaseYear" className="form-label">Release Year</label>
+                <label htmlFor="releaseYear" className="form-label">
+                  Release Year
+                </label>
                 <input
                   type="number"
                   className="form-control"
@@ -226,7 +244,9 @@ const AdminAddTitlePage = () => {
               </div>
 
               <div className="mb-3">
-                <label htmlFor="rating" className="form-label">MPAA Rating</label>
+                <label htmlFor="rating" className="form-label">
+                  MPAA Rating
+                </label>
                 <input
                   type="text"
                   className="form-control"
@@ -238,7 +258,9 @@ const AdminAddTitlePage = () => {
 
               {isMovie && (
                 <div className="mb-3">
-                  <label htmlFor="duration" className="form-label">Duration (minutes)</label>
+                  <label htmlFor="duration" className="form-label">
+                    Duration (minutes)
+                  </label>
                   <input
                     type="number"
                     className="form-control"
@@ -251,7 +273,9 @@ const AdminAddTitlePage = () => {
 
               {isShow && (
                 <div className=" mb-3">
-                  <label htmlFor="seasons" className="form-label">Seasons</label>
+                  <label htmlFor="seasons" className="form-label">
+                    Seasons
+                  </label>
                   <input
                     type="number"
                     className="form-control"
@@ -264,7 +288,9 @@ const AdminAddTitlePage = () => {
 
               {isOther && (
                 <div className="mb-3">
-                  <label htmlFor="duration" className="form-label">Duration</label>
+                  <label htmlFor="duration" className="form-label">
+                    Duration
+                  </label>
                   <input
                     type="text"
                     className="form-control"
@@ -275,43 +301,45 @@ const AdminAddTitlePage = () => {
                   />
                 </div>
               )}
-              
-              
-
+            </div>
           </div>
-        </div>
         </div>
       </div>
 
       {/* Submission Card */}
       <div className="card shadow-sm">
         <div className="card-body text-end">
-            <button
-              type="button"
-              className="btn btn-outline-secondary me-2 p-2"
-              onClick={() => navigate('/admin')}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="btn btn-primary p-2"
-              disabled={isLoading}
-              onClick={handleSubmit}
-            >
-              {isLoading ? (
-                <>
-                  <span className="spinner-border spinner-border-sm me-2" role="status" />
-                  Submitting
-                </>
-              ) : 'Create Title'}
-            </button>
-            {error && (
-              <div className="text-center text-danger mt-3">{error}</div> // Display error message">
+          <button
+            type="button"
+            className="btn btn-outline-secondary me-2 p-2"
+            onClick={() => navigate('/admin')}
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="btn btn-primary p-2"
+            disabled={isLoading}
+            onClick={handleSubmit}
+          >
+            {isLoading ? (
+              <>
+                <span
+                  className="spinner-border spinner-border-sm me-2"
+                  role="status"
+                />
+                Submitting
+              </>
+            ) : (
+              'Create Title'
             )}
-          </div>
+          </button>
+          {error && (
+            <div className="text-center text-danger mt-3">{error}</div> // Display error message">
+          )}
         </div>
-    </div> 
+      </div>
+    </div>
   );
 };
 

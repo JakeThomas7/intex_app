@@ -7,7 +7,6 @@ namespace intex_app.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
     public class MovieUserController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -16,7 +15,7 @@ namespace intex_app.API.Controllers
         {
             _context = context;
         }
-        
+
         [HttpGet]
         public IActionResult GetMovieUsers()
         {
@@ -25,6 +24,7 @@ namespace intex_app.API.Controllers
         }
 
         [HttpGet("GetMovieUserByEmail/{email}")]
+        [Authorize]
         public IActionResult GetMovieUserByEmail(string email)
         {
             // Query the user and include related streaming services

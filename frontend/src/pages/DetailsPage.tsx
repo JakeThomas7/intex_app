@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Navbar from '../components/all_pages/Navbar';
 import Carousel from '../components/shop/Carousel';
 import '../styles/DetailsPage.css';
 import Movie from '../types/Movie';
 import SimpleFooter from '../components/all_pages/SimpleFooter';
 import { getItemHybridRecommender } from '../api/RecommenderAPI';
-import { submitRating } from '../api/MoviesAPI';
+import { fetchMovieDetailsWithRating, submitRating } from '../api/MoviesAPI';
 import CookieFavoriteGenre from '../components/all_pages/CookieRecorder/CookieFavoriteGenre';
-
-const API_URL = 'https://api2.byjacobthomas.com';
-
+import { useAuth } from '../components/context/AuthContext';
 interface CarouselMovie {
   title: string;
   imagePath: string;
@@ -21,29 +19,56 @@ interface CarouselMovie {
 
 // ✅ Sanitize the movie title for URLs
 const sanitizeTitleForURL = (title: string): string => {
-  return title.replace(/[^a-zA-Z0-9 ]/g, '').trim().replace(/\s+/g, '%20');
+  return title
+    .replace(/[^a-zA-Z0-9 ]/g, '')
+    .trim()
+    .replace(/\s+/g, '%20');
 };
 
 const DetailsPage = () => {
-  const location = useLocation();
-  const initialMovie = location.state?.movie;
-  const [movie, setMovie] = useState<Movie | null>(initialMovie || null);
-  const [loading, setLoading] = useState(!initialMovie);
+  const { showId } = useParams();
+  const [movie, setMovie] = useState<Movie | null>(null);
+  const [loading, setLoading] = useState(true);
   const [selectedRating, setSelectedRating] = useState<number>(0);
   const [recommendations, setRecommendations] = useState<CarouselMovie[]>([]);
   const [userRating, setUserRating] = useState<number | null>(null);
-  const [userId, setUserId] = useState<number | null>(null);
-
-  // ✅ Background image state with fallback
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(
     'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg'
   );
+  // ✅ Get userId from AuthContext
+  const { user } = useAuth();
+  console.log('User from AuthContext:', user); // Log the entire user object
+  const [userId, setUserId] = useState(user?.userId || null); // Assuming userId is available in the user object
+  useEffect(() => {
+    const fetchDetails = async () => {
+      if (!showId) return;
+
+      try {
+        const result = await fetchMovieDetailsWithRating(showId);
+        setMovie(result.movie); // result should include movie + rating + genres
+        setUserRating(result.userRating);
+        setUserId(result.user.userId); // This might be redundant
+      } catch (err) {
+        console.error('❌ Error fetching movie details with rating:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDetails();
+  }, [showId]);
 
   const handleStarClick = (value: number) => {
     setSelectedRating(value);
   };
 
   const handleSubmitRating = async () => {
+    console.log('Submit button clicked');
+    console.log('movie?.showId:', movie?.showId);
+    console.log('selectedRating:', selectedRating);
+    console.log('userId:', userId);
+
+    // Check for valid data before submitting
     if (!movie?.showId || !selectedRating || userId === null) return;
 
     try {
@@ -70,7 +95,7 @@ const DetailsPage = () => {
           'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg'
         );
     }
-  }, [movie?.title]);
+  }, [movie?.title, showId]);
 
   useEffect(() => {
     const fetchRecommendations = async () => {
@@ -94,42 +119,7 @@ const DetailsPage = () => {
     };
 
     fetchRecommendations();
-  }, [movie?.showId]);
-
-  useEffect(() => {
-    if (initialMovie) {
-      setMovie(initialMovie);
-      setLoading(false);
-
-      const fetchRatingData = async () => {
-        try {
-          const response = await fetch(
-            `${API_URL}/MovieRating/GetMovieDetailsPage/${initialMovie.showId}`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              credentials: 'include',
-              body: JSON.stringify('patrick59@gmail.com'),
-            }
-          );
-
-          if (!response.ok) throw new Error('Failed to fetch rating data');
-
-          const result = await response.json();
-          setUserRating(result.UserRating);
-          setUserId(result.User.UserId);
-        } catch (err) {
-          console.error('❌ Error fetching average rating:', err);
-        }
-      };
-
-      fetchRatingData();
-    } else {
-      console.warn("⚠️ No movie found in route state. Movie won't be displayed.");
-    }
-  }, [initialMovie]);
+  }, [movie?.showId, showId]);
 
   return (
     <div>
@@ -151,7 +141,7 @@ const DetailsPage = () => {
               <div className="movie-stats d-flex align-items-center gap-3 flex-wrap mb-3">
                 <span className="stat-pill">
                   <i className="fas fa-star me-1 text-warning"></i>
-                  {movie?.averageRating?.toFixed(1) ?? '0.0'}
+                  {movie?.averageRating?.toFixed(1) ?? 'N/A'}
                 </span>
                 <span className="stat-pill">
                   <i className="fas fa-calendar-alt me-1"></i>
@@ -172,7 +162,8 @@ const DetailsPage = () => {
               </div>
 
               <p className="movie-description">
-                {movie?.description || 'This is a brief description of the movie.'}
+                {movie?.description ||
+                  'This is a brief description of the movie.'}
               </p>
 
               <div className="movie-actions">
@@ -187,7 +178,9 @@ const DetailsPage = () => {
                   <i className="fas fa-star me-2"></i>Rate
                 </button>
                 {userRating !== null && (
-                  <p className="text-white mt-2">Your Rating: ⭐ {userRating}</p>
+                  <p className="text-white mt-2">
+                    Your Rating: ⭐ {userRating}
+                  </p>
                 )}
               </div>
             </>
@@ -236,7 +229,9 @@ const DetailsPage = () => {
                 <i
                   key={star}
                   className={`fa-star fs-2 ${
-                    selectedRating >= star ? 'fas text-warning' : 'far text-light'
+                    selectedRating >= star
+                      ? 'fas text-warning'
+                      : 'far text-light'
                   } rating-star`}
                   onClick={() => handleStarClick(star)}
                   style={{ cursor: 'pointer' }}
@@ -244,17 +239,24 @@ const DetailsPage = () => {
               ))}
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-outline-light" data-bs-dismiss="modal">
+              <button
+                type="button"
+                className="btn btn-outline-light"
+                data-bs-dismiss="modal"
+              >
                 Cancel
               </button>
-              <button type="button" className="btn btn-primary" onClick={handleSubmitRating}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleSubmitRating}
+              >
                 Submit
               </button>
             </div>
           </div>
         </div>
       </div>
-
       <CookieFavoriteGenre genre={movie?.genres?.[0]?.genreName} />
       <SimpleFooter />
     </div>

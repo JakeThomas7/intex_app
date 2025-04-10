@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using intex_app.API.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,27 +25,35 @@ public class MovieRatingController : ControllerBase
         if (movieRating == null)
             return BadRequest("Invalid rating.");
 
+        // Get the authenticated user's UserId from claims
+        var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    
+        if (string.IsNullOrEmpty(userIdClaim))
+            return Unauthorized("User not authenticated.");
+
+        int userId = int.Parse(userIdClaim); // Ensure it's the correct type, parse if needed
+
         // Check if the movie exists
         var movieExists = _context.Movies.Any(m => m.ShowId == movieRating.ShowId);
         if (!movieExists)
             return NotFound($"Movie with ShowId '{movieRating.ShowId}' not found.");
 
-        // Check if the user exists
-        var userExists = _context.MovieUsers.Any(u => u.UserId == movieRating.UserId);
+        // You now have the userId from the authenticated user
+        // Check if the user exists (optional)
+        var userExists = _context.MovieUsers.Any(u => u.UserId == userId);
         if (!userExists)
-            return NotFound($"User with ID '{movieRating.UserId}' not found.");
+            return NotFound($"User with ID '{userId}' not found.");
 
         // Look for existing rating
         var existingRating = _context.MovieRatings
-            .FirstOrDefault(r => r.ShowId == movieRating.ShowId && r.UserId == movieRating.UserId);
+            .FirstOrDefault(r => r.ShowId == movieRating.ShowId && r.UserId == userId);
 
         var newMovieRating = new MovieRating
         {
             ShowId = movieRating.ShowId,
-            UserId = movieRating.UserId,
+            UserId = userId,  // Use the userId from the claim
             Rating = movieRating.Rating
         };
-
 
         if (existingRating == null)
         {
@@ -60,9 +69,9 @@ public class MovieRatingController : ControllerBase
         return Ok("Rating saved successfully.");
     }
 
-    [HttpPost("GetMovieDetailsPage/{movieId}")]
+    [HttpPost("GetMovieDetailsPage/{ShowId}")]
     [Authorize]
-    public IActionResult GetMovieDetailsPage(string movieId, [FromBody] string email)
+    public IActionResult GetMovieDetailsPage(string ShowId, [FromBody] string email)
     {
         // Fetch movie details with genres and average rating
         var movie = _context.Movies
@@ -89,10 +98,10 @@ public class MovieRatingController : ControllerBase
                     ? m.MovieRatings.Average(r => r.Rating) 
                     : 0 // Default to 0 if no ratings
             })
-            .FirstOrDefault(m => m.ShowId == movieId);
+            .FirstOrDefault(m => m.ShowId == ShowId);
 
         if (movie == null)
-            return NotFound($"Movie with ID {movieId} not found.");
+            return NotFound($"Movie with ID {ShowId} not found.");
 
         // Check if user exists
         var user = _context.MovieUsers
@@ -110,12 +119,12 @@ public class MovieRatingController : ControllerBase
 
         // Fetch user rating for the movie if exists
         var userRating = _context.MovieRatings
-            .Where(r => r.UserId == user.UserId && r.ShowId == movieId)
+            .Where(r => r.UserId == user.UserId && r.ShowId == ShowId)
             .Select(r => r.Rating)
             .FirstOrDefault();
 
         // If no rating found, return 0
-        if (userRating == 0 && !_context.MovieRatings.Any(r => r.UserId == user.UserId && r.ShowId == movieId))
+        if (userRating == 0 && !_context.MovieRatings.Any(r => r.UserId == user.UserId && r.ShowId == ShowId))
         {
             userRating = 0;
         } 

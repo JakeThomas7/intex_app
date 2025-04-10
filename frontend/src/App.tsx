@@ -44,15 +44,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/details"
-            element={
-              // <ProtectedRoute>
-                <DetailsPage />
-              // </ProtectedRoute>
-            }
-          />
-          <Route path="/details/:movieId" element={<DetailsPage />} />
+          <Route path="/details/:showId" element={<DetailsPage />} />
           <Route
             path="/browse"
             element={
@@ -66,9 +58,9 @@ function App() {
           <Route
             path="/admin"
             element={
-              // <AdminProtectedRoute>
+              <AdminProtectedRoute>
                 <AdminLayout />
-              // </AdminProtectedRoute>
+              </AdminProtectedRoute>
             }
           >
             <Route index element={<AdminHomePage />} />

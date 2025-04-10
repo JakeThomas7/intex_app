@@ -1,4 +1,4 @@
-import { useRef} from 'react';
+import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/home/LandingCarousel.css';
 
@@ -38,7 +38,7 @@ const LandingCarousel = ({
                 maxWidth: `${cardWidth}rem`,
                 height: `${cardHeight}rem`,
               }}
-              // onClick={() => navigate('/details')}
+              onClick={() => navigate(`/details/${item.id}`)}
             >
               <div
                 className="p-4 lead shadow grow-sm h-100 position-relative"

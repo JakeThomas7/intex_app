@@ -91,8 +91,9 @@ public class MoviesController : ControllerBase
                 }).ToList(),
                 // Calculate the average rating if there are any ratings
                 AverageRating = m.MovieRatings.Any() 
-                ? Math.Round(m.MovieRatings.Average(r => r.Rating), 1) 
-                : 0
+                    ? m.MovieRatings.Average(r => r.Rating) 
+                    : (double?)null // Return null if no ratings
+
             })
             .ToListAsync();
 
@@ -105,6 +106,50 @@ public class MoviesController : ControllerBase
 
         return Ok(response);
     }
+
+    // [HttpGet("GetMovieById")]
+    // [Authorize]
+    // public async Task<IActionResult> GetMovieById([FromQuery] string ShowId)
+    // {
+    //     if (string.IsNullOrWhiteSpace(ShowId))
+    //     {
+    //         return BadRequest("ShowId is required.");
+    //     }
+
+    //     var movie = await _context.Movies
+    //         .Where(m => m.ShowId == ShowId)
+    //         .Select(m => new
+    //         {
+    //             m.ShowId,
+    //             m.Title,
+    //             m.ReleaseYear,
+    //             m.Director,
+    //             m.Cast,
+    //             m.Description,
+    //             m.Duration,
+    //             m.Country,
+    //             m.Type,
+    //             m.Rating,
+    //             m.image_url_suffix,
+    //             Genres = m.MovieGenres.Select(mg => new
+    //             {
+    //                 mg.GenreId,
+    //                 GenreName = mg.Genre.GenreName
+    //             }).ToList(),
+    //             AverageRating = m.MovieRatings.Any()
+    //                 ? Math.Round(m.MovieRatings.Average(r => r.Rating), 1)
+    //                 : 0
+    //         })
+    //         .FirstOrDefaultAsync();
+
+    //     if (movie == null)
+    //     {
+    //         return NotFound($"No movie found with ShowId: {ShowId}");
+    //     }
+
+    //     return Ok(movie);
+    // }
+
 
     [HttpPost("CreateMovie")]
     [Authorize(Roles = "Admin, Super Admin")]

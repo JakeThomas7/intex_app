@@ -9,10 +9,14 @@ interface CarouselProps {
   data: Array<any>;
 }
 
-const fallbackImage = 'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg';
+const fallbackImage =
+  'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg';
 
 const sanitizeTitleForURL = (title: string): string => {
-  return title.replace(/[^a-zA-Z0-9 ]/g, '').trim().replace(/\s+/g, '%20');
+  return title
+    .replace(/[^a-zA-Z0-9 ]/g, '')
+    .trim()
+    .replace(/\s+/g, '%20');
 };
 
 const Carousel = ({
@@ -104,7 +108,7 @@ const Carousel = ({
               maxWidth: `${cardWidth}rem`,
               height: `${cardHeight}rem`,
             }}
-            onClick={() => navigate('/details', { state: { movie: item } })}
+            onClick={() => navigate(`/details/${item.showId}`)}
           >
             <div
               className="shadow grow-sm h-100 d-flex flex-column justify-content-between position-relative"
