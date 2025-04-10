@@ -3,8 +3,8 @@
 import Genre from '../types/Genre';
 import Movie from '../types/Movie';
 
-const API_URL = 'https://api2.byjacobthomas.com';
-// const API_URL = 'https://localhost:5000';
+// const API_URL = 'https://api2.byjacobthomas.com';
+const API_URL = 'https://localhost:5000';
 
 interface MovieParams {
   pageNum?: number;
@@ -34,9 +34,9 @@ export const fetchMovies = async (params: MovieParams): Promise<any> => {
   return response.json();
 };
 
-// export const getMovieByShowId = async (showId: string): Promise<Movie> => {
+// export const getMovieByShowId = async (ShowId: string): Promise<Movie> => {
 //   const response = await fetch(
-//     `${API_URL}/Movies/GetMovieById?showId=${encodeURIComponent(showId)}`,
+//     `${API_URL}/Movies/GetMovieById?ShowId=${encodeURIComponent(ShowId)}`,
 //     {
 //       method: 'GET',
 //       credentials: 'include', // assuming you're using cookies/auth
@@ -44,7 +44,7 @@ export const fetchMovies = async (params: MovieParams): Promise<any> => {
 //   );
 
 //   if (!response.ok) {
-//     throw new Error(`Failed to fetch movie with showId ${showId}`);
+//     throw new Error(`Failed to fetch movie with ShowId ${ShowId}`);
 //   }
 
 //   return await response.json();
@@ -151,7 +151,7 @@ export const submitRating = async (
     },
     body: JSON.stringify({
       userId,
-      showId,
+      showId: showId,
       rating,
     }),
   });

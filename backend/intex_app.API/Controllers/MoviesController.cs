@@ -108,15 +108,15 @@ public class MoviesController : ControllerBase
 
     // [HttpGet("GetMovieById")]
     // [Authorize]
-    // public async Task<IActionResult> GetMovieById([FromQuery] string showId)
+    // public async Task<IActionResult> GetMovieById([FromQuery] string ShowId)
     // {
-    //     if (string.IsNullOrWhiteSpace(showId))
+    //     if (string.IsNullOrWhiteSpace(ShowId))
     //     {
     //         return BadRequest("ShowId is required.");
     //     }
 
     //     var movie = await _context.Movies
-    //         .Where(m => m.ShowId == showId)
+    //         .Where(m => m.ShowId == ShowId)
     //         .Select(m => new
     //         {
     //             m.ShowId,
@@ -143,7 +143,7 @@ public class MoviesController : ControllerBase
 
     //     if (movie == null)
     //     {
-    //         return NotFound($"No movie found with ShowId: {showId}");
+    //         return NotFound($"No movie found with ShowId: {ShowId}");
     //     }
 
     //     return Ok(movie);

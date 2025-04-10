@@ -41,10 +41,10 @@ export const getItemContentRecommender = async (
 };
 
 export const getSimilarUserRecommender = async (
-  UserId: number
+  userId: number
 ): Promise<Movie[]> => {
   const response = await fetch(
-    `${API_URL}/Recommender/SimilarUser?id=${encodeURIComponent(UserId)}`,
+    `${API_URL}/Recommender/SimilarUser?id=${encodeURIComponent(userId)}`,
     {
       method: 'GET',
       credentials: 'include',
@@ -60,10 +60,10 @@ export const getSimilarUserRecommender = async (
 };
 
 export const getUserDemographicRecommender = async (
-  UserId: number
+  userId: number
 ): Promise<Movie[]> => {
   const response = await fetch(
-    `${API_URL}/Recommender/UserDemographic?id=${encodeURIComponent(UserId)}`,
+    `${API_URL}/Recommender/UserDemographic?id=${encodeURIComponent(userId)}`,
     {
       method: 'GET',
       credentials: 'include',

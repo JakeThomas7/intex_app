@@ -15,9 +15,6 @@ const AdminMovieCard = ({
   movie: Movie;
   onMovieDeleted: () => void;
 }) => {
-  console.log(movie);
-  console.log(movie.image_url_suffix);
-
   const navigate = useNavigate();
 
   // Handle undefined title by providing a default value if necessary

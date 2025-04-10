@@ -39,6 +39,25 @@ const DetailsPage = () => {
     'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg'
   );
 
+  useEffect(() => {
+    const fetchDetails = async () => {
+      if (!showId) return;
+
+      try {
+        const result = await fetchMovieDetailsWithRating(showId);
+        setMovie(result.movie); // result should include movie + rating + genres
+        setUserRating(result.userRating);
+        setUserId(result.user.userId);
+      } catch (err) {
+        console.error('❌ Error fetching movie details with rating:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDetails();
+  }, [showId]);
+
   const handleStarClick = (value: number) => {
     setSelectedRating(value);
   };
@@ -70,7 +89,7 @@ const DetailsPage = () => {
           'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg'
         );
     }
-  }, [movie?.title]);
+  }, [movie?.title, showId]);
 
   useEffect(() => {
     const fetchRecommendations = async () => {
@@ -94,26 +113,7 @@ const DetailsPage = () => {
     };
 
     fetchRecommendations();
-  }, [movie?.showId]);
-
-  useEffect(() => {
-    const fetchDetails = async () => {
-      if (!showId) return;
-
-      try {
-        const result = await fetchMovieDetailsWithRating(showId);
-        setMovie(result); // result should include movie + rating + genres
-        setUserRating(result.UserRating);
-        setUserId(result.User.UserId);
-      } catch (err) {
-        console.error('❌ Error fetching movie details with rating:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDetails();
-  }, [showId]);
+  }, [movie?.showId, showId]);
 
   return (
     <div>

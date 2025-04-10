@@ -108,7 +108,7 @@ const Carousel = ({
               maxWidth: `${cardWidth}rem`,
               height: `${cardHeight}rem`,
             }}
-            onClick={() => navigate(`/details/${item.id}`)}
+            onClick={() => navigate(`/details/${item.showId}`)}
           >
             <div
               className="shadow grow-sm h-100 d-flex flex-column justify-content-between position-relative"
