@@ -91,8 +91,9 @@ public class MoviesController : ControllerBase
                 }).ToList(),
                 // Calculate the average rating if there are any ratings
                 AverageRating = m.MovieRatings.Any() 
-                ? Math.Round(m.MovieRatings.Average(r => r.Rating), 1) 
-                : 0
+                    ? m.MovieRatings.Average(r => r.Rating) 
+                    : (double?)null // Return null if no ratings
+
             })
             .ToListAsync();
 

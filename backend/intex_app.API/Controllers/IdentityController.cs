@@ -7,6 +7,7 @@ using intex_app.API.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore; // To use DbContext
 
 namespace intex_app.API.Controllers
 {
@@ -18,54 +19,21 @@ namespace intex_app.API.Controllers
         private readonly UserManager<User> _userManager;
         private readonly TwoFactorAuthService _twoFactorAuthService; // Inject TwoFactorAuthService
         private readonly IConfiguration _config;
-        
-        public IdentityController(UserIdentityDbContext temp, SignInManager<User> signInManager, UserManager<User> userManager, TwoFactorAuthService twoFactorAuthService, IConfiguration config)
+        private readonly ApplicationDbContext _context; // Add ApplicationDbContext
+
+        public IdentityController(UserIdentityDbContext temp, SignInManager<User> signInManager,
+            UserManager<User> userManager, TwoFactorAuthService twoFactorAuthService,
+            IConfiguration config, ApplicationDbContext context)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _twoFactorAuthService = twoFactorAuthService; // Initialize the service
             _config = config;
-        }
-
-        [HttpGet("getSecretKeys")]
-        public IActionResult GetSecretKeys()
-        {
-            var dbConnection = _config.GetConnectionString("DbConnection");
-            var identityConnection = _config.GetConnectionString("IdentityDbConnection");
-            
-            return Ok(new
-            {
-                DbConnection = dbConnection,
-                IdentityDbConnection = identityConnection,
-                SendGridApiKey = _config["SendGridApiKey"]
-            });
-        }
-
-        [HttpGet("getTest")]
-        public IActionResult GetTest()
-        {
-            return Ok(new { message = "Test Successful. 04/10 12:49" });
-        }
-
-        [HttpPost("logout")]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-
-            // Ensure authentication cookie is removed
-            Response.Cookies.Delete(".AspNetCore.Identity.Application", new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None,
-                Domain = ".byjacobthomas.com"
-            });
-
-            return Ok(new { message = "Logout successful" });
+            _context = context; // Initialize ApplicationDbContext
         }
 
         [HttpGet("pingauth")]
-        [Authorize] // Ensure the endpoint requires authentication
+        [Authorize]
         public async Task<IActionResult> PingAuth()
         {
             // Get email from claims
@@ -75,12 +43,27 @@ namespace intex_app.API.Controllers
                 return BadRequest(new { message = "Email claim missing" });
             }
 
-            // Get user details
+            Console.WriteLine($"Email from claims: {email}"); // Debugging the extracted email
+
+            // Get user details from Identity
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
                 return NotFound(new { message = "User not found", email = email });
             }
+
+            Console.WriteLine($"Found Identity user: {user.Email}"); // Debugging the found user
+
+            // Fetch userId from the MovieUsers table based on the logged-in user's email
+            var movieUser = await _context.MovieUsers
+                .FirstOrDefaultAsync(u => u.Email == email);
+
+            if (movieUser == null)
+            {
+                return NotFound(new { message = "User not found in MovieUsers table" });
+            }
+
+            Console.WriteLine($"Found MovieUser: UserId = {movieUser.UserId}"); // Debugging the MovieUser
 
             // Check if TwoFa is enabled for the user
             var twoFaEnabled = await _twoFactorAuthService.CheckTwoFaEnabledAsync(email);
@@ -97,9 +80,10 @@ namespace intex_app.API.Controllers
                     email = email,
                     role = primaryRole,
                     firstName = user.FirstName ?? "",
-                    lastName = user.LastName ?? "",
+                    lastName = user.LastName ?? "1",
                     isAuthenticated = true,
-                    allRoles = roles
+                    allRoles = roles,
+                    userId = movieUser.UserId // Add userId from MovieUsers table
                 });
             }
 
@@ -123,7 +107,8 @@ namespace intex_app.API.Controllers
                 firstName = user.FirstName ?? "",
                 lastName = user.LastName ?? "",
                 isAuthenticated = true,
-                allRoles = rolesList
+                allRoles = rolesList,
+                userId = movieUser.UserId // Add userId from MovieUsers table
             });
         }
     }

@@ -25,35 +25,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const checkAuth = useCallback(async () => {
     try {
-      const data = await pingauth();
+      const data = await pingauth(); // Assuming pingauth is correctly fetching data
+       console.log('Received data from pingauth:', data);
 
       if (data.email) {
-        setUser({ 
+        setUser({
+          userId: data.userId, // Ensure userId is part of the response
           email: data.email,
           firstName: data.firstName,
           lastName: data.lastName,
-          role: data.role
+          role: data.role,
         });
 
         setIsAuth(true);
 
-        if (data.role == "Admin" || data.role == "Super Admin") {
+        if (data.role == 'Admin' || data.role == 'Super Admin') {
           setIsAdmin(true);
         } else {
           setIsAdmin(false);
         }
-
       } else {
         throw new Error('Invalid user session');
       }
     } catch (error) {
       setUser(null);
       setIsAuth(false);
-      setIsAdmin(false)
+      setIsAdmin(false);
     } finally {
       setLoading(false);
     }
   }, []);
+
 
   useEffect(() => {
     checkAuth();
