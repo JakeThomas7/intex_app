@@ -21,6 +21,7 @@ namespace intex_app.API.Controllers
         private readonly TwoFactorAuthService _twoFactorAuthService; // Inject TwoFactorAuthService
         private readonly IConfiguration _config;
         private readonly ApplicationDbContext _context; // Add ApplicationDbContext
+        private readonly UserIdentityDbContext _identityContext;
 
         public IdentityController(UserIdentityDbContext temp, SignInManager<User> signInManager,
             UserManager<User> userManager, TwoFactorAuthService twoFactorAuthService,
@@ -31,11 +32,7 @@ namespace intex_app.API.Controllers
             _twoFactorAuthService = twoFactorAuthService; // Initialize the service
             _config = config;
             _context = context; // Initialize ApplicationDbContext
-        }
-
-        [HttpGet("pingauth")]
-        [Authorize]
-            _context = temp;
+            _identityContext = temp;
         }
 
         [HttpGet("getSecretKeys")]
@@ -67,7 +64,7 @@ namespace intex_app.API.Controllers
             if (!string.IsNullOrEmpty(email))
             {
                 // Find any verified OTP entries for this user
-                var verifiedOtps = await _context.UserOtp
+                var verifiedOtps = await _identityContext.UserOtp
                     .Where(u => u.Email == email && u.IsVerified)
                     .ToListAsync();
 
@@ -77,7 +74,7 @@ namespace intex_app.API.Controllers
                     otp.IsVerified = false;
                 }
 
-                await _context.SaveChangesAsync();
+                await _identityContext.SaveChangesAsync();
             }
 
             // Remove authentication cookie
