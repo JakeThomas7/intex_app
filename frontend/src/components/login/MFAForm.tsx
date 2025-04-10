@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../../styles/LoginPage.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -10,7 +10,7 @@ const MFAForm = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const {checkAuth} = useAuth();
+  const {checkAuth, isAuth} = useAuth();
 
   const location = useLocation();
   const email = location.state.email
@@ -18,6 +18,30 @@ const MFAForm = () => {
   const handleResendCode = async () => {
     await sendOtp(email);
   };
+
+  useEffect(() => {
+    console.log("Checking if verified: ", isAuth);
+  
+    // Immediate check
+    if (isAuth) {
+      navigate('/browse');
+    } else {
+      checkAuth();
+    }
+  
+    // Set up interval for continuous checking
+    const intervalId = setInterval(() => {
+      console.log("Periodic auth check");
+      if (isAuth) {
+        navigate('/browse');
+      } else {
+        checkAuth();
+      }
+    }, 5000); // Check every 5 seconds (adjust as needed)
+  
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [isAuth]);
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();

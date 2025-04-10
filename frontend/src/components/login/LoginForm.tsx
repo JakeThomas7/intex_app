@@ -3,11 +3,14 @@ import '../../styles/LoginPage.css';
 import { useNavigate } from 'react-router-dom';
 import { login, sendOtp } from '../../api/AuthenticationAPI';
 import moviesBackground from '../../assets/Movies.jpg';
+import { useAuth } from '../context/AuthContext';
 
 
 
 
 const LoginForm = () => {
+
+  const { checkAuth, isAuth } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -30,20 +33,33 @@ const LoginForm = () => {
     }));
   };
 
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
+    
+
     try {
       // 1. First try login
-      console.log('LOGING USER IN')
+      console.log('LOGGING USER IN')
       await login(formData.email, formData.password, formData.rememberMe);
+
+      await delay(500); // Delay for 500ms before first check
+      await checkAuth();
+      console.log('First check - Login is auth', isAuth);
+
+      if (isAuth) {
+        navigate('/browse');
+        return null;
+      }
       
       console.log('SENDING 2 FACTOR AUTH')
       // 2. Only if login succeeds, proceed with OTP flow
       try {
-      await sendOtp(formData.email)
+        await sendOtp(formData.email)
       } catch (otpError) {
         // Still navigate even if OTP fails, but show error
         setError((otpError as Error).message);
