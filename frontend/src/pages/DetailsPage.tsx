@@ -8,7 +8,7 @@ import SimpleFooter from '../components/all_pages/SimpleFooter';
 import { getItemHybridRecommender } from '../api/RecommenderAPI';
 import { fetchMovieDetailsWithRating, submitRating } from '../api/MoviesAPI';
 import CookieFavoriteGenre from '../components/all_pages/CookieRecorder/CookieFavoriteGenre';
-//import { useAuth } from '../components/context/AuthContext';
+import { useAuth } from '../components/context/AuthContext';
 interface CarouselMovie {
   title: string;
   imagePath: string;
@@ -32,13 +32,13 @@ const DetailsPage = () => {
   const [selectedRating, setSelectedRating] = useState<number>(0);
   const [recommendations, setRecommendations] = useState<CarouselMovie[]>([]);
   const [userRating, setUserRating] = useState<number | null>(null);
-  const [userId, setUserId] = useState<number | null>(null);
-
-  // ✅ Background image state with fallback
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(
     'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg'
   );
-
+  // ✅ Get userId from AuthContext
+  const { user } = useAuth();
+  console.log('User from AuthContext:', user); // Log the entire user object
+  const [userId, setUserId] = useState(user?.userId || null); // Assuming userId is available in the user object
   useEffect(() => {
     const fetchDetails = async () => {
       if (!showId) return;
@@ -47,7 +47,7 @@ const DetailsPage = () => {
         const result = await fetchMovieDetailsWithRating(showId);
         setMovie(result.movie); // result should include movie + rating + genres
         setUserRating(result.userRating);
-        setUserId(result.user.userId);
+        setUserId(result.user.userId); // This might be redundant
       } catch (err) {
         console.error('❌ Error fetching movie details with rating:', err);
       } finally {
@@ -63,6 +63,12 @@ const DetailsPage = () => {
   };
 
   const handleSubmitRating = async () => {
+    console.log('Submit button clicked');
+    console.log('movie?.showId:', movie?.showId);
+    console.log('selectedRating:', selectedRating);
+    console.log('userId:', userId);
+
+    // Check for valid data before submitting
     if (!movie?.showId || !selectedRating || userId === null) return;
 
     try {
@@ -135,7 +141,7 @@ const DetailsPage = () => {
               <div className="movie-stats d-flex align-items-center gap-3 flex-wrap mb-3">
                 <span className="stat-pill">
                   <i className="fas fa-star me-1 text-warning"></i>
-                  {movie?.averageRating?.toFixed(1) ?? '0.0'}
+                  {movie?.averageRating?.toFixed(1) ?? 'N/A'}
                 </span>
                 <span className="stat-pill">
                   <i className="fas fa-calendar-alt me-1"></i>
