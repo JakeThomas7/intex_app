@@ -25,7 +25,8 @@
 }
 
 .movie-title {
-  font-size: clamp(2.5rem, 6vw, 4rem);
+  /* font-family: 'Bebas Neue'; */
+  font-size: clamp(3.5rem, 6vw, 4rem);
   font-weight: 700;
   margin-bottom: 1rem;
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
@@ -83,4 +84,84 @@
 
 .rating-star.selected {
   color: gold;
+}
+
+.movie-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.movie-info-tags {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.info-tag {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #d1d5db; /* Tailwind's slate-300 like tone */
+  padding: 0.4rem 0.9rem;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: background-color 0.2s ease;
+}
+
+.info-tag:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.rating-tag {
+  color: #facc15; /* yellow-400 */
+}
+.stat-pill {
+  background-color: #1e293b; /* slate-800 blue-gray */
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #e2e8f0; /* slate-200 */
+  font-size: 0.875rem; /* slightly smaller */
+  font-weight: 500;
+  border: 1px solid #334155; /* slightly darker border */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  transition: background-color 0.2s ease;
+}
+
+.stat-pill i {
+  font-size: 0.85rem;
+}
+
+.stat-pill:hover {
+  background-color: #334155; /* darker slate on hover */
+}
+
+.carousel-title {
+  font-family: 'Monoton', cursive;
+  font-size: 2.5rem;
+  color: #ffe066;
+  text-align: left;
+  text-shadow: 0 0 10px rgba(255, 224, 102, 0.5);
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+.carousel-title {
+  /* ...existing styles */
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(255, 224, 102, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 18px rgba(255, 224, 102, 0.8);
+  }
 }
