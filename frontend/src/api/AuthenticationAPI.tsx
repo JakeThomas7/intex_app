@@ -114,6 +114,8 @@ export const pingauth = async (
         if (!data.email) {
           throw new Error('Invalid user session: No email found');
         }
+
+        console.log('Received data from pingauth!:', data);
   
         return data;
   

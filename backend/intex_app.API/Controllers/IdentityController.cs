@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore; // To use DbContext
 
 namespace intex_app.API.Controllers
 {
@@ -19,14 +20,21 @@ namespace intex_app.API.Controllers
         private readonly UserManager<User> _userManager;
         private readonly TwoFactorAuthService _twoFactorAuthService; // Inject TwoFactorAuthService
         private readonly IConfiguration _config;
-        private readonly UserIdentityDbContext _context;
+        private readonly ApplicationDbContext _context; // Add ApplicationDbContext
 
-        public IdentityController(UserIdentityDbContext temp, SignInManager<User> signInManager, UserManager<User> userManager, TwoFactorAuthService twoFactorAuthService, IConfiguration config)
+        public IdentityController(UserIdentityDbContext temp, SignInManager<User> signInManager,
+            UserManager<User> userManager, TwoFactorAuthService twoFactorAuthService,
+            IConfiguration config, ApplicationDbContext context)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _twoFactorAuthService = twoFactorAuthService; // Initialize the service
             _config = config;
+            _context = context; // Initialize ApplicationDbContext
+        }
+
+        [HttpGet("pingauth")]
+        [Authorize]
             _context = temp;
         }
 
@@ -95,12 +103,27 @@ namespace intex_app.API.Controllers
                 return BadRequest(new { message = "Email claim missing" });
             }
 
-            // Get user details
+            Console.WriteLine($"Email from claims: {email}"); // Debugging the extracted email
+
+            // Get user details from Identity
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
                 return NotFound(new { message = "User not found", email = email });
             }
+
+            Console.WriteLine($"Found Identity user: {user.Email}"); // Debugging the found user
+
+            // Fetch userId from the MovieUsers table based on the logged-in user's email
+            var movieUser = await _context.MovieUsers
+                .FirstOrDefaultAsync(u => u.Email == email);
+
+            if (movieUser == null)
+            {
+                return NotFound(new { message = "User not found in MovieUsers table" });
+            }
+
+            Console.WriteLine($"Found MovieUser: UserId = {movieUser.UserId}"); // Debugging the MovieUser
 
             // Check if TwoFa is enabled for the user
             var twoFaEnabled = await _twoFactorAuthService.CheckTwoFaEnabledAsync(email);
@@ -117,9 +140,10 @@ namespace intex_app.API.Controllers
                     email = email,
                     role = primaryRole,
                     firstName = user.FirstName ?? "",
-                    lastName = user.LastName ?? "",
+                    lastName = user.LastName ?? "1",
                     isAuthenticated = true,
-                    allRoles = roles
+                    allRoles = roles,
+                    userId = movieUser.UserId // Add userId from MovieUsers table
                 });
             }
 
@@ -143,7 +167,8 @@ namespace intex_app.API.Controllers
                 firstName = user.FirstName ?? "",
                 lastName = user.LastName ?? "",
                 isAuthenticated = true,
-                allRoles = rolesList
+                allRoles = rolesList,
+                userId = movieUser.UserId // Add userId from MovieUsers table
             });
         }
     }
