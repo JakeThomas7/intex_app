@@ -38,7 +38,7 @@ const LandingCarousel = ({
                 maxWidth: `${cardWidth}rem`,
                 height: `${cardHeight}rem`,
               }}
-              onClick={() => navigate('/details')}
+              // onClick={() => navigate('/details')}
             >
               <div
                 className="p-4 lead shadow grow-sm h-100 position-relative"
@@ -50,6 +50,7 @@ const LandingCarousel = ({
                   fontSize: '1.5rem',
                   minWidth: '200px',
                   transition: 'transform 0.3s ease',
+                  height: `calc(100% - 4px)` // ✅ Gives room for top/bottom border
                 }}
               >
                 {/* Movie Poster */}
