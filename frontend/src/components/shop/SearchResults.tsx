@@ -1,20 +1,17 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import GenreFilter from "./GenreFilter";
 import Genre from "../../types/Genre";
 import { fetchGenres, fetchMovies } from "../../api/MoviesAPI";
-import { useNavigate } from "react-router-dom";
+import Carousel from "./Carousel";
 import Movie from "../../types/Movie";
 
 const SearchResults = () => {
 
-    // PUTTING TOGETHER SEARCHING / FILTERING CONTROLS -----------
-    //const [searchQuery, setSearchQuery] = useState('');
     const [selectedGenres, setSelectedGenres] = useState<Genre[]>([]);
     const [isOpen, setIsOpen] = useState(false);
     const [genres, setGenres] = useState<Genre[]>([]);
   
     useEffect(() => {
-
         const getGenres = async () => {
           try {
             const data = await fetchGenres();
@@ -36,44 +33,94 @@ const SearchResults = () => {
       setSelectedGenres(selectedGenres.filter((g) => g !== genre));
     };
 
-    
-
     useEffect(() => {
       if (searchQuery || selectedGenres.length > 0) {
-        setIsOpen(false);
         handleSearch();
+        console.log(movies)
+        setIsOpen(false);
       }
     }, [selectedGenres]); 
 
 
-    const [searchQuery, setSearchQuery] = useState('');
-    const [movies, setMovies] = useState([]);
-    const navigate = useNavigate();
-    //const [numMovies, setNumMovies] = useState(0);
-    const [loading, setLoading] = useState(false);
-    //const [error, setError] = useState<string | null>(null);
-    const handleSearch = async () => {
-      setLoading(true);
-      try {
-        const data = await fetchMovies({ search: searchQuery, categories: selectedGenres.map(g => g.genreName), pageSize: 20 });
-        setMovies(data.data);
-        //setNumMovies(data.totalCount);
-        setDisplayResults(true);
-      } catch (error) {
-        console.error("Error fetching headlines:", error);
-        //setError("Failed to load headlines. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    }
-
     const [displayResults, setDisplayResults] = useState(false);
-  
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const [movies, setMovies] = useState<Movie[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+
+
+     // Chunk movies into groups of 8
+    const movieChunks = useMemo(() => {
+      const chunks = [];
+      for (let i = 0; i < movies.length; i += 8) {
+        chunks.push(movies.slice(i, i + 8));
+      }
+      return chunks;
+    }, [movies]);
+
+    useEffect(() => {
+      const getGenres = async () => {
+        try {
+          const data = await fetchGenres();
+          setGenres(data);
+        } catch (error) {
+          console.error('Error fetching genres:', error);
+        }
+      };
+      getGenres();
+    }, [isOpen]);
+
+    const handleSearch = useCallback(async () => {
+      if (isLoading || !hasMore) return;
+      
+      setIsLoading(true);
+      try {
+        const res = await fetchMovies({
+          search: searchQuery,
+          categories: selectedGenres.map(g => g.genreName),
+          pageNum: currentPage,
+          pageSize: 8 // Fetch 8 items per page
+        });
+
+        setMovies(prev => [...prev, ...res.data]);
+        setHasMore(res.data.length === 8);
+        setCurrentPage(prev => prev + 1);
+      } catch (error) {
+        console.error("Error fetching movies:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }, [currentPage, isLoading, hasMore, searchQuery, selectedGenres]);
+
+    // Infinite scroll handler
+    useEffect(() => {
+      const handleScroll = () => {
+        const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 500;
+        if (nearBottom && !isLoading && hasMore) {
+          handleSearch();
+        }
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }, [isLoading, hasMore, handleSearch]);
+
+    const cancelSearch = () => {
+      setDisplayResults(false);
+      setSearchQuery('');
+      setSelectedGenres([]);
+      setMovies([]);
+      setCurrentPage(1);
+      setHasMore(true);
+    };
+    
 
 
 
   return (
-    <div>
+    <div>     
     <div className="d-flex flex-column align-items-center w-100" onSubmit={(event) => {
         event?.preventDefault();
         setDisplayResults(true);
@@ -89,10 +136,11 @@ const SearchResults = () => {
                 <input
                   type="search"
                   className="form-control form-control-lg ps-5 py-1 me-2"
-                  placeholder={`${loading ? 'Loading...' : 'Search Movies'}`}
+                  placeholder={`${isLoading ? 'Loading...' : 'Search Movies'}`}
                   aria-label="Search products"
+                  value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  disabled={loading}
+                  disabled={isLoading}
                 />
                 
               </form>
@@ -128,89 +176,52 @@ const SearchResults = () => {
                 selectedGenres={selectedGenres}
               />
             )}
+            
           </div>
+          
 
-          </div>
+
+        </div>
       </div>
 
       <div>
-      {displayResults && movies.length > 0 && (
-        
-  <div className="d-flex flex-column align-items-center w-100 section-padding my-5">
-    <h3 className="text-white w-100 text-start mb-3">Your Search Results <button className="btn btn-sm btn-outline-light" onClick={() => setDisplayResults(false)}>Clear</button></h3>
-    <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-      {movies.map((movie: Movie, index) => (
-        <div
-          key={index}
-          className="col"
-          onClick={() => navigate('/details')}
-        >
-          <div className="card-item">
-            <div
-              className="card h-100 shadow grow-sm position-relative"
-              style={{
-                borderRadius: '12px',
-                backgroundColor: '#1a1a1a',
-                color: 'white',
-                border: 'none',
-                overflow: 'hidden',
-                transition: 'all 0.3s ease',
-                cursor: 'pointer'
-              }}
+      {displayResults && (
+        <div className="d-flex flex-column gap-4">
+          <div className="d-flex justify-content-start mt-4 section-padding">
+            <button 
+              className="btn btn-light btn-sm text-end px-3 py-2 me-2" 
+              onClick={cancelSearch}
             >
-              {/* Movie Poster */}
-              <div style={{ position: 'relative', overflow: 'hidden' }}>
-                <img
-                  src={`https://intex2movieposters.blob.core.windows.net/movie-postersv2/${movie.image_url_suffix}`}
-                  alt={movie.title}
-                  className="img-fluid"
-                  style={{
-                    width: '100%',
-                    height: '350px',
-                    objectFit: 'cover',
-                    transition: 'transform 0.3s ease'
-                  }}
-                />
-                <div 
-                  className="position-absolute bottom-0 start-0 end-0 p-3"
-                  style={{
-                    background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
-                    paddingTop: '2rem'
-                  }}
-                >
-                  <h5 className="mb-0" style={{ fontWeight: '600' }}>{movie.title}</h5>
-                </div>
-              </div>
-              
-              {/* Card Body */}
-              <div className="card-body p-3">
-                <div className="d-flex justify-content-between align-items-center">
-                  <span className="badge bg-warning text-dark">
-                    {movie.releaseYear}
-                  </span>
-            
-                  <div className="d-flex">
-                  <span>
-                    {movie.averageRating && movie.averageRating > 0 && (
-                      <>
-                        {movie.averageRating}
-                        <i className="fa-solid fa-star ms-1" style={{ color: "#FFD43B" }}></i>
-                      </>
-                    )}
-                  </span>                  
-                  </div>
-                </div>
-              
+              <i className="fa-solid fa-xmark"></i> Clear Search
+            </button>
+          </div>
+
+          {movieChunks.map((chunk, index) => (
+            <Carousel
+              key={index}
+              title={index === 0 ? "Top Results" : `More Results ${index + 1}`}
+              data={chunk}
+            />
+          ))}
+
+          {isLoading && (
+            <div className="text-center my-4">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
               </div>
             </div>
-          </div>
-        </div>
-      ))}
+          )}
+
+          {!hasMore && (
+            <div className="text-center text-muted py-4">
+              No more movies to show
+            </div>
+          )}
+      </div>
+      )}
     </div>
+    )
   </div>
-)}
-      </div> 
-    </div>
   )
 }
 

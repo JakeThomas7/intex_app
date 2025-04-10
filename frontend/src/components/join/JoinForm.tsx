@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { login, register, sendOtp } from '../../api/AuthenticationAPI'
+import { addMovieUser } from '../../api/MovieUserAPI';
 
 const JoinForm = () => {
     const [form, setForm] = useState({
@@ -52,6 +53,10 @@ const JoinForm = () => {
 
                 // 1. First try login
                 console.log('LOGING USER IN')
+                const movieUserData = {
+                    email: form.Email
+                }
+                await addMovieUser(movieUserData)
                 await register(form.Email, form.Password);
                 await login(form.Email, form.Password, false)
                 

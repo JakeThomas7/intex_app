@@ -21,11 +21,13 @@ public class MoviesController : ControllerBase
 
     // GET: /Movies/GetMovies
     [HttpGet("GetMovies")]
+    [Authorize]
     public async Task<IActionResult> GetMovies(
         [FromQuery] int pageSize = 10,
         [FromQuery] int pageNum = 1,
         [FromQuery] string? search = null,
-        [FromQuery] string[]? genre = null)
+        [FromQuery] string[]? genre = null,
+        [FromQuery] string? sort = null)
     {
         // Validate page size
         const int maxPageSize = 100;
@@ -203,6 +205,7 @@ public class MoviesController : ControllerBase
     }
 
     [HttpGet("GetGenres")]
+    [Authorize]
     public IActionResult GetGenres()
     {
         var categories = _context.Genres.ToList();

@@ -1,8 +1,8 @@
 import Footer from "../components/all_pages/Footer"
 import Navbar from "../components/all_pages/Navbar"
 import { useAuth } from "../components/context/AuthContext"
+import AllMovies from "../components/shop/AllMovies"
 import Carousel from "../components/shop/Carousel"
-import MoviesInfiniteScroll from "../components/shop/MoviesInfiniteScroll"
 import SearchResults from "../components/shop/SearchResults"
 
 
@@ -33,7 +33,7 @@ const ShopPage = () => {
       <Carousel title={`Because you think Spencer Petty is Cute`} cardWidth={22} cardHeight={21} data={data} />
       <Carousel title="Trending Now" cardWidth={22} cardHeight={21} data={data} />
       <Carousel title="New Arrivals" cardWidth={19} cardHeight={19} data={data} />
-        <MoviesInfiniteScroll />
+        <AllMovies />
       <Footer />
 
 
