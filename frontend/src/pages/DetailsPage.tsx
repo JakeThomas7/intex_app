@@ -7,6 +7,9 @@ import Movie from '../types/Movie';
 import SimpleFooter from '../components/all_pages/SimpleFooter';
 import { getItemHybridRecommender } from '../api/RecommenderAPI';
 import { submitRating } from '../api/MoviesAPI';
+import CookieFavoriteGenre from '../components/all_pages/CookieRecorder/CookieFavoriteGenre';
+//import { useAuth } from '../components/context/AuthContext';
+
 
 const API_URL = 'https://api2.byjacobthomas.com';
 
@@ -249,7 +252,7 @@ const DetailsPage = () => {
           </div>
         </div>
       </div>
-
+      <CookieFavoriteGenre genre={movie?.genres?.[0]?.genreName} />            
       <SimpleFooter />
     </div>
   );
