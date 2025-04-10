@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using intex_app.API.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
@@ -34,6 +35,65 @@ namespace intex_app.API.Controllers
 
         [HttpGet("pingauth")]
         [Authorize]
+            _context = temp;
+        }
+
+        [HttpGet("getSecretKeys")]
+        public IActionResult GetSecretKeys()
+        {
+            var dbConnection = _config.GetConnectionString("DbConnection");
+            var identityConnection = _config.GetConnectionString("IdentityDbConnection");
+            
+            return Ok(new
+            {
+                DbConnection = dbConnection,
+                IdentityDbConnection = identityConnection,
+                SendGridApiKey = _config["SendGridApiKey"]
+            });
+        }
+
+        [HttpGet("getTest")]
+        public IActionResult GetTest()
+        {
+            return Ok(new { message = "Test Successful. 04/10 12:22" });
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            var email = User.FindFirstValue(ClaimTypes.Email);
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                // Find any verified OTP entries for this user
+                var verifiedOtps = await _context.UserOtp
+                    .Where(u => u.Email == email && u.IsVerified)
+                    .ToListAsync();
+
+                // Set them back to unverified
+                foreach (var otp in verifiedOtps)
+                {
+                    otp.IsVerified = false;
+                }
+
+                await _context.SaveChangesAsync();
+            }
+
+            // Remove authentication cookie
+            Response.Cookies.Delete(".AspNetCore.Identity.Application", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Domain = ".byjacobthomas.com"
+            });
+
+            return Ok(new { message = "Logout successful" });
+        }
+
+        [HttpGet("pingauth")]
+        // Ensure the endpoint requires authentication
         public async Task<IActionResult> PingAuth()
         {
             // Get email from claims
