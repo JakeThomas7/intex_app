@@ -78,6 +78,7 @@ const MovieUserProfileForm = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        // Allow users to update without actually needding to put in information if they don't want.
         // Basic validation
         // if (!form.firstName || !form.lastName) {
         //     setError('First and last name are required');

@@ -58,55 +58,85 @@ namespace intex_app.API.Controllers
             return Ok(response);
         }
         
-        [HttpPost("CreateMovieUser")]
-        public IActionResult CreateMovieUser([FromBody] CreateMovieUserDto newUserDto)
+        [HttpPost("UpsertMovieUser")] // Consider using `[HttpPut]` for RESTful upsert semantics
+        public IActionResult UpsertMovieUser([FromBody] CreateMovieUserDto userDto)
         {
             try
             {
-
-                // Check for existing user
+                // Check for existing user by email
                 var existingUser = _context.MovieUsers
-                    .FirstOrDefault(u => u.Email == newUserDto.Email);
-                    
+                    .Include(u => u.MovieUserStreamingServices)
+                    .FirstOrDefault(u => u.Email == userDto.Email);
+
                 if (existingUser != null)
                 {
-                    return Conflict("User with this email already exists");
-                }
+                    // Update existing user
+                    existingUser.Name = userDto.Name;
+                    existingUser.Phone = userDto.Phone;
+                    existingUser.Age = userDto.Age;
+                    existingUser.Gender = userDto.Gender;
+                    existingUser.City = userDto.City;
+                    existingUser.State = userDto.State;
+                    existingUser.Zip = userDto.Zip;
 
-                // Create new user entity
-                var newUser = new MovieUser
-                {
-                    Name = newUserDto.Name,
-                    Email = newUserDto.Email,
-                    Phone = newUserDto.Phone,
-                    Age = newUserDto.Age,
-                    Gender = newUserDto.Gender,
-                    City = newUserDto.City,
-                    State = newUserDto.State,
-                    Zip = newUserDto.Zip,
-                    MovieUserStreamingServices = new List<MovieUserStreamingService>()
-                };
-
-                // Add streaming service relationships
-                if (newUserDto.StreamingServiceIds != null && newUserDto.StreamingServiceIds.Any())
-                {
-                    var validServices = _context.StreamingServices
-                        .Where(s => newUserDto.StreamingServiceIds.Contains(s.StreamingServiceId))
-                        .ToList();
-
-                    foreach (var service in validServices)
+                    // Handle streaming services if provided
+                    if (userDto.StreamingServiceIds != null)
                     {
-                        newUser.MovieUserStreamingServices.Add(new MovieUserStreamingService
+                        // Clear existing relationships
+                        existingUser.MovieUserStreamingServices.Clear();
+
+                        // Add new relationships
+                        var validServices = _context.StreamingServices
+                            .Where(s => userDto.StreamingServiceIds.Contains(s.StreamingServiceId))
+                            .ToList();
+
+                        foreach (var service in validServices)
                         {
-                            StreamingService = service
-                        });
+                            existingUser.MovieUserStreamingServices.Add(new MovieUserStreamingService
+                            {
+                                StreamingServiceId = service.StreamingServiceId
+                            });
+                        }
                     }
+
+                    _context.SaveChanges();
+                    return Ok(existingUser);
                 }
+                else
+                {
+                    // Create new user
+                    var newUser = new MovieUser
+                    {
+                        Name = userDto.Name,
+                        Email = userDto.Email,
+                        Phone = userDto.Phone,
+                        Age = userDto.Age,
+                        Gender = userDto.Gender,
+                        City = userDto.City,
+                        State = userDto.State,
+                        Zip = userDto.Zip,
+                        MovieUserStreamingServices = new List<MovieUserStreamingService>()
+                    };
 
-                _context.MovieUsers.Add(newUser);
-                _context.SaveChanges();
+                    if (userDto.StreamingServiceIds != null && userDto.StreamingServiceIds.Any())
+                    {
+                        var validServices = _context.StreamingServices
+                            .Where(s => userDto.StreamingServiceIds.Contains(s.StreamingServiceId))
+                            .ToList();
 
-                return Ok();
+                        foreach (var service in validServices)
+                        {
+                            newUser.MovieUserStreamingServices.Add(new MovieUserStreamingService
+                            {
+                                StreamingServiceId = service.StreamingServiceId
+                            });
+                        }
+                    }
+
+                    _context.MovieUsers.Add(newUser);
+                    _context.SaveChanges();
+                    return Ok(newUser);
+                }
             }
             catch (Exception ex)
             {
@@ -115,46 +145,46 @@ namespace intex_app.API.Controllers
         }
         
         
-        [HttpPut("{id}")]
-        [Authorize(Roles="Admin, Super Admin")]
-        public IActionResult UpdateMovieUser(int id, [FromBody] MovieUser updatedUser)
-        {
-            var existingUser = _context.MovieUsers.Find(id);
-            if (existingUser == null)
-            {
-                return NotFound();
-            }
-
-            // Update fields
-            existingUser.Name = updatedUser.Name;
-            existingUser.Phone = updatedUser.Phone;
-            existingUser.Email = updatedUser.Email;
-            existingUser.Age = updatedUser.Age;
-            existingUser.Gender = updatedUser.Gender;
-            existingUser.City = updatedUser.City;
-            existingUser.State = updatedUser.State;
-            existingUser.Zip = updatedUser.Zip;
-
-            _context.MovieUsers.Update(existingUser);
-            _context.SaveChanges();
-
-            return Ok(existingUser);
-        }
-
-        [HttpDelete("{id}")]
-        [Authorize(Roles="Admin, Super Admin")]
-        public IActionResult DeleteMovieUser(int id)
-        {
-            var user = _context.MovieUsers.Find(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            _context.MovieUsers.Remove(user);
-            _context.SaveChanges();
-
-            return NoContent();
-        }
+        // [HttpPut("{id}")]
+        // [Authorize(Roles="Admin, Super Admin")]
+        // public IActionResult UpdateMovieUser(int id, [FromBody] MovieUser updatedUser)
+        // {
+        //     var existingUser = _context.MovieUsers.Find(id);
+        //     if (existingUser == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //
+        //     // Update fields
+        //     existingUser.Name = updatedUser.Name;
+        //     existingUser.Phone = updatedUser.Phone;
+        //     existingUser.Email = updatedUser.Email;
+        //     existingUser.Age = updatedUser.Age;
+        //     existingUser.Gender = updatedUser.Gender;
+        //     existingUser.City = updatedUser.City;
+        //     existingUser.State = updatedUser.State;
+        //     existingUser.Zip = updatedUser.Zip;
+        //
+        //     _context.MovieUsers.Update(existingUser);
+        //     _context.SaveChanges();
+        //
+        //     return Ok(existingUser);
+        // }
+        //
+        // [HttpDelete("{id}")]
+        // [Authorize(Roles="Admin, Super Admin")]
+        // public IActionResult DeleteMovieUser(int id)
+        // {
+        //     var user = _context.MovieUsers.Find(id);
+        //     if (user == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //
+        //     _context.MovieUsers.Remove(user);
+        //     _context.SaveChanges();
+        //
+        //     return NoContent();
+        // }
     }
 }

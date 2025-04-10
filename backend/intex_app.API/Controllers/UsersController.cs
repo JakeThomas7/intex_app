@@ -14,10 +14,12 @@ public class UsersController : ControllerBase
     private readonly UserIdentityDbContext _identityContext;
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly ApplicationDbContext _context;
     
-    public UsersController(UserIdentityDbContext temp, SignInManager<User> signInManager, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+    public UsersController(UserIdentityDbContext temp, ApplicationDbContext context, SignInManager<User> signInManager, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
     {
         _identityContext = temp;
+        _context = context;
         _userManager = userManager;
         _roleManager = roleManager;
     }
@@ -156,12 +158,12 @@ public class UsersController : ControllerBase
     [Authorize(Roles = "Super Admin")]
     public async Task<IActionResult> DeleteUser(string email)
     {
-        // 1. Find the user
+        // 1. Find the Identity user
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
             return NotFound($"User with email '{email}' not found.");
 
-        // 2. Remove all roles first (optional but recommended)
+        // 2. Remove all roles first
         var roles = await _userManager.GetRolesAsync(user);
         if (roles.Any())
         {
@@ -170,25 +172,50 @@ public class UsersController : ControllerBase
                 return BadRequest($"Failed to remove roles: {string.Join(", ", removeRolesResult.Errors)}");
         }
 
-        // 3. Delete the user
-        var deleteResult = await _userManager.DeleteAsync(user);
+        // 3. Find and delete MovieUser records
+        var movieUser = _context.MovieUsers
+            .Include(u => u.MovieUserStreamingServices)
+            .Include(u => u.MovieRatings)
+            .FirstOrDefault(u => u.Email == email);
 
+        if (movieUser != null)
+        {
+            // Delete related records
+            _context.MovieUserStreamingServices.RemoveRange(movieUser.MovieUserStreamingServices);
+            _context.MovieRatings.RemoveRange(movieUser.MovieRatings);
+            _context.MovieUsers.Remove(movieUser);
+        }
+
+        // 4. Delete the Identity user
+        var deleteResult = await _userManager.DeleteAsync(user);
         if (!deleteResult.Succeeded)
             return BadRequest($"Failed to delete user: {string.Join(", ", deleteResult.Errors)}");
 
-        // 4. (Optional) Clean up related data
+        // 5. Clean up other Identity related data
         try
         {
-            // Example: Delete user's records from other tables
             await _identityContext.UserTokens.Where(ut => ut.UserId == user.Id).ExecuteDeleteAsync();
             await _identityContext.UserLogins.Where(ul => ul.UserId == user.Id).ExecuteDeleteAsync();
+            await _identityContext.UserClaims.Where(uc => uc.UserId == user.Id).ExecuteDeleteAsync();
         }
         catch (Exception ex)
         {
-            // Log but don't fail the operation
-            //_logger.LogWarning(ex, "Failed to clean up related user data for {Email}", email);
+
         }
 
-        return Ok($"User '{email}' and {roles.Count} roles were successfully deleted.");
+        // 6. Save all changes to the database
+        try
+        {
+            await _context.SaveChangesAsync();
+            await _identityContext.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Failed to save changes: {ex.Message}");
+        }
+
+        return Ok($"User '{email}' and all related data were successfully deleted. " + 
+                 $"Removed {roles.Count} roles, {movieUser?.MovieUserStreamingServices.Count ?? 0} streaming services, " +
+                 $"and {movieUser?.MovieRatings.Count ?? 0} ratings.");
     }
 }
