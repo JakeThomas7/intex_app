@@ -17,9 +17,12 @@ interface CarouselMovie {
   id: string;
 }
 
-// Function to sanitize the movie title by removing special characters (except spaces)
+// ✅ Sanitize the movie title for URLs
 const sanitizeTitleForURL = (title: string): string => {
-  return title.replace(/[^a-zA-Z0-9 ]/g, '').trim(); // Remove special characters but keep spaces
+  return title
+    .replace(/[^a-zA-Z0-9 ]/g, '')
+    .trim()
+    .replace(/\s+/g, '%20');
 };
 
 const DetailsPage = () => {
@@ -29,20 +32,23 @@ const DetailsPage = () => {
   const [selectedRating, setSelectedRating] = useState<number>(0);
   const [recommendations, setRecommendations] = useState<CarouselMovie[]>([]);
   const [userRating, setUserRating] = useState<number | null>(null);
-  const [userId, setUserId] = useState<number | null>(null); // ✅ added
+  const [userId, setUserId] = useState<number | null>(null);
 
-  // Function to handle star click and update the selected rating
+  // ✅ Background image state with fallback
+  const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(
+    'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg'
+  );
+
   const handleStarClick = (value: number) => {
     setSelectedRating(value);
   };
 
-  // Handle submitting the rating to the backend
   const handleSubmitRating = async () => {
     if (!movie?.showId || !selectedRating || userId === null) return;
 
     try {
       await submitRating(userId, movie.showId, selectedRating);
-      setUserRating(selectedRating); // ✅ update UI
+      setUserRating(selectedRating);
       alert('Rating submitted successfully!');
     } catch (err) {
       console.error('Failed to submit rating:', err);
@@ -50,13 +56,28 @@ const DetailsPage = () => {
     }
   };
 
+  // ✅ Dynamically check image existence
+  useEffect(() => {
+    if (movie?.title) {
+      const sanitized = sanitizeTitleForURL(movie.title);
+      const candidateUrl = `https://intex2movieposters.blob.core.windows.net/movie-postersv2/${sanitized}.jpg`;
+
+      const img = new Image();
+      img.src = candidateUrl;
+      img.onload = () => setBackgroundImageUrl(candidateUrl);
+      img.onerror = () =>
+        setBackgroundImageUrl(
+          'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg'
+        );
+    }
+  }, [movie?.title]);
+
   useEffect(() => {
     const fetchRecommendations = async () => {
       if (!movie?.showId) return;
 
       try {
         const recs = await getItemHybridRecommender(movie.showId);
-
         const mapped = recs.map((m, idx) => ({
           title: m.title ?? 'Untitled',
           imagePath: m.image_url_suffix
@@ -66,7 +87,6 @@ const DetailsPage = () => {
           rank: idx + 1,
           id: m.showId ?? `unknown-${idx}`,
         }));
-
         setRecommendations(mapped);
       } catch (error) {
         console.error('Error fetching hybrid recommendations:', error);
@@ -95,23 +115,13 @@ const DetailsPage = () => {
     fetchDetails();
   }, [showId]);
 
-  // Sanitize the movie title
-  const sanitizedTitle = sanitizeTitleForURL(movie?.title || 'Untitled Movie');
-
-  // Default fallback image URL if the poster cannot be loaded
-  const defaultImageUrl =
-    'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg';
-
   return (
     <div>
       <Navbar />
       <div
         className="details-hero"
         style={{
-          backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.85) 20%, rgba(0, 0, 0, 0.2) 70%, rgba(255, 255, 255, 0.1) 100%), url(${
-            `https://intex2movieposters.blob.core.windows.net/movie-postersv2/${sanitizedTitle}.jpg` ||
-            defaultImageUrl
-          })`,
+          backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.85) 20%, rgba(0, 0, 0, 0.2) 70%, rgba(255, 255, 255, 0.1) 100%), url(${backgroundImageUrl})`,
         }}
       >
         <div className="details-overlay container">
@@ -119,14 +129,24 @@ const DetailsPage = () => {
             <p className="text-white">Loading movie...</p>
           ) : (
             <>
-              <p className="movie-subinfo">
-                {movie?.releaseYear || 'N/A'} • {movie?.duration || 'N/A'} •{' '}
-                {movie?.rating || 'N/A'}
-              </p>
+              <p className="movie-subinfo">{movie?.rating || 'N/A'}</p>
               <h1 className="movie-title">{movie?.title || 'Movie Title'}</h1>
-              <p className="text-warning fw-bold fs-5">
-                ⭐ Average Rating: {movie?.averageRating}
-              </p>
+
+              <div className="movie-stats d-flex align-items-center gap-3 flex-wrap mb-3">
+                <span className="stat-pill">
+                  <i className="fas fa-star me-1 text-warning"></i>
+                  {movie?.averageRating?.toFixed(1) ?? '0.0'}
+                </span>
+                <span className="stat-pill">
+                  <i className="fas fa-calendar-alt me-1"></i>
+                  {movie?.releaseYear || 'N/A'}
+                </span>
+                <span className="stat-pill">
+                  <i className="fas fa-clock me-1"></i>
+                  {movie?.duration || 'N/A'}
+                </span>
+              </div>
+
               <div className="genre-tags">
                 {movie?.genres?.map((genre, index) => (
                   <span key={index} className="genre-tag">
@@ -162,17 +182,17 @@ const DetailsPage = () => {
         </div>
       </div>
 
-      <div className="details-carousels section-padding">
+      <div className="carousel-title section-padding">
         <Carousel
           title="More like this"
-          cardWidth={25}
-          cardHeight={21}
+          cardWidth={22}
+          cardHeight={32}
           data={recommendations}
         />
         <Carousel
           title="Trending Now"
-          cardWidth={19}
-          cardHeight={19}
+          cardWidth={22}
+          cardHeight={32}
           data={recommendations}
         />
       </div>
@@ -202,7 +222,11 @@ const DetailsPage = () => {
               {[1, 2, 3, 4, 5].map((star) => (
                 <i
                   key={star}
-                  className={`fa-star fs-2 ${selectedRating >= star ? 'fas text-warning' : 'far text-light'} rating-star`}
+                  className={`fa-star fs-2 ${
+                    selectedRating >= star
+                      ? 'fas text-warning'
+                      : 'far text-light'
+                  } rating-star`}
                   onClick={() => handleStarClick(star)}
                   style={{ cursor: 'pointer' }}
                 ></i>
@@ -219,9 +243,7 @@ const DetailsPage = () => {
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={() => {
-                  handleSubmitRating();
-                }}
+                onClick={handleSubmitRating}
               >
                 Submit
               </button>
