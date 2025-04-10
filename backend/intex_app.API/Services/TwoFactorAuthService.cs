@@ -32,16 +32,19 @@ namespace intex_app.API.Services
             string otp = GenerateOtp();
             var expirationTime = DateTime.UtcNow.AddMinutes(5);  // OTP expires in 5 minutes
 
-            // Delete any existing OTP for the email
+            // Fetch the existing OTP for the email
             var existingOtp = await _context.UserOtp
                 .Where(u => u.Email == userEmail)
                 .FirstOrDefaultAsync(); // Get the first record that matches the email, regardless of expiration or verification
 
             if (existingOtp != null)
             {
-                // If an OTP exists, delete the old OTP record
-                _context.UserOtp.Remove(existingOtp);
-                await _context.SaveChangesAsync();  // Save changes (delete old OTP)
+                // Only delete the OTP record if TwoFaEnabled is true
+                if (existingOtp.TwoFaEnabled)
+                {
+                    _context.UserOtp.Remove(existingOtp); // Remove the old OTP record if TwoFaEnabled is true
+                    await _context.SaveChangesAsync();  // Save changes (delete old OTP)
+                }
             }
 
             // Create a new OTP record
@@ -62,6 +65,7 @@ namespace intex_app.API.Services
 
             await _emailSender.SendEmailAsync(userEmail, subject, content);  // Send email
         }
+
 
 
         // Verify OTP
