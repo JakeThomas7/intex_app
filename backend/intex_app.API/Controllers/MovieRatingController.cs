@@ -18,6 +18,7 @@ public class MovieRatingController : ControllerBase
     }
 
     [HttpPost("MakeRating")]
+    [Authorize]
     public IActionResult MakeRating([FromBody] MovieRatingDto movieRating)
     {
         if (movieRating == null)
@@ -60,6 +61,7 @@ public class MovieRatingController : ControllerBase
     }
 
     [HttpPost("GetMovieDetailsPage/{movieId}")]
+    [Authorize]
     public IActionResult GetMovieDetailsPage(string movieId, [FromBody] string email)
     {
         // Fetch movie details with genres and average rating

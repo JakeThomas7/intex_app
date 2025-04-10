@@ -21,6 +21,7 @@ public class MoviesController : ControllerBase
 
     // GET: /Movies/GetMovies
     [HttpGet("GetMovies")]
+    [Authorize]
     public async Task<IActionResult> GetMovies(
         [FromQuery] int pageSize = 10,
         [FromQuery] int pageNum = 1,
