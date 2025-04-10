@@ -39,3 +39,41 @@ export const getItemContentRecommender = async (
   const data = await response.json();
   return data;
 };
+
+export const getSimilarUserRecommender = async (
+  UserId: number
+): Promise<Movie[]> => {
+  const response = await fetch(
+    `${API_URL}/Recommender/SimilarUser?id=${encodeURIComponent(UserId)}`,
+    {
+      method: 'GET',
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to get Similar User Recommender');
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const getUserDemographicRecommender = async (
+  UserId: number
+): Promise<Movie[]> => {
+  const response = await fetch(
+    `${API_URL}/Recommender/UserDemographic?id=${encodeURIComponent(UserId)}`,
+    {
+      method: 'GET',
+      credentials: 'include',
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to get User Demographic Recommender');
+  }
+
+  const data = await response.json();
+  return data;
+};

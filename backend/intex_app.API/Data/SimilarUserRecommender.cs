@@ -2,10 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace intex_app.API.Data;
 
-public class Recommender
+public class SimilarUserRecommender
 {
     [Key]
-    public string ShowId { get; set; }
+    public byte UserId { get; set; }
     public string RecId1 { get; set; }
     public string RecId2 { get; set; }
     public string RecId3 { get; set; }
