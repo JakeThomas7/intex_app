@@ -16,7 +16,7 @@ namespace intex_app.API.Controllers
         {
             _context = context;
         }
-        
+
         [HttpGet]
         public IActionResult GetMovieUsers()
         {

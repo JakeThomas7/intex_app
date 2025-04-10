@@ -17,18 +17,34 @@ namespace intex_app.API.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly TwoFactorAuthService _twoFactorAuthService; // Inject TwoFactorAuthService
-
-        public IdentityController(UserIdentityDbContext temp, SignInManager<User> signInManager, UserManager<User> userManager, TwoFactorAuthService twoFactorAuthService)
+        private readonly IConfiguration _config;
+        
+        public IdentityController(UserIdentityDbContext temp, SignInManager<User> signInManager, UserManager<User> userManager, TwoFactorAuthService twoFactorAuthService, IConfiguration config)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _twoFactorAuthService = twoFactorAuthService; // Initialize the service
+            _config = config;
+        }
+
+        [HttpGet("getSecretKeys")]
+        public IActionResult GetSecretKeys()
+        {
+            var dbConnection = _config.GetConnectionString("DBConnection");
+            var identityConnection = _config.GetConnectionString("IdentityConnection");
+            
+            return Ok(new
+            {
+                DBConnection = dbConnection,
+                IdentityConnection = identityConnection,
+                SendGridApiKey = _config["SendGridApiKey"]
+            });
         }
 
         [HttpGet("getTest")]
         public IActionResult GetTest()
         {
-            return Ok(new { message = "Test Successful. 04/09 12:04" });
+            return Ok(new { message = "Test Successful. 04/10 12:49" });
         }
 
         [HttpPost("logout")]
