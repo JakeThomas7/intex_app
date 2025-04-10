@@ -30,8 +30,8 @@ namespace intex_app.API.Controllers
         [HttpGet("getSecretKeys")]
         public IActionResult GetSecretKeys()
         {
-            var dbConnection = _config.GetConnectionString("DBConnection");
-            var identityConnection = _config.GetConnectionString("IdentityConnection");
+            var dbConnection = _config.GetConnectionString("DbConnection");
+            var identityConnection = _config.GetConnectionString("IdentityDbConnection");
             
             return Ok(new
             {
