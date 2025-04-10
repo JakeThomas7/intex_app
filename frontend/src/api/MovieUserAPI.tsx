@@ -5,6 +5,8 @@ const API_URL = 'https://api2.byjacobthomas.com'
 
 export const addMovieUser = async(movieUser : MovieUser) => {
 
+    console.log(movieUser)
+    console.log(JSON.stringify(movieUser))
 
     const response = await fetch(`${API_URL}/MovieUser/UpsertMovieUser`, {
         method: 'POST',

@@ -56,8 +56,10 @@ const JoinForm = () => {
                 const movieUserData = {
                     email: form.Email
                 }
-                await addMovieUser(movieUserData)
+                console.log(movieUserData)
                 await register(form.Email, form.Password);
+
+                await addMovieUser(movieUserData)
                 await login(form.Email, form.Password, false)
                 
                 console.log('SENDING 2 FACTOR AUTH')
