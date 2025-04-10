@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchHeadlines } from "../../api/HeadlinesAPI";
 import Headline from "../../types/Headline";
-import image from '../../assets/interstellar.jpg';
+import image from '../../assets/TV.jpg';
 import '../../styles/home/SiteWidget.css'; // Your CSS file
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
