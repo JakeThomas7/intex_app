@@ -49,7 +49,7 @@ const SearchResults = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
-    //const navigate = useNavigate();
+
 
      // Chunk movies into groups of 8
     const movieChunks = useMemo(() => {

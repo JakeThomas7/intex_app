@@ -3,6 +3,7 @@
 import Genre from "../types/Genre";
 import Movie from "../types/Movie";
 
+
 const API_URL = 'https://api2.byjacobthomas.com';
 //const API_URL = 'https://localhost:5000';
 
