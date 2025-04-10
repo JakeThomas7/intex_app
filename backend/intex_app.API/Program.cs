@@ -22,7 +22,10 @@ builder.Services.AddDbContext<UserIdentityDbContext>(options =>
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddIdentityApiEndpoints<User>()
+builder.Services.AddIdentityApiEndpoints<User>(options =>
+    {
+        options.SignIn.RequireConfirmedEmail = false;
+    })
     .AddRoles<IdentityRole>() // For role based authentication
     .AddEntityFrameworkStores<UserIdentityDbContext>()
     .AddDefaultTokenProviders();
@@ -45,7 +48,7 @@ builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, CustomUserClaimsPr
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    //options.Cookie.Domain = ".byjacobthomas.com";
+    options.Cookie.Domain = ".byjacobthomas.com";
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.None;
     options.LoginPath = "/login";

@@ -36,17 +36,31 @@ const LoginForm = () => {
     setIsLoading(true);
 
     try {
+      // 1. First try login
+      console.log('LOGING USER IN')
       await login(formData.email, formData.password, formData.rememberMe);
-      //localStorage.setItem('authToken', data.token);
-      await sendOtp(formData.email);
+      
+      console.log('SENDING 2 FACTOR AUTH')
+      // 2. Only if login succeeds, proceed with OTP flow
+      try {
+        await sendOtp(formData.email);
+      } catch (otpError) {
+        // Still navigate even if OTP fails, but show error
+        setError((otpError as Error).message);
+      }
+      
+      console.log('REDIRECTING TO MFA')
+      // 3. Navigate regardless of OTP success (but only if login succeeded)
       navigate('/mfa', {
         state: { email: formData.email, type: 'login' }
       });
-    } catch (err) {
-      setError((err as Error).message);
+    
+    } catch (loginError) {
+      setError((loginError as Error).message);
     } finally {
       setIsLoading(false);
     }
+    
   };
 
   return (

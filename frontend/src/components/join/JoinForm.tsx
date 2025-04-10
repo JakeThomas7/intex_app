@@ -49,12 +49,28 @@ const JoinForm = () => {
             setIsLoading(true);
 
             try {
+
+                // 1. First try login
+                console.log('LOGING USER IN')
                 await register(form.Email, form.Password);
                 await login(form.Email, form.Password, false)
-                await sendOtp(form.Email);
+                
+                console.log('SENDING 2 FACTOR AUTH')
+                // 2. Only if login succeeds, proceed with OTP flow
+                try {
+                    await sendOtp(form.Email);
+                } catch (otpError) {
+                    // Still navigate even if OTP fails, but show error
+                    setError((otpError as Error).message);
+                }
+                
+                console.log('NAVIGATING TO MFA')
+                // 3. Navigate regardless of OTP success (but only if login succeeded)
                 navigate('/mfa', {
-                    state: { email: form.Email, type: 'login' }
+                    state: { email: form.Email, type: 'join' }
                 });
+
+
             } catch (err) {
                 setError((err as Error).message);
             } finally {

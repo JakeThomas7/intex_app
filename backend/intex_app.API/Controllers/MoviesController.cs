@@ -25,7 +25,7 @@ public class MoviesController : ControllerBase
         [FromQuery] int pageSize = 10,
         [FromQuery] int pageNum = 1,
         [FromQuery] string? search = null,
-        [FromQuery] string? genre = null)
+        [FromQuery] string[]? genre = null)
     {
         // Validate page size
         const int maxPageSize = 100;
@@ -42,11 +42,22 @@ public class MoviesController : ControllerBase
         }
 
 
-        if (!string.IsNullOrWhiteSpace(genre))
+        if (genre != null && genre.Length > 0)
         {
+            // First filter movies that have ANY of the selected genres
             query = query
-                .Where(m => m.MovieGenres
-                    .Any(mg => mg.Genre.GenreName == genre));
+                .Where(m => m.MovieGenres.Any(mg => genre.Contains(mg.Genre.GenreName)))
+                // Then add a computed column for sorting by match count
+                .Select(m => new 
+                {
+                    Movie = m,
+                    MatchCount = m.MovieGenres.Count(mg => genre.Contains(mg.Genre.GenreName))
+                })
+                // Sort by most matches first, then by other criteria (e.g. release year)
+                .OrderByDescending(x => x.MatchCount)
+                .ThenBy(x => x.Movie.ReleaseYear)
+                // Finally project back to just the movie
+                .Select(x => x.Movie);
         }
 
         // Get total count before pagination
@@ -54,7 +65,7 @@ public class MoviesController : ControllerBase
 
         // Apply ordering and pagination
         var movies = await query
-            .OrderBy(m => m.ReleaseYear)
+            .OrderByDescending(m => m.ReleaseYear)
             .Skip((pageNum - 1) * pageSize)
             .Take(pageSize)
             .Select(m => new

@@ -3,13 +3,13 @@ import { useLocation } from 'react-router-dom';
 import Navbar from '../components/all_pages/Navbar';
 import Carousel from '../components/shop/Carousel';
 import '../styles/DetailsPage.css';
-import placeholder from '../assets/sanddust.jpg';
+//import placeholder from '../assets/sanddust.jpg';
 import Movie from '../types/Movie';
 import SimpleFooter from '../components/all_pages/SimpleFooter';
 import { getItemHybridRecommender } from '../api/RecommenderAPI';
 // import { useAuth } from '../components/context/AuthContext';
 import { submitRating } from '../api/MoviesAPI';
-import { useAuth } from '../components/context/AuthContext';
+//import { useAuth } from '../components/context/AuthContext';
 
 const API_URL = 'https://api2.byjacobthomas.com';
 
@@ -28,11 +28,11 @@ const DetailsPage = () => {
   const [loading, setLoading] = useState(!initialMovie);
   const [selectedRating, setSelectedRating] = useState<number>(0);
   const [recommendations, setRecommendations] = useState<CarouselMovie[]>([]);
-  const [averageRating, setAverageRating] = useState<number>(0);
+  //const [averageRating, setAverageRating] = useState<number>(0);
   const [userRating, setUserRating] = useState<number | null>(null);
   const [userId, setUserId] = useState<number | null>(null); // ✅ added
 
-  const { user } = useAuth();
+  //const { user } = useAuth();
 
   const handleSubmitRating = async () => {
     if (!movie?.showId || !selectedRating || userId === null) return;
@@ -92,7 +92,7 @@ const DetailsPage = () => {
           if (!response.ok) throw new Error('Failed to fetch rating data');
 
           const result = await response.json();
-          setAverageRating(result.Movie.AverageRating);
+          //setAverageRating(result.Movie.AverageRating);
           setUserRating(result.UserRating);
           setUserId(result.User.UserId); // ✅ capture user ID
         } catch (err) {
@@ -235,9 +235,9 @@ const DetailsPage = () => {
                   className="btn btn-primary"
                   onClick={() => {
                     handleSubmitRating();
-                    const modalElement = document.getElementById("ratingModal");
-                    const modalInstance = window.bootstrap?.Modal.getInstance(modalElement!);
-                    modalInstance?.hide();
+                    //const modalElement = document.getElementById("ratingModal");
+                    //const modalInstance = window.bootstrap?.Modal.getInstance(modalElement!);
+                   // modalInstance?.hide();
                   }}
                 >
                   Submit
