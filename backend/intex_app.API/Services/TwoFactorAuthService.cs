@@ -116,6 +116,8 @@ namespace intex_app.API.Services
                 return false; // No entry found
             }
 
+            Console.WriteLine($"TwoFaEnabled for {userEmail}: {userOtp.TwoFaEnabled}"); // Add logging here
+
             return userOtp.TwoFaEnabled; // Return the value of TwoFaEnabled
         }
 
