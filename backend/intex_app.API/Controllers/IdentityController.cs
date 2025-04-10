@@ -47,7 +47,7 @@ namespace intex_app.API.Controllers
         [HttpGet("getTest")]
         public IActionResult GetTest()
         {
-            return Ok(new { message = "Test Successful. 04/10 9:30" });
+            return Ok(new { message = "Test Successful. 04/10 12:22" });
         }
 
         [HttpPost("logout")]
@@ -78,7 +78,7 @@ namespace intex_app.API.Controllers
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                //Domain = ".byjacobthomas.com"
+                Domain = ".byjacobthomas.com"
             });
 
             return Ok(new { message = "Logout successful" });
