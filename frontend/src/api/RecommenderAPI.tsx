@@ -1,7 +1,7 @@
 import Movie from '../types/Movie';
 
-const API_URL = 'https://api2.byjacobthomas.com';
-// const API_URL = 'https://localhost:5000';
+// const API_URL = 'https://api2.byjacobthomas.com';
+const API_URL = 'https://localhost:5000';
 export const getItemHybridRecommender = async (
   showId: string
 ): Promise<Movie[]> => {
