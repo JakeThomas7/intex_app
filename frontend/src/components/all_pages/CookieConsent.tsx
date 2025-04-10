@@ -1,35 +1,66 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 const CookieConsent = () => {
-  const [showBanner, setShowBanner] = useState(false);
+  const [showConsent, setShowConsent] = useState(false);
+
 
   useEffect(() => {
-    // Check if consent has already been given
-    const consentGiven = localStorage.getItem("cookieConsent");
-    if (!consentGiven) {
-      setShowBanner(true);
+    // Only show consent banner if cookie preference not set
+    if (!Cookies.get('cookie_consent')) {
+      setShowConsent(true);
     }
   }, []);
 
-  const acceptCookies = () => {
-    // Store consent in local storage
-    localStorage.setItem("cookieConsent", "true");
-    setShowBanner(false);
+  const handleAccept = () => {
+    Cookies.set('cookie_consent', 'accepted', { 
+      expires: 180, // 6 months
+      sameSite: 'Lax'
+    });
+    setShowConsent(false);
   };
 
-  if (!showBanner) return null; // Hide if already accepted
+  const handleDeny = () => {
+    Cookies.set('cookie_consent', 'denied', { 
+      expires: 30, // 1 month
+      sameSite: 'Lax'
+    });
+    // Remove any existing tracking cookies
+    Cookies.remove('clicked_movies');
+    setShowConsent(false);
+  };
+
+  if (!showConsent) return null;
 
   return (
     <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 9999 }}>
-      <div className="card shadow-lg g-primary" style={{ maxWidth: "400px" }}>
+      <div className="card shadow-lg border-primary" style={{ maxWidth: "400px" }}>
         <div className="card-body">
-          <h5 className="card-title">Cookie Consent</h5>
-          <p className="card-text">
-            We use cookies to improve your experience. By continuing, you accept our use of cookies.
+          <h5 className="card-title">We Value Your Privacy</h5>
+          <p className="card-text small">
+            We use cookies to remember which movies you've shown interest in, 
+            helping us suggest content you'll love. You can manage your 
+            preferences at any time.
           </p>
-          <button className="btn btn-primary text-white w-100 grow-sm" onClick={acceptCookies}>
-            Accept
-          </button>
+          <div className="d-flex gap-2">
+            <button 
+              className="btn btn-primary flex-grow-1" 
+              onClick={handleAccept}
+            >
+              Accept
+            </button>
+            <button 
+              className="btn btn-outline-secondary flex-grow-1" 
+              onClick={handleDeny}
+            >
+              Deny
+            </button>
+          </div>
+          <p className="text-muted mt-2 me-2 mb-0 small">
+            <a href="/privacy" className="text-decoration-none">
+              Learn more in our Privacy Policy
+            </a>
+          </p>
         </div>
       </div>
     </div>

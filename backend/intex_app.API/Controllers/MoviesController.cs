@@ -25,7 +25,8 @@ public class MoviesController : ControllerBase
         [FromQuery] int pageSize = 10,
         [FromQuery] int pageNum = 1,
         [FromQuery] string? search = null,
-        [FromQuery] string[]? genre = null)
+        [FromQuery] string[]? genre = null,
+        [FromQuery] string? sort = )
     {
         // Validate page size
         const int maxPageSize = 100;
