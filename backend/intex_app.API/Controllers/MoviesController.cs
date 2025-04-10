@@ -26,7 +26,7 @@ public class MoviesController : ControllerBase
         [FromQuery] int pageNum = 1,
         [FromQuery] string? search = null,
         [FromQuery] string[]? genre = null,
-        [FromQuery] string? sort = )
+        [FromQuery] string? sort = null)
     {
         // Validate page size
         const int maxPageSize = 100;
@@ -204,6 +204,7 @@ public class MoviesController : ControllerBase
     }
 
     [HttpGet("GetGenres")]
+    [Authorize]
     public IActionResult GetGenres()
     {
         var categories = _context.Genres.ToList();
