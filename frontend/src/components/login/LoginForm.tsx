@@ -43,7 +43,7 @@ const LoginForm = () => {
       console.log('SENDING 2 FACTOR AUTH')
       // 2. Only if login succeeds, proceed with OTP flow
       try {
-        await sendOtp(formData.email);
+      await sendOtp(formData.email)
       } catch (otpError) {
         // Still navigate even if OTP fails, but show error
         setError((otpError as Error).message);
@@ -104,7 +104,7 @@ const LoginForm = () => {
             />
             <input 
               type={isPasswordVisible ? "text" : "password"} // Dynamically set type
-              className="form-control ps-5 bg-dark text-white" 
+              className="form-control ps-5 bg-dark" 
               id="password" 
               placeholder="Enter your password..." 
               value={formData.password}
