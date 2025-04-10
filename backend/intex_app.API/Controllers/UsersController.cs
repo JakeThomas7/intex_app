@@ -210,7 +210,6 @@ public class UsersController : ControllerBase
         if (otpsToDelete.Any())
         {
             _identityContext.UserOtp.RemoveRange(otpsToDelete);
-            await _identityContext.SaveChangesAsync(); // Delete all matching records
         }
 
         // 6. Save all changes to the database
