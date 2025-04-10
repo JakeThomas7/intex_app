@@ -104,5 +104,20 @@ namespace intex_app.API.Services
             // If a valid, verified OTP is found, return true, else return false
             return userOtp != null;
         }
+        
+        public async Task<bool> CheckTwoFaEnabledAsync(string userEmail)
+        {
+            var userOtp = await _context.UserOtp
+                .Where(u => u.Email == userEmail)
+                .FirstOrDefaultAsync();
+
+            if (userOtp == null)
+            {
+                return false; // No entry found
+            }
+
+            return userOtp.TwoFaEnabled; // Return the value of TwoFaEnabled
+        }
+
     }
 }
