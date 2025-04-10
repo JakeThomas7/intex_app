@@ -200,7 +200,17 @@ public class UsersController : ControllerBase
         }
         catch (Exception ex)
         {
+            
+        }
 
+        var otpsToDelete = await _identityContext.UserOtp
+            .Where(u => u.Email == user.Email)
+            .ToListAsync();
+
+        if (otpsToDelete.Any())
+        {
+            _identityContext.UserOtp.RemoveRange(otpsToDelete);
+            await _identityContext.SaveChangesAsync(); // Delete all matching records
         }
 
         // 6. Save all changes to the database
