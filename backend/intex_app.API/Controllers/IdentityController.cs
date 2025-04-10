@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using intex_app.API.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
@@ -18,13 +19,15 @@ namespace intex_app.API.Controllers
         private readonly UserManager<User> _userManager;
         private readonly TwoFactorAuthService _twoFactorAuthService; // Inject TwoFactorAuthService
         private readonly IConfiguration _config;
-        
+        private readonly UserIdentityDbContext _context;
+
         public IdentityController(UserIdentityDbContext temp, SignInManager<User> signInManager, UserManager<User> userManager, TwoFactorAuthService twoFactorAuthService, IConfiguration config)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _twoFactorAuthService = twoFactorAuthService; // Initialize the service
             _config = config;
+            _context = temp;
         }
 
         [HttpGet("getSecretKeys")]
@@ -44,28 +47,45 @@ namespace intex_app.API.Controllers
         [HttpGet("getTest")]
         public IActionResult GetTest()
         {
-            return Ok(new { message = "Test Successful. 04/10 12:49" });
+            return Ok(new { message = "Test Successful. 04/10 9:30" });
         }
 
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+            var email = User.FindFirstValue(ClaimTypes.Email);
 
-            // Ensure authentication cookie is removed
+            if (!string.IsNullOrEmpty(email))
+            {
+                // Find any verified OTP entries for this user
+                var verifiedOtps = await _context.UserOtp
+                    .Where(u => u.Email == email && u.IsVerified)
+                    .ToListAsync();
+
+                // Set them back to unverified
+                foreach (var otp in verifiedOtps)
+                {
+                    otp.IsVerified = false;
+                }
+
+                await _context.SaveChangesAsync();
+            }
+
+            // Remove authentication cookie
             Response.Cookies.Delete(".AspNetCore.Identity.Application", new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                Domain = ".byjacobthomas.com"
+                //Domain = ".byjacobthomas.com"
             });
 
             return Ok(new { message = "Logout successful" });
         }
 
         [HttpGet("pingauth")]
-        [Authorize] // Ensure the endpoint requires authentication
+        // Ensure the endpoint requires authentication
         public async Task<IActionResult> PingAuth()
         {
             // Get email from claims

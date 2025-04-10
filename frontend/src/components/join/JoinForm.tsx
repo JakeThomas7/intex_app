@@ -61,6 +61,8 @@ const JoinForm = () => {
 
                 await addMovieUser(movieUserData)
                 await login(form.Email, form.Password, false)
+
+                
                 
                 console.log('SENDING 2 FACTOR AUTH')
                 // 2. Only if login succeeds, proceed with OTP flow
