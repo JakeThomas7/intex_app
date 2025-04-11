@@ -1,34 +1,41 @@
-import { useNavigate } from 'react-router-dom'; // Import the navigate hook
+import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 
 const ImageSection = () => {
-  const navigate = useNavigate(); // Initialize the navigate hook
-  const siteWidgetRef = useRef<HTMLDivElement | null>(null); // Use a ref for SiteWidget
+  const navigate = useNavigate();
+  const siteWidgetRef = useRef<HTMLDivElement | null>(null);
 
   const handleStartStreaming = () => {
-    navigate('/login'); // Redirects to the login page
+    navigate('/login');
   };
 
   return (
     <div className="section-padding image-section" id="imageSection">
       <br />
       <br />
-      <h1 className="display-5 fw-bold">
+      <h1
+        className="display-5 fw-bold"
+        style={{
+          color: 'white',
+          textShadow: '2px 2px 8px rgba(0, 0, 0, 0.75)', // just a shadow for visibility
+          maxWidth: '100%',
+        }}
+      >
         Stream Your Next Favorite Show Anytime
       </h1>
-      <div className="col-lg-6">
+
+      <div className="col-lg-6 mt-4">
         <div className="d-grid gap-2 d-sm-flex">
           <button
             type="button"
             className="btn btn-light text-dark btn-lg px-4 gap-3 grow-sm"
-            onClick={handleStartStreaming} // Add onClick to redirect to login page
+            onClick={handleStartStreaming}
           >
             Start Streaming
           </button>
         </div>
       </div>
 
-      {/* SiteWidget Section */}
       <div ref={siteWidgetRef} id="SiteWidget">
         {/* SiteWidget content goes here */}
       </div>
