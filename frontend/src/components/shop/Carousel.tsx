@@ -33,6 +33,8 @@ const Carousel = ({
 
   // console.log(scrollDistance);
 
+  scrollDistance
+
   useEffect(() => {
     const updateDimensions = () => {
       if (carouselRef.current) {

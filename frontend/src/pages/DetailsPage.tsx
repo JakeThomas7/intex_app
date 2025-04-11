@@ -96,6 +96,8 @@ const DetailsPage = () => {
       const response = await submitRating(userId, movie.showId, selectedRating);
       const data = await response.json(); // Parse the JSON response
 
+      data;
+
       // console.log(data.message); // Log the response message (e.g., "Rating saved successfully.")
 
       window.location.reload(); // This reloads the page, fetching fresh data from the backend
