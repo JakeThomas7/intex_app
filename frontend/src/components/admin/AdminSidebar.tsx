@@ -63,7 +63,7 @@ const AdminSidebar = ({
       <hr />
       <div className="nav nav-pills flex-column">
         <div className="nav-item">
-          <NavLink to="/" end className="ps-2 nav-link">
+          <NavLink to="/browse" end className="ps-2 nav-link">
             <i className="fa-solid fa-right-from-bracket me-2 fa-rotate-180"></i>
             Back
           </NavLink>
