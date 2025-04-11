@@ -131,6 +131,7 @@ const AdminAddTitlePage = () => {
               </label>
               <input
                 type="text"
+                maxLength={20}
                 className="form-control"
                 id="title"
                 required
@@ -144,6 +145,7 @@ const AdminAddTitlePage = () => {
               </label>
               <input
                 type="text"
+                maxLength={10}
                 className="form-control"
                 value={isMovie ? 'Movie' : isShow ? 'TV Show' : 'Other'}
                 disabled
@@ -157,6 +159,7 @@ const AdminAddTitlePage = () => {
               <textarea
                 className="form-control"
                 id="description"
+                maxLength={450}
                 rows={3}
                 required
                 onChange={handleChange}
@@ -181,6 +184,7 @@ const AdminAddTitlePage = () => {
                   type="text"
                   className="form-control"
                   id="director"
+                  maxLength={100}
                   onChange={handleChange}
                 />
               </div>
@@ -193,6 +197,7 @@ const AdminAddTitlePage = () => {
                   className="form-control"
                   id="cast"
                   rows={4}
+                  maxLength={250}
                   onChange={handleChange}
                   placeholder="Comma separated list"
                 />
@@ -204,6 +209,7 @@ const AdminAddTitlePage = () => {
                 </label>
                 <input
                   type="text"
+                  maxLength={50}
                   className="form-control"
                   id="country"
                   onChange={handleChange}
@@ -251,6 +257,7 @@ const AdminAddTitlePage = () => {
                   type="text"
                   className="form-control"
                   id="rating"
+                  maxLength={20}
                   required
                   onChange={handleChange}
                 />
@@ -265,6 +272,8 @@ const AdminAddTitlePage = () => {
                     type="number"
                     className="form-control"
                     id="duration"
+                    min={0}
+                    max={2000}
                     required
                     onChange={(e) => handleDurationChange(e.target.value)}
                   />
@@ -280,6 +289,8 @@ const AdminAddTitlePage = () => {
                     type="number"
                     className="form-control"
                     id="seasons"
+                    min={0}
+                    max={2000}
                     required
                     onChange={(e) => handleDurationChange(e.target.value)}
                   />
@@ -295,6 +306,7 @@ const AdminAddTitlePage = () => {
                     type="text"
                     className="form-control"
                     id="duration"
+                    maxLength={20}
                     placeholder="e.g., 2h 30m"
                     required
                     onChange={(e) => handleDurationChange(e.target.value)}

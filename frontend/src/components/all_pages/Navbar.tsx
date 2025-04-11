@@ -13,6 +13,7 @@ const NavBar = () => {
           className="navbar-brand grow righteous-title"
           onClick={() => navigate(isAuth ? '/browse' : '/')}
         >
+          <i className="fa-solid fa-clapperboard me-2"></i>
           CineNiche
         </a>
         <div
