@@ -35,7 +35,7 @@ const ChatbotPage = () => {
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
-          Authorization: `Bearer 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`,
+          Authorization: ``,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
