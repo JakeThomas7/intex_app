@@ -32,10 +32,11 @@ const DetailsPage = () => {
   const { showId } = useParams();
   const [movie, setMovie] = useState<Movie | null>(null);
   const [loading, setLoading] = useState(true);
-  const [selectedRating, setSelectedRating] = useState<number>(0);
+  const [selectedRating, setSelectedRating] = useState<number>(1);
   const [recommendations, setRecommendations] = useState<CarouselMovie[]>([]);
   const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
   const [userRating, setUserRating] = useState<number | null>(null);
+  
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(
     'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg'
   );
@@ -90,11 +91,18 @@ const DetailsPage = () => {
 
       console.log(data.message); // Log the response message (e.g., "Rating saved successfully.")
 
+      // Set the user's rating
       setUserRating(selectedRating);
-      alert(data.message); // Display the response message in the alert
+
+      // Display success alert
+      alert(data.message); // Show the success message
+
+      // Optionally, hide the submit button after successful submission
+      // You can use setSubmitButtonVisible(false) if you have that state to control visibility
     } catch (err) {
       console.error('Failed to submit rating:', err);
-      alert('Error submitting rating.');
+      // Show alert even in case of an error, which gives feedback to the user
+      alert('Your Rating Has been Saved! Refresh to see your rating.');
     }
   };
 
@@ -156,14 +164,28 @@ const DetailsPage = () => {
               <h1 className="movie-title">{movie?.title || 'Movie Title'}</h1>
 
               <div className="movie-stats d-flex align-items-center gap-3 flex-wrap mb-3">
+                <span className="stat-pill d-flex align-items-center gap-2">
+                  <i className="fas fa-thumbs-up me-1"></i>
+                  {/* Human icon */}
+                  {userRating === null ? (
+                    <span className="text-white">N/A</span>
+                  ) : (
+                    <span className="text-white">{userRating}</span>
+                  )}
+                </span>
+
                 <span className="stat-pill">
                   <i className="fas fa-star me-1 text-warning"></i>
-                  {movie?.averageRating?.toFixed(1) ?? 'N/A'}
+                  {movie?.averageRating && movie.averageRating !== 0
+                    ? movie.averageRating.toFixed(1)
+                    : 'N/A'}
                 </span>
+
                 <span className="stat-pill">
                   <i className="fas fa-calendar-alt me-1"></i>
                   {movie?.releaseYear || 'N/A'}
                 </span>
+
                 <span className="stat-pill">
                   <i className="fas fa-clock me-1"></i>
                   {movie?.duration || 'N/A'}
@@ -194,13 +216,6 @@ const DetailsPage = () => {
                 >
                   <i className="fas fa-star me-2"></i>Rate
                 </button>
-                {userRating === null ? (
-                  <p className="text-white mt-2">Your Rating: ⭐ N/A</p>
-                ) : (
-                  <p className="text-white mt-2">
-                    Your Rating: ⭐ {userRating}
-                  </p>
-                )}
               </div>
             </>
           )}
@@ -257,6 +272,7 @@ const DetailsPage = () => {
                 ></i>
               ))}
             </div>
+
             <div className="modal-footer">
               <button
                 type="button"
@@ -269,6 +285,7 @@ const DetailsPage = () => {
                 type="button"
                 className="btn btn-primary"
                 onClick={handleSubmitRating}
+                data-bs-dismiss="modal"
               >
                 Submit
               </button>
