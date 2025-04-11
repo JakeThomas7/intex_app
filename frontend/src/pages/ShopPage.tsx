@@ -66,7 +66,7 @@ const ShopPage = () => {
 
         setSimilarUserRecs(mapped);
       } catch (error) {
-        // console.error('Error fetching similar user recommendations:', error);
+         console.error('Error fetching similar user recommendations:', error);
       }
     };
 
