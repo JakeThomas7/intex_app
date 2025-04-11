@@ -4,7 +4,7 @@ import Headline from "../../types/Headline";
 import image from '../../assets/TV.jpg';
 import '../../styles/home/SiteWidget.css'; // Your CSS file
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; 
 
 const SiteWidget = () => {
   const [headlines, setHeadlines] = useState<Headline[]>([]);

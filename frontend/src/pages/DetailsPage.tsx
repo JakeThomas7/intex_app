@@ -14,7 +14,7 @@ interface CarouselMovie {
   imagePath: string;
   year: number;
   rank: number;
-  id: string;
+  showId: string;
 }
 
 // ✅ Sanitize the movie title for URLs
@@ -110,7 +110,7 @@ const DetailsPage = () => {
             : 'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg',
           year: m.releaseYear ?? 0,
           rank: idx + 1,
-          id: m.showId ?? `unknown-${idx}`,
+          showId: m.showId ?? `unknown-${idx}`,
         }));
         setRecommendations(mapped);
       } catch (error) {
