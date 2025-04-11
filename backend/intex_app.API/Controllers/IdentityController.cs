@@ -35,19 +35,19 @@ namespace intex_app.API.Controllers
             _identityContext = temp;
         }
 
-        [HttpGet("getSecretKeys")]
-        public IActionResult GetSecretKeys()
-        {
-            var dbConnection = _config.GetConnectionString("DbConnection");
-            var identityConnection = _config.GetConnectionString("IdentityDbConnection");
+        // [HttpGet("getSecretKeys")]
+        // public IActionResult GetSecretKeys()
+        // {
+        //     var dbConnection = _config.GetConnectionString("DbConnection");
+        //     var identityConnection = _config.GetConnectionString("IdentityDbConnection");
             
-            return Ok(new
-            {
-                DbConnection = dbConnection,
-                IdentityDbConnection = identityConnection,
-                SendGridApiKey = _config["SendGridApiKey"]
-            });
-        }
+        //     return Ok(new
+        //     {
+        //         DbConnection = dbConnection,
+        //         IdentityDbConnection = identityConnection,
+        //         SendGridApiKey = _config["SendGridApiKey"]
+        //     });
+        // }
 
         [HttpGet("getTest")]
         public IActionResult GetTest()

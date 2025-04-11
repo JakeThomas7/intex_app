@@ -17,6 +17,7 @@ namespace intex_app.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetMovieUsers()
         {
             var users = _context.MovieUsers.ToList();
@@ -59,6 +60,7 @@ namespace intex_app.API.Controllers
         }
         
         [HttpPost("UpsertMovieUser")]
+        [Authorize]
         public async Task<IActionResult> UpsertMovieUser([FromBody] CreateMovieUserDto userDto)
         {
             try
