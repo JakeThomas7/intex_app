@@ -1,4 +1,5 @@
 {
-    "appService.defaultWebAppToDeploy": "/subscriptions/6944bd8f-a941-42b6-8db8-14dcbd2da134/resourceGroups/appsvc_windows_westus2/providers/Microsoft.Web/sites/INTEXBackend",
-    "appService.deploySubpath": "backend/intex_app.API/publish"
+  "appService.defaultWebAppToDeploy": "/subscriptions/6944bd8f-a941-42b6-8db8-14dcbd2da134/resourceGroups/appsvc_windows_westus2/providers/Microsoft.Web/sites/INTEXBackend",
+  "appService.deploySubpath": "backend/intex_app.API/publish",
+  "idf.pythonInstallPath": "/opt/homebrew/bin/python3"
 }

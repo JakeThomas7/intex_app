@@ -1,0 +1,71 @@
+.hero-video-container {
+  position: relative;
+  height: 70vh; /* Adjust height as needed */
+  z-index: 0; /* Ensures the video container is at the bottom */
+}
+
+.hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1; /* Keeps the video in the background */
+}
+
+.hero-content {
+  position: absolute;
+  top: -30px;
+  left: 200px; /* Move it more to the left by decreasing the value */
+  width: 70%; /* Right third of the screen */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align content to the left */
+  justify-content: center;
+  color: white;
+  padding: 2rem;
+  z-index: 2; /* Ensure content is above the video */
+}
+
+.hero-text {
+  text-align: left;
+}
+
+.hero-header {
+  font-size: 100px;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+  margin-bottom: 1rem;
+  font-family: righteous;
+  z-index: 3; /* Ensure the header is above other content */
+}
+
+.hero-text p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  z-index: 3; /* Keep text above other content */
+}
+
+.spin-reel-button {
+  background-color: #071475; /* Custom color for the button */
+  color: white;
+  font-size: 1.1rem;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.3s ease;
+  z-index: 9999; /* Ensure the button is above everything else */
+  position: relative; /* Ensures the button stays in place within its container */
+}
+
+.spin-reel-button:hover {
+  background-color: #0a1b57; /* Darker shade on hover */
+}
+
+.spin-reel-button:active {
+  background-color: #071475; /* Keep the background color when pressed */
+}

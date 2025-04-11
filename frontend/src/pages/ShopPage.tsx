@@ -13,6 +13,7 @@ import {
 } from '../api/RecommenderAPI';
 import Movie from '../types/Movie';
 import SimpleFooter from '../components/all_pages/SimpleFooter';
+import HeroVideo from '../components/shop/HeroVideo';
 
 interface CarouselMovie {
   title: string;
@@ -153,6 +154,7 @@ const ShopPage = () => {
   return (
     <div>
       <Navbar />
+      <HeroVideo />
       <SearchResults
         isSearching={isSearching}
         setIsSearching={setIsSearching}
