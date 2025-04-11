@@ -33,7 +33,7 @@ const DetailsPage = () => {
   const { showId } = useParams();
   const [movie, setMovie] = useState<Movie | null>(null);
   const [loading, setLoading] = useState(true);
-  const [selectedRating, setSelectedRating] = useState<number>(1); // Default to 1
+  const [selectedRating, setSelectedRating] = useState<number>(0);
   const [recommendations, setRecommendations] = useState<CarouselMovie[]>([]);
   const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
   const [userRating, setUserRating] = useState<number | null>(null);
@@ -41,18 +41,21 @@ const DetailsPage = () => {
     'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg'
   );
 
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
   const { user } = useAuth();
   const [userId, setUserId] = useState(user?.userId || null);
 
   useEffect(() => {
     const fetchDetails = async () => {
       if (!showId) return;
+      if (!user?.email) return;
 
       try {
-        const result = await fetchMovieDetailsWithRating(showId);
+        const result = await fetchMovieDetailsWithRating(showId, user?.email);
         setMovie(result.movie); // result should include movie + rating + genres
         setUserRating(result.userRating);
         setUserId(result.user.userId); // This might be redundant
+
       } catch (err) {
         console.error('❌ Error fetching movie details with rating:', err);
       } finally {
@@ -61,7 +64,7 @@ const DetailsPage = () => {
     };
 
     fetchDetails();
-  }, [showId]);
+  }, [showId, refreshTrigger]);
 
   useEffect(() => {
     const fetchTrending = async () => {
@@ -81,6 +84,10 @@ const DetailsPage = () => {
     console.log('movie?.showId:', movie?.showId);
     console.log('selectedRating:', selectedRating);
     console.log('userId:', userId);
+    setRefreshTrigger(prev => {
+      const newValue = prev + 1;
+      return newValue;
+    });
 
     // Check for valid data before submitting
     if (!movie?.showId || !selectedRating || userId === null) return;
@@ -99,7 +106,7 @@ const DetailsPage = () => {
       console.error('Failed to submit rating:', err);
     }
 
-    window.location.reload(); // This reloads the page, fetching fresh data from the backend
+  window.location.reload(); // This reloads the page, fetching fresh data from the backend
   };
 
   useEffect(() => {
@@ -284,6 +291,7 @@ const DetailsPage = () => {
                 className="btn btn-primary"
                 onClick={handleSubmitRating}
                 data-bs-dismiss="modal"
+                disabled={selectedRating === 0}
               >
                 Submit
               </button>

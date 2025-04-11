@@ -29,6 +29,10 @@ const SearchResults = ({isSearching, setIsSearching}: {isSearching: boolean, set
         setIsSearching(hasSearchCriteria);
     }, [selectedGenres, searchQuery, setIsSearching]);
 
+    useEffect(() => {
+        setIsOpen(false)
+    }, [selectedGenres]);
+
     const containerStyle = {
         overflow: "hidden",
         maxHeight: isOpen ? "300px" : "0",

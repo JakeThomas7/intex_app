@@ -120,7 +120,8 @@ export const fetchGenres = async (): Promise<Genre[]> => {
 
 // Fetch movie details including average and user rating
 export const fetchMovieDetailsWithRating = async (
-  showId: string
+  showId: string,
+  email: string
 ): Promise<any> => {
   const response = await fetch(
     `${API_URL}/MovieRating/GetMovieDetailsPage/${showId}`,
@@ -128,7 +129,7 @@ export const fetchMovieDetailsWithRating = async (
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify('patrick59@gmail.com'), // Change to dynamic email later
+      body: JSON.stringify(email), // Change to dynamic email later
     }
   );
 
