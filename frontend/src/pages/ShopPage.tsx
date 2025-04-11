@@ -8,6 +8,7 @@ import SearchResults from '../components/shop/SearchResults';
 import {
   getItemContentRecommender,
   getSimilarUserRecommender,
+  getTopTrendingNow,
   getUserDemographicRecommender,
   getUserTopRatedMovies,
 } from '../api/RecommenderAPI';
@@ -18,12 +19,13 @@ interface CarouselMovie {
   imagePath: string;
   year: number;
   rank: number;
-  id: string;
+  showId: string;
 }
 
 const ShopPage = () => {
   const { user } = useAuth();
-  console.log(user);
+  console.log('User: ', user);
+  const [userId, setUserId] = useState(user?.userId || null); // Assuming userId is available in the user object
   const [similarUserRecs, setSimilarUserRecs] = useState<CarouselMovie[]>([]);
   const [userDemographicRecs, setUserDemographicRecs] = useState<
     CarouselMovie[]
@@ -32,66 +34,22 @@ const ShopPage = () => {
   const [contentRecsByMovie, setContentRecsByMovie] = useState<{
     [movieId: string]: CarouselMovie[];
   }>({});
+  const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
 
-  // Example placeholder data for existing carousels
-  const data = [
-    {
-      description:
-        'Designed for endurance, the Cervélo Caledonia delivers comfort and speed for long-distance rides.',
-    },
-    {
-      description:
-        'Lightweight carbon frame ensures a smooth, responsive ride, even on rough terrain.',
-    },
-    {
-      description:
-        'Relaxed geometry offers an upright position, perfect for riders prioritizing comfort.',
-    },
-    {
-      description:
-        'Wide tire clearance handles everything from smooth roads to gravel paths.',
-    },
-    {
-      description:
-        'Shimano Ultegra Di2 electronic shifting guarantees precise and reliable gear changes.',
-    },
-    {
-      description:
-        'Aerodynamic design and stable handling inspire confidence on descents and climbs.',
-    },
-    {
-      description:
-        'Designed for endurance, the Cervélo Caledonia delivers comfort and speed for long-distance rides.',
-    },
-    {
-      description:
-        'Lightweight carbon frame ensures a smooth, responsive ride, even on rough terrain.',
-    },
-    {
-      description:
-        'Relaxed geometry offers an upright position, perfect for riders prioritizing comfort.',
-    },
-    {
-      description:
-        'Wide tire clearance handles everything from smooth roads to gravel paths.',
-    },
-    {
-      description:
-        'Shimano Ultegra Di2 electronic shifting guarantees precise and reliable gear changes.',
-    },
-    {
-      description:
-        'Aerodynamic design and stable handling inspire confidence on descents and climbs.',
-    },
-  ];
+  useEffect(() => {
+    if (user?.userId) {
+      setUserId(user.userId);
+    } else {
+      setUserId(100);
+    }
+  }, [user]);
 
-  const placeholderId = Math.floor(Math.random() * 200);
   useEffect(() => {
     const fetchSimilarUserRecs = async () => {
-      if (!placeholderId) return;
+      if (!userId) return;
 
       try {
-        const recs = await getSimilarUserRecommender(placeholderId);
+        const recs = await getSimilarUserRecommender(userId);
 
         const mapped = recs.map((m, idx) => ({
           title: m.title ?? 'Untitled',
@@ -100,7 +58,7 @@ const ShopPage = () => {
             : 'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg',
           year: m.releaseYear ?? 0,
           rank: idx + 1,
-          id: m.showId ?? `unknown-${idx}`,
+          showId: m.showId ?? `unknown-${idx}`,
         }));
 
         setSimilarUserRecs(mapped);
@@ -110,14 +68,14 @@ const ShopPage = () => {
     };
 
     fetchSimilarUserRecs();
-  }, [placeholderId]);
+  }, [userId]);
 
   useEffect(() => {
     const fetchUserDemographicRecs = async () => {
-      if (!placeholderId) return;
+      if (!userId) return;
 
       try {
-        const recs = await getUserDemographicRecommender(placeholderId);
+        const recs = await getUserDemographicRecommender(userId);
 
         const mapped = recs.map((m, idx) => ({
           title: m.title ?? 'Untitled',
@@ -126,7 +84,7 @@ const ShopPage = () => {
             : 'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg',
           year: m.releaseYear ?? 0,
           rank: idx + 1,
-          id: m.showId ?? `unknown-${idx}`,
+          showId: m.showId ?? `unknown-${idx}`,
         }));
 
         setUserDemographicRecs(mapped);
@@ -139,16 +97,17 @@ const ShopPage = () => {
     };
 
     fetchUserDemographicRecs();
-  }, [placeholderId]);
+  }, [userId]);
 
   useEffect(() => {
     const fetchTopMovieRecs = async () => {
-      if (!placeholderId) return;
+      if (!userId) return;
 
       try {
         // Step 1: Get top-rated movies
-        const topMovies = await getUserTopRatedMovies(placeholderId);
+        const topMovies = await getUserTopRatedMovies(userId);
         setTopRatedMovies(topMovies);
+        console.log('Top movies: ', topMovies);
 
         // Step 2: For each movie, fetch content-based recs
         const recsByMovie: { [key: string]: CarouselMovie[] } = {};
@@ -165,10 +124,10 @@ const ShopPage = () => {
               : 'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg',
             year: m.releaseYear ?? 0,
             rank: idx + 1,
-            id: m.showId ?? `unknown-${idx}`,
+            showId: m.showId ?? `unknown-${idx}`,
           }));
         }
-
+        console.log('recsByMovie: ', recsByMovie);
         setContentRecsByMovie(recsByMovie);
       } catch (error) {
         console.error('Error fetching top-rated movie recs:', error);
@@ -176,20 +135,29 @@ const ShopPage = () => {
     };
 
     fetchTopMovieRecs();
-  }, [placeholderId]);
+  }, [userId]);
+
+  useEffect(() => {
+    const fetchTrending = async () => {
+      const data = await getTopTrendingNow();
+      setTrendingMovies(data);
+    };
+
+    fetchTrending();
+  }, []);
 
   return (
     <div>
       <Navbar />
       <SearchResults />
       <Carousel
-        title="Users with similar tastes also liked"
+        title="Users with similar tastes also liked:"
         cardWidth={19}
         cardHeight={19}
         data={similarUserRecs}
       />
       <Carousel
-        title="Popular in your age group"
+        title="Popular in your age group:"
         cardWidth={22}
         cardHeight={21}
         data={userDemographicRecs}
@@ -198,7 +166,7 @@ const ShopPage = () => {
         movie.showId ? (
           <Carousel
             key={movie.showId}
-            title={`Because you liked ${movie.title}`}
+            title={`Because you liked '${movie.title}'`}
             cardWidth={22}
             cardHeight={21}
             data={contentRecsByMovie[movie.showId] || []}
@@ -210,7 +178,7 @@ const ShopPage = () => {
         title="Trending Now"
         cardWidth={22}
         cardHeight={21}
-        data={data}
+        data={trendingMovies}
       />
 
       <AllMovies />

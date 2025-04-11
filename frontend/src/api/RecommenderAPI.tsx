@@ -82,7 +82,7 @@ export const getUserTopRatedMovies = async (
   userId: number
 ): Promise<Movie[]> => {
   const response = await fetch(
-    `${API_URL}/UserTopRated?userId=${encodeURIComponent(userId)}`, // you’ll add this backend route below
+    `${API_URL}/Recommender/UserTopRated?id=${encodeURIComponent(userId)}`, // you’ll add this backend route below
     {
       method: 'GET',
       credentials: 'include',
@@ -94,4 +94,23 @@ export const getUserTopRatedMovies = async (
   }
 
   return await response.json();
+};
+
+export const getTopTrendingNow = async (): Promise<Movie[]> => {
+  try {
+    const response = await fetch(`${API_URL}/Recommender/TopTrendingNow`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching top trending movies:', error);
+    return [];
+  }
 };
