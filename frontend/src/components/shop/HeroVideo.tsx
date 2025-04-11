@@ -1,4 +1,4 @@
-import '/Users/mjmikes/Downloads/Classes/INTEX2/real-intex/intex_app/frontend/src/styles/HeroVideo.css'; // Import the CSS file
+import '../../styles/HeroVideo.css'; // Import the CSS file
 
 import { useNavigate } from 'react-router-dom';
 
