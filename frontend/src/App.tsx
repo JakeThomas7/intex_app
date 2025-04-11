@@ -44,7 +44,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/details/:showId" element={<DetailsPage />} />
+          <Route path="/details/:showId" element={<ProtectedRoute><DetailsPage /></ProtectedRoute>} />
           <Route
             path="/browse"
             element={
