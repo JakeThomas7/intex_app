@@ -41,7 +41,7 @@ const AdminHomePage = () => {
           setMovies(data.data);
           setNumMovies(data.totalCount);
         } catch (error) {
-          console.error("Error fetching headlines:", error);
+          // console.error("Error fetching headlines:", error);
           setError("Failed to load headlines. Please try again later.");
         } finally {
           setLoading(false);

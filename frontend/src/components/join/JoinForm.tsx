@@ -52,11 +52,11 @@ const JoinForm = () => {
             try {
 
                 // 1. First try login
-                console.log('LOGING USER IN')
+                console.log('LOGGING USER IN')
                 const movieUserData = {
                     email: form.Email
                 }
-                console.log(movieUserData)
+                // console.log(movieUserData)
                 await register(form.Email, form.Password);
 
                 await addMovieUser(movieUserData)

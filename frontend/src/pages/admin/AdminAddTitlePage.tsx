@@ -64,7 +64,7 @@ const AdminAddTitlePage = () => {
       genres: selectedOptions,
     }));
 
-    console.log(formData);
+    // console.log(formData);
   };
 
   const handleSubmit = async (e: FormEvent) => {

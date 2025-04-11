@@ -106,7 +106,7 @@ const MovieUserProfileForm = () => {
                 age: form.age ? parseInt(form.age) : undefined,
                 zip: form.zip ? parseInt(form.zip) : undefined
             };
-            console.log(movieUserData)
+            // console.log(movieUserData)
             await addMovieUser(movieUserData);
             navigate('/browse'); // Or wherever you want to redirect after success
         } catch (err) {

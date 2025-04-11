@@ -17,7 +17,7 @@ const SiteWidget = () => {
         const data = await fetchHeadlines();
         setHeadlines(data);
       } catch (error) {
-        console.error("Error fetching headlines:", error);
+        // console.error("Error fetching headlines:", error);
       }
     };
 

@@ -21,12 +21,12 @@ const AdminMovieCard = ({
   const sanitizedTitle = sanitizeTitleForURL(movie.title || 'Untitled Movie');
 
   const handleDeleteMovie = async () => {
-    console.log('Deleting movie:', movie.showId);
+    // console.log('Deleting movie:', movie.showId);
     try {
       await deleteMovie(movie.showId);
       onMovieDeleted();
     } catch (error) {
-      console.error('Failed to delete movie:', error);
+      // console.error('Failed to delete movie:', error);
     }
   };
 

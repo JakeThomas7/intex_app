@@ -39,7 +39,7 @@ const GenreSelect2 = ({ onChange, selectedValues }: MultiSelectProps) => {
         const data = await fetchGenres();
         setGenres(data);
       } catch (error) {
-        console.error('Error fetching genres:', error);
+        // console.error('Error fetching genres:', error);
       }
     };
     getGenres();

@@ -68,7 +68,7 @@ export const deleteHeadline = async (headlineID: number): Promise<void> => {
       method: 'DELETE',
     });
   } catch (error) {
-    console.error('Error deleting project:', error);
+    // console.error('Error deleting project:', error);
     throw error;
   }
 };

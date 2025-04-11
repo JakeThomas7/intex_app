@@ -110,7 +110,7 @@ export const getTopTrendingNow = async (): Promise<Movie[]> => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching top trending movies:', error);
+    // console.error('Error fetching top trending movies:', error);
     return [];
   }
 };

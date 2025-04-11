@@ -63,7 +63,7 @@ const AllMovies = () => {
       setHasMore(res.data.length === 6);
       setCurrentPage((prev) => prev + 1);
     } catch (error) {
-      console.error("Error fetching movies:", error);
+      // console.error("Error fetching movies:", error);
     } finally {
       setIsLoading(false);
     }

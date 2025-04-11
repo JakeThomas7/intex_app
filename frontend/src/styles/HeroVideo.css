@@ -69,3 +69,49 @@
 .spin-reel-button:active {
   background-color: #071475; /* Keep the background color when pressed */
 }
+@media (max-width: 768px) {
+  .hero-video-container {
+    height: 60vh;
+  }
+
+  .hero-content {
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-header {
+    font-size: 2.5rem;
+  }
+
+  .hero-text p {
+    font-size: 1rem;
+  }
+
+  .spin-reel-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-video-container {
+    height: 50vh;
+  }
+
+  .hero-header {
+    font-size: 4rem;
+  }
+
+  .hero-text p {
+    font-size: 0.9rem;
+  }
+
+  .spin-reel-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+  }
+}

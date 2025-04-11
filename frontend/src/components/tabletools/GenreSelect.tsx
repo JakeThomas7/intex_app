@@ -21,7 +21,7 @@ const GenreMultiSelect = ({ onChange, selectedValues }: MultiSelectProps) => {
         const data = await fetchGenres();
         setGenres(data);
       } catch (error) {
-        console.error("Error fetching genres:", error);
+        // console.error("Error fetching genres:", error);
         setError("Failed to load genres. Please try again later.");
       } finally {
         setLoading(false);

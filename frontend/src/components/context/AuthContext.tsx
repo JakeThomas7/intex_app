@@ -26,7 +26,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const checkAuth = useCallback(async () => {
     try {
       const data = await pingauth(); // Assuming pingauth is correctly fetching data
-       console.log('Received data from pingauth:', data);
+      console.log('Received data from pingauth:', data);
 
       if (data.email) {
         setUser({

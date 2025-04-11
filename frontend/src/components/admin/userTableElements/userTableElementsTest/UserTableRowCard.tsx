@@ -28,7 +28,7 @@ const UserTableRowCard = ({ user, onUserDeleted }: { user: any; onUserDeleted: (
       await deleteUser(user.email);
       onUserDeleted();
     } catch (error) {
-      console.error('Delete failed:', error);
+      // console.error('Delete failed:', error);
       setDeleteState('idle');
     }
   };

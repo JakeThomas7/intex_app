@@ -26,7 +26,7 @@ const SiteTraffic = () => {
         const data = await getSiteTraffic();
         setSiteTraffic(data)
       } catch (error) {
-        console.error("Error fetching site traffic:", error);
+        // console.error("Error fetching site traffic:", error);
       }
     }
 
