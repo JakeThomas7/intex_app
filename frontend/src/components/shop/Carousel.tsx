@@ -29,6 +29,7 @@ const Carousel = ({
   const [scrollDistance, setScrollDistance] = useState(0);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -44,11 +45,10 @@ const Carousel = ({
 
   useEffect(() => {
     const preloadImages = async () => {
+      setLoading(true);
       const urls = await Promise.all(
         data.map(async (item) => {
-          if (item.image_url_suffix) {
-            return `https://intex2movieposters.blob.core.windows.net/movie-postersv2/${item.image_url_suffix}`;
-          } else if (item.title) {
+          if (item.title) {
             const sanitized = sanitizeTitleForURL(item.title);
             const testUrl = `https://intex2movieposters.blob.core.windows.net/movie-postersv2/${sanitized}.jpg`;
 
@@ -66,6 +66,7 @@ const Carousel = ({
         })
       );
       setImageUrls(urls);
+      setLoading(false); // ✅ Done loading
     };
 
     preloadImages();
@@ -84,123 +85,133 @@ const Carousel = ({
     <div className="carousel-section position-relative pt-4">
       <h3 className="section-padding">{title}</h3>
 
-      <button
-        onClick={() => scroll('left')}
-        className="btn btn-light position-absolute top-50 translate-middle-y start-0 ms-3 carousel-controls d-none d-sm-block"
-      >
-        <i className="fa-solid fa-chevron-left fa-lg px-2 py-5"></i>
-      </button>
-
-      <div
-        ref={carouselRef}
-        className="d-flex overflow-x-auto pt-2 pb-4 scrollbar-hidden section-padding"
-        style={{
-          scrollSnapType: 'x mandatory',
-          WebkitOverflowScrolling: 'touch',
-        }}
-      >
-        {data.map((item, index) => (
-          <div
-            key={index}
-            className="flex-shrink-0 mx-2 card-item"
-            style={{
-              scrollSnapAlign: 'start',
-              maxWidth: `${cardWidth}rem`,
-              height: `${cardHeight}rem`,
-            }}
-            onClick={() => navigate(`/details/${item.showId}`)}
-          >
-            <div
-              className="shadow grow-sm h-100 d-flex flex-column justify-content-between position-relative"
-              style={{
-                borderRadius: '18px',
-                backgroundColor: 'black',
-                color: 'white',
-                border: '2px solid white',
-                overflow: 'hidden',
-              }}
-            >
-              <div
-                className="rank-badge"
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '-2rem',
-                  transform: 'translateY(-50%)',
-                  width: '3rem',
-                  height: '5rem',
-                  border: '2px solid white',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '1.5rem',
-                  backgroundColor: 'black',
-                  color: 'white',
-                }}
-              >
-                {item.rank}
-              </div>
-
-              {/* Image (75% height) */}
-              <div style={{ height: '75%' }}>
-                <img
-                  src={imageUrls[index] || fallbackImage}
-                  alt={item.title}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    borderRadius: '10px 10px 0 0',
-                  }}
-                />
-              </div>
-
-              {/* Text (25% height) */}
-              <div
-                className="px-3 py-2 text-center"
-                style={{
-                  height: '25%',
-                  backgroundColor: '#111',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                }}
-              >
-                <h4
-                  style={{
-                    fontSize: '1.5rem',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    marginBottom: '0.25rem',
-                  }}
-                >
-                  {item.title}
-                </h4>
-                <p
-                  style={{
-                    fontSize: '1rem',
-                    color: '#bbb',
-                    margin: 0,
-                  }}
-                >
-                  {item.year}
-                </p>
-              </div>
-            </div>
+      {loading ? (
+        <div className="text-center py-5">
+          <div className="spinner-border text-light" role="status">
+            <span className="visually-hidden">Loading...</span>
           </div>
-        ))}
+        </div>
+      ) : (
+        <>
+          <button
+            onClick={() => scroll('left')}
+            className="btn btn-light position-absolute top-50 translate-middle-y start-0 ms-3 carousel-controls d-none d-sm-block"
+          >
+            <i className="fa-solid fa-chevron-left fa-lg px-2 py-5"></i>
+          </button>
 
-        <div style={{ minWidth: '16px', flexShrink: 0 }}></div>
-      </div>
+          <div
+            ref={carouselRef}
+            className="d-flex overflow-x-auto pt-2 pb-4 scrollbar-hidden section-padding"
+            style={{
+              scrollSnapType: 'x mandatory',
+              WebkitOverflowScrolling: 'touch',
+            }}
+          >
+            {data.map((item, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 mx-2 card-item"
+                style={{
+                  scrollSnapAlign: 'start',
+                  maxWidth: `${cardWidth}rem`,
+                  height: `${cardHeight}rem`,
+                }}
+                onClick={() => navigate(`/details/${item.showId}`)}
+              >
+                <div
+                  className="shadow grow-sm h-100 d-flex flex-column justify-content-between position-relative"
+                  style={{
+                    borderRadius: '18px',
+                    backgroundColor: 'black',
+                    color: 'white',
+                    border: '2px solid white',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div
+                    className="rank-badge"
+                    style={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '-2rem',
+                      transform: 'translateY(-50%)',
+                      width: '3rem',
+                      height: '5rem',
+                      border: '2px solid white',
+                      borderRadius: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1.5rem',
+                      backgroundColor: 'black',
+                      color: 'white',
+                    }}
+                  >
+                    {item.rank}
+                  </div>
 
-      <button
-        onClick={() => scroll('right')}
-        className="btn btn-light position-absolute top-50 translate-middle-y end-0 me-3 carousel-controls d-none d-sm-block"
-      >
-        <i className="fa-solid fa-chevron-right fa-xl px-2 py-5"></i>
-      </button>
+                  {/* Image (75% height) */}
+                  <div style={{ height: '75%' }}>
+                    <img
+                      src={imageUrls[index] || fallbackImage}
+                      alt={item.title}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        borderRadius: '10px 10px 0 0',
+                      }}
+                    />
+                  </div>
+
+                  {/* Text (25% height) */}
+                  <div
+                    className="px-3 py-2 text-center"
+                    style={{
+                      height: '25%',
+                      backgroundColor: '#111',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <h4
+                      style={{
+                        fontSize: '1.5rem',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        marginBottom: '0.25rem',
+                      }}
+                    >
+                      {item.title}
+                    </h4>
+                    <p
+                      style={{
+                        fontSize: '1rem',
+                        color: '#bbb',
+                        margin: 0,
+                      }}
+                    >
+                      {item.year}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            <div style={{ minWidth: '16px', flexShrink: 0 }}></div>
+          </div>
+
+          <button
+            onClick={() => scroll('right')}
+            className="btn btn-light position-absolute top-50 translate-middle-y end-0 me-3 carousel-controls d-none d-sm-block"
+          >
+            <i className="fa-solid fa-chevron-right fa-xl px-2 py-5"></i>
+          </button>
+        </>
+      )}
     </div>
   );
 };

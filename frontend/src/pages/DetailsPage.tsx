@@ -5,7 +5,10 @@ import Carousel from '../components/shop/Carousel';
 import '../styles/DetailsPage.css';
 import Movie from '../types/Movie';
 import SimpleFooter from '../components/all_pages/SimpleFooter';
-import { getItemHybridRecommender } from '../api/RecommenderAPI';
+import {
+  getItemHybridRecommender,
+  getTopTrendingNow,
+} from '../api/RecommenderAPI';
 import { fetchMovieDetailsWithRating, submitRating } from '../api/MoviesAPI';
 import CookieFavoriteGenre from '../components/all_pages/CookieRecorder/CookieFavoriteGenre';
 import { useAuth } from '../components/context/AuthContext';
@@ -31,6 +34,7 @@ const DetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [selectedRating, setSelectedRating] = useState<number>(0);
   const [recommendations, setRecommendations] = useState<CarouselMovie[]>([]);
+  const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
   const [userRating, setUserRating] = useState<number | null>(null);
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(
     'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg'
@@ -57,6 +61,15 @@ const DetailsPage = () => {
 
     fetchDetails();
   }, [showId]);
+
+  useEffect(() => {
+    const fetchTrending = async () => {
+      const data = await getTopTrendingNow();
+      setTrendingMovies(data);
+    };
+
+    fetchTrending();
+  }, []);
 
   const handleStarClick = (value: number) => {
     setSelectedRating(value);
@@ -199,7 +212,7 @@ const DetailsPage = () => {
           title="Trending Now"
           cardWidth={22}
           cardHeight={32}
-          data={recommendations}
+          data={trendingMovies}
         />
       </div>
 

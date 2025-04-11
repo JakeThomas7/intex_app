@@ -137,14 +137,14 @@ public class RecommenderController : ControllerBase
 
     // GET: /Recommender/SimilarUser?userId=123
     [HttpGet("SimilarUser")]
-    public async Task<IActionResult> SimilarUser([FromQuery] int userId)
+    public async Task<IActionResult> SimilarUser([FromQuery] int id)
     {
         var recommendationRow = await _context.SimilarUserRecommender
-            .FirstOrDefaultAsync(r => r.UserId == userId);
+            .FirstOrDefaultAsync(r => r.UserId == id);
 
         if (recommendationRow == null)
         {
-            return NotFound($"No recommendations found for user ID {userId}");
+            return NotFound($"No recommendations found for user ID {id}");
         }
 
         var recommendedIds = new List<string?>
@@ -195,16 +195,16 @@ public class RecommenderController : ControllerBase
         return Ok(movies);
     }
 
-    // GET: /Recommender/SimilarUser?userId=123
+    // GET: /Recommender/SimilarUser?id=123
     [HttpGet("UserDemographic")]
-    public async Task<IActionResult> UserDemographic([FromQuery] int userId)
+    public async Task<IActionResult> UserDemographic([FromQuery] int id)
     {
         var recommendationRow = await _context.UserDemographicRecommender
-            .FirstOrDefaultAsync(r => r.UserId == userId);
+            .FirstOrDefaultAsync(r => r.UserId == id);
 
         if (recommendationRow == null)
         {
-            return NotFound($"No recommendations found for user ID {userId}");
+            return NotFound($"No recommendations found for user ID {id}");
         }
 
         var recommendedIds = new List<string?>
@@ -257,10 +257,10 @@ public class RecommenderController : ControllerBase
 
     // GET: UserTopRated?userId=123
     [HttpGet("UserTopRated")]
-    public async Task<IActionResult> GetUserTopRated([FromQuery] int userId)
+    public async Task<IActionResult> GetUserTopRated([FromQuery] int id)
     {
         var topMovies = await _context.MovieRatings
-            .Where(r => r.UserId == userId)
+            .Where(r => r.UserId == id)
             .OrderByDescending(r => r.Rating)
             .Select(r => r.ShowId)
             .Distinct()
@@ -296,5 +296,36 @@ public class RecommenderController : ControllerBase
         return Ok(movies);
     }
 
+    [HttpGet("TopTrendingNow")]
+    public async Task<IActionResult> GetTopTrendingNow()
+    {
+        var topRatedMovies = await _context.Movies
+            .Where(m => m.MovieRatings.Count() >= 3) // At least 3 ratings
+            .Select(m => new
+            {
+                m.ShowId,
+                m.Title,
+                m.ReleaseYear,
+                m.Director,
+                m.Cast,
+                m.Description,
+                m.Duration,
+                m.Country,
+                m.Type,
+                m.Rating,
+                m.image_url_suffix,
+                Genres = m.MovieGenres.Select(mg => new
+                {
+                    mg.GenreId,
+                    GenreName = mg.Genre.GenreName
+                }).ToList(),
+                AverageRating = Math.Round(m.MovieRatings.Average(r => r.Rating), 1)
+            })
+            .OrderByDescending(m => m.AverageRating)
+            .Take(20)
+            .ToListAsync();
+
+        return Ok(topRatedMovies);
+    }
 
 }
