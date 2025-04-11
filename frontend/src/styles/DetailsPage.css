@@ -144,11 +144,8 @@
 }
 
 .carousel-title {
-  font-family: 'Monoton', cursive;
   font-size: 2.5rem;
-  color: #ffe066;
   text-align: left;
-  text-shadow: 0 0 10px rgba(255, 224, 102, 0.5);
   margin-left: 1.5rem;
   margin-bottom: 1rem;
 }
