@@ -38,34 +38,67 @@ const LandingCarousel = ({
                 maxWidth: `${cardWidth}rem`,
                 height: `${cardHeight}rem`,
               }}
-              onClick={() => navigate(`/details/${item.id}`)}
+              // onClick={() => navigate(`/details/${item.id}`)}
             >
               <div
-                className="p-4 lead shadow grow-sm h-100 position-relative"
+                className="shadow grow-sm h-100 position-relative"
                 style={{
                   borderRadius: '18px',
                   backgroundColor: 'black',
                   color: 'white',
                   border: '2px solid white',
-                  fontSize: '1.5rem',
-                  minWidth: '200px',
                   transition: 'transform 0.3s ease',
-                  height: `calc(100% - 4px)` // ✅ Gives room for top/bottom border
+                  display: 'flex',
+                  flexDirection: 'column',
+                  overflow: 'hidden',
                 }}
               >
-                {/* Movie Poster */}
-                <img
-                  src={item.imagePath} // Movie poster image
-                  alt={item.title}
+                {/* Image takes 85% of card */}
+                <div style={{ height: '85%' }}>
+                  <img
+                    src={item.imagePath}
+                    alt={item.title}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      borderRadius: '10px 10px 0 0',
+                    }}
+                  />
+                </div>
+
+                {/* Text takes 15% of card */}
+                <div
+                  className="px-3 py-2 text-center"
                   style={{
-                    width: '100%',
-                    height: 'auto',
-                    borderRadius: '10px',
-                    objectFit: 'cover',
+                    height: '15%',
+                    backgroundColor: '#111',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
                   }}
-                />
-                <h4>{item.title}</h4>
-                <p>{item.year}</p>
+                >
+                  <h4
+                    style={{
+                      fontSize: '1.25rem',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      marginBottom: '0.25rem',
+                    }}
+                  >
+                    {item.title}
+                  </h4>
+                  <p
+                    style={{
+                      fontSize: '0.9rem',
+                      color: '#bbb',
+                      margin: 0,
+                    }}
+                  >
+                    {item.year}
+                  </p>
+                </div>
               </div>
             </div>
           ))}

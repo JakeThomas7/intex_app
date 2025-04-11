@@ -165,7 +165,7 @@ const HomePage = () => {
       <LandingCarousel
         title="Hundreds of Niche Shows"
         cardWidth={22}
-        cardHeight={36}
+        cardHeight={35.9}
         data={carouselData}
       />
       <SiteWidget />

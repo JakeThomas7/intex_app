@@ -111,39 +111,19 @@ const Carousel = ({
             onClick={() => navigate(`/details/${item.showId}`)}
           >
             <div
-              className="shadow grow-sm h-100 d-flex flex-column justify-content-between position-relative"
+              className="shadow grow-sm h-100 d-flex flex-column position-relative"
               style={{
                 borderRadius: '18px',
                 backgroundColor: 'black',
                 color: 'white',
                 border: '2px solid white',
                 overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
               }}
             >
-              <div
-                className="rank-badge"
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '-0.1rem',
-                  transform: 'translateY(-50%)',
-                  width: '2.5rem',
-                  height: '4.4rem',
-                  border: '2px solid white',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '1.5rem',
-                  backgroundColor: 'black',
-                  color: 'white',
-                }}
-              >
-                {item.rank}
-              </div>
-
-              {/* Image (75% height) */}
-              <div style={{ height: '75%' }}>
+              {/* Image (85%) */}
+              <div style={{ height: '85%' }}>
                 <img
                   src={imageUrls[index] || fallbackImage}
                   alt={item.title}
@@ -156,11 +136,11 @@ const Carousel = ({
                 />
               </div>
 
-              {/* Text (25% height) */}
+              {/* Text (15%) */}
               <div
                 className="px-3 py-2 text-center"
                 style={{
-                  height: '25%',
+                  height: '15%',
                   backgroundColor: '#111',
                   display: 'flex',
                   flexDirection: 'column',
@@ -169,7 +149,7 @@ const Carousel = ({
               >
                 <h4
                   style={{
-                    fontSize: '1.5rem',
+                    fontSize: '1.25rem',
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -191,7 +171,6 @@ const Carousel = ({
             </div>
           </div>
         ))}
-
         <div style={{ minWidth: '16px', flexShrink: 0 }}></div>
       </div>
 

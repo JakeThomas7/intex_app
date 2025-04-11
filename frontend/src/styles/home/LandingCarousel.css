@@ -48,9 +48,9 @@
 /* Card styling */
 .card-item {
   flex-shrink: 0;
-  min-width: 19rem; /* Ensure card width */
-  height: 19rem; /* Ensure card height */
-  margin-right: 1rem; /* Space between cards */
+  min-width: 19rem;
+  height: 21rem; /* was 19rem */
+  margin-right: 1rem;
   cursor: pointer;
 }
 

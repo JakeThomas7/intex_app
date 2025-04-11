@@ -10,7 +10,9 @@ const NavBar = () => {
   return (
     <nav className="navbar main-navbar section-padding navbar-expand-lg bg-body-tertiary sticky-top navbar-color border-bottom thin-border">
       <div className="container-fluid">
-      <a className="navbar-brand grow righteous-title" onClick={() => navigate('/')}>
+      <a
+        className="navbar-brand grow righteous-title"
+        onClick={() => navigate(isAuth ? '/browse' : '/')}>
         CineNiche
       </a>
         <div className="navbar-toggler text-white" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
