@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 
 const NavBar = () => {
   const navigate = useNavigate();
-  const { isAdmin, isAuth, checkAuth } = useAuth();
+  const { isAdmin, isAuth, user, checkAuth } = useAuth();
 
   return (
     <nav className="navbar main-navbar section-padding navbar-expand-lg bg-body-tertiary sticky-top navbar-color border-bottom thin-border">
@@ -84,7 +84,6 @@ const NavBar = () => {
                     aria-current="page"
                     onClick={() => navigate('/login')}
                   >
-                    {/* <i className="fa-solid fa-user"></i>  */}
                     Log in
                   </a>
                 </li>
@@ -97,6 +96,15 @@ const NavBar = () => {
                   </button>
                 </li>
               </>
+            )}
+
+            {isAuth && !isAdmin && (
+              <li className="nav-item d-flex align-items-center text-gray me-3">
+                <button className="btn btn-primary text-white grow">
+                  <span className="me-2">{user?.email}</span>
+                  <i className="fa-regular fa-circle-user me-2"></i>
+                </button>
+              </li>
             )}
 
             {isAdmin && (
