@@ -36,15 +36,29 @@ const NavBar = () => {
             </li> */}
 
             {isAuth && (
-              <li className="nav-item me-3">
-                <a
-                  className="nav-link active"
-                  aria-current="page"
-                  onClick={() => navigate('/browse')}
-                >
-                  Recommendations
-                </a>
-              </li>
+              <>
+                <li className="nav-item me-3">
+                  <a
+                    className="nav-link active"
+                    aria-current="page"
+                    onClick={() => navigate('/browse')}
+                  >
+                    Recommendations
+                  </a>
+                </li>
+                <li className="nav-item me-3">
+                  <a
+                    className="nav-link active"
+                    aria-current="page"
+                    onClick={() => {
+                      const randomNumber = Math.floor(Math.random() * 8500) + 1;
+                      navigate(`/details/s${randomNumber}`);
+                    }}
+                  >
+                    Spin the Reel!
+                  </a>
+                </li>
+              </>
             )}
 
             {/* <li className="nav-item me-3">
