@@ -123,7 +123,7 @@ const MovieUserProfileForm = () => {
                 <button 
                     type="submit" 
                     className="btn btn-outline-dark btn-outline-custom-white w-100 mb-3"
-                    onClick={handleSubmit}
+                    onClick={() => navigate('/browse')}
                 >Skip for now <i className="fa-solid fa-arrow-right"></i></button>
                 <hr/>
 
@@ -137,7 +137,7 @@ const MovieUserProfileForm = () => {
                             placeholder="First name"
                             value={form.firstName}
                             onChange={handleChange}
-                            
+                            maxLength={20}
                         />
                     </div>
                     <div className="col-md-6">
@@ -149,7 +149,7 @@ const MovieUserProfileForm = () => {
                             placeholder="Last name"
                             value={form.lastName}
                             onChange={handleChange}
-                            
+                            maxLength={20}
                         />
                     </div>
                 </div>
@@ -163,6 +163,7 @@ const MovieUserProfileForm = () => {
                         placeholder="(123) 456-7890"
                         value={form.phone}
                         onChange={handleChange}
+                        maxLength={20}
                     />
                 </div>
 
@@ -207,6 +208,7 @@ const MovieUserProfileForm = () => {
                             placeholder="City"
                             value={form.city}
                             onChange={handleChange}
+                            maxLength={20}
                         />
                     </div>
                     <div className="col-md-3">
@@ -218,6 +220,7 @@ const MovieUserProfileForm = () => {
                             placeholder="State"
                             value={form.state}
                             onChange={handleChange}
+                            maxLength={20}
                         />
                     </div>
                     <div className="col-md-3">
@@ -228,6 +231,7 @@ const MovieUserProfileForm = () => {
                             id="zip"
                             placeholder="ZIP code"
                             value={form.zip}
+                            maxLength={10}
                             onChange={handleChange}
                         />
                     </div>

@@ -97,6 +97,7 @@ const AdminEditTitlePage = () => {
                 className="form-control"
                 id="title"
                 value={formData.title}
+                maxLength={200}
                 required
                 onChange={handleChange}
               />
@@ -108,6 +109,7 @@ const AdminEditTitlePage = () => {
               </label>
               <input
                 type="text"
+                maxLength={10}
                 value={formData.type}
                 className="form-control"
               />
@@ -120,6 +122,7 @@ const AdminEditTitlePage = () => {
               <textarea
                 className="form-control"
                 id="description"
+                maxLength={450}
                 rows={3}
                 value={formData.description}
                 required
@@ -145,6 +148,7 @@ const AdminEditTitlePage = () => {
                   type="text"
                   className="form-control"
                   id="director"
+                  maxLength={100}
                   value={formData.director}
                   onChange={handleChange}
                 />
@@ -158,6 +162,7 @@ const AdminEditTitlePage = () => {
                   className="form-control"
                   id="cast"
                   rows={4}
+                  maxLength={250}
                   value={formData.cast}
                   onChange={handleChange}
                   placeholder="Comma separated list"
@@ -170,6 +175,7 @@ const AdminEditTitlePage = () => {
                 </label>
                 <input
                   type="text"
+                  maxLength={50}
                   className="form-control"
                   id="country"
                   value={formData.country}
@@ -219,6 +225,7 @@ const AdminEditTitlePage = () => {
                   type="text"
                   className="form-control"
                   id="rating"
+                  maxLength={20}
                   required
                   value={formData.rating}
                   onChange={handleChange}
@@ -233,6 +240,7 @@ const AdminEditTitlePage = () => {
                   type="text"
                   className="form-control"
                   id="duration"
+                  maxLength={20}
                   placeholder="e.g., 2h 30m"
                   required
                   value={formData.duration}
