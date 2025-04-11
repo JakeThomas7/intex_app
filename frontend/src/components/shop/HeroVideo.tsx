@@ -17,13 +17,11 @@ const HeroVideo = () => {
         autoPlay
         loop
         muted
-        src="/hero-video2.mp4" // Reference your video stored in the public folder
+        src="https://intex2movieposters.blob.core.windows.net/movie-postersv2/hero-video2.mp4" // Reference your video stored in the public folder
       />
       <div className="hero-content">
         <div className="hero-text">
-          <h2 className="hero-header">
-            Looking for Inspiration?
-          </h2>
+          <h2 className="hero-header">Looking for Inspiration?</h2>
           <p className="hero-text-description">
             Spin the Reel and we will find a movie just for you!
           </p>
