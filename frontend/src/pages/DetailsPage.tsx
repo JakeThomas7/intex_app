@@ -177,7 +177,9 @@ const DetailsPage = () => {
                 >
                   <i className="fas fa-star me-2"></i>Rate
                 </button>
-                {userRating !== null && (
+                {userRating === null ? (
+                  <p className="text-white mt-2">Your Rating: ⭐ N/A</p>
+                ) : (
                   <p className="text-white mt-2">
                     Your Rating: ⭐ {userRating}
                   </p>
