@@ -50,6 +50,7 @@ const LandingCarousel = ({
                   fontSize: '1.5rem',
                   minWidth: '200px',
                   transition: 'transform 0.3s ease',
+                  height: `calc(100% - 4px)` // ✅ Gives room for top/bottom border
                 }}
               >
                 {/* Movie Poster */}
