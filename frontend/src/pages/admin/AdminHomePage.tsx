@@ -89,7 +89,7 @@ const AdminHomePage = () => {
                 <input 
                     className="form-control ps-5" 
                     type="text" 
-                    placeholder="Search users..."
+                    placeholder="Search movies..."
                     value={params.search}
                     onChange={(e) => handleParamsChange({ search: e.target.value })}
                 />

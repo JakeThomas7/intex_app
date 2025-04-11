@@ -9,14 +9,13 @@ const TitleSection = () => {
     <div className="section-padding hero-section">
       <div className="title-content">
         <h1 className="righteous-title">
-          Cine<span className=" shadow">Niche</span>
+          Cine<span className="shadow">Niche</span>
         </h1>
-        <p className="lead mb-4">
-          Your gateway to curated cinematic treasures. Discover hand-picked cult
-          classics, indie masterpieces, international gems, and niche
-          documentaries unavailable anywhere else. Personalized recommendations
-          bring hidden stories straight to you. Dive into a streaming experience
-          designed for true film enthusiasts.
+        <p
+          className="lead mb-4"
+          style={{ fontSize: '1.5rem', fontWeight: 500 }}
+        >
+          Unlock Hidden Stories, Just for You.
         </p>
         <div className="d-grid gap-2 d-sm-flex justify-content-center">
           {!isAuth && (
