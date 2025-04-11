@@ -4,8 +4,8 @@ import Movie from "../../types/Movie";
 import Carousel from "./Carousel";
 
 // Utility for fallback image and sanitization
-const DEFAULT_IMAGE_URL =
-  "https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg";
+// const DEFAULT_IMAGE_URL =
+//   "https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg";
 
 const sanitizeTitleForURL = (title: string): string => {
   return title.replace(/[^a-zA-Z0-9 ]/g, "").trim().replace(/\s+/g, "%20");
