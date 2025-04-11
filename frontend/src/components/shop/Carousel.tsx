@@ -89,7 +89,7 @@ const Carousel = ({
 
       <div
         ref={carouselRef}
-        className="d-flex overflow-x-auto pt-2 pb-4 scrollbar-hidden section-padding"
+        className="d-flex overflow-x-auto pt-2 pb-4 scrollbar-hidden "
         style={{
           scrollSnapType: 'x mandatory',
           WebkitOverflowScrolling: 'touch',
