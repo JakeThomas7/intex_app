@@ -31,6 +31,8 @@ const Carousel = ({
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  console.log(scrollDistance);
+
   useEffect(() => {
     const updateDimensions = () => {
       if (carouselRef.current) {

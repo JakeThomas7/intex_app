@@ -18,6 +18,8 @@ const LandingCarousel = ({
   const carouselRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
 
+  console.log(navigate);
+
   return (
     <div className="carousel-section-container">
       <div className="carousel-heading">
