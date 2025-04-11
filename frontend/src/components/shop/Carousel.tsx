@@ -35,6 +35,7 @@ const Carousel = ({
     const updateDimensions = () => {
       if (carouselRef.current) {
         setScrollDistance(window.innerWidth * 0.66);
+        console.log(scrollDistance)
       }
     };
     updateDimensions();

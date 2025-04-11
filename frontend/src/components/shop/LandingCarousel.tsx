@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import '../../styles/home/LandingCarousel.css';
 
 interface CarouselProps {
@@ -16,7 +15,6 @@ const LandingCarousel = ({
   data,
 }: CarouselProps) => {
   const carouselRef = useRef<HTMLDivElement | null>(null);
-  const navigate = useNavigate();
 
   return (
     <div className="carousel-section-container">
