@@ -37,12 +37,14 @@ const ShopPage = () => {
   const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
-    if (user?.userId) {
+    if (user?.userId && user.userId < 200) {
       setUserId(user.userId);
     } else {
-      setUserId(100);
+      setUserId(null);
     }
   }, [user]);
+
+  console.log('User ID:', userId);
 
   useEffect(() => {
     const fetchSimilarUserRecs = async () => {
@@ -151,41 +153,48 @@ const ShopPage = () => {
   return (
     <div>
       <Navbar />
-      <SearchResults isSearching={isSearching} setIsSearching={setIsSearching} />
+      <SearchResults
+        isSearching={isSearching}
+        setIsSearching={setIsSearching}
+      />
       {!isSearching && (
-      <div className="flex-grow">
-        <Carousel
-          title="Users with similar tastes also liked:"
-          cardWidth={22}
-          cardHeight={32}
-          data={similarUserRecs}
-        />
-        <Carousel
-          title="Popular in your age group:"
-          cardWidth={22}
-          cardHeight={32}
-          data={userDemographicRecs}
-        />
-        {topRatedMovies.map((movie) =>
-          movie.showId ? (
-            <Carousel
-              key={movie.showId}
-              title={`Because you liked '${movie.title}'`}
-              cardWidth={22}
-              cardHeight={32}
-              data={contentRecsByMovie[movie.showId] || []}
-            />
-          ) : null
-        )}
-        <Carousel
-          title="Trending Now"
-          cardWidth={22}
-          cardHeight={32}
-          data={trendingMovies}
-        />
-        <AllMovies />
-      </div>
-    )}
+        <div className="flex-grow">
+          {userId && (
+            <div>
+              <Carousel
+                title="Users with similar tastes also liked:"
+                cardWidth={22}
+                cardHeight={32}
+                data={similarUserRecs}
+              />
+              <Carousel
+                title="Popular in your age group:"
+                cardWidth={22}
+                cardHeight={32}
+                data={userDemographicRecs}
+              />
+              {topRatedMovies.map((movie) =>
+                movie.showId ? (
+                  <Carousel
+                    key={movie.showId}
+                    title={`Because you liked '${movie.title}'`}
+                    cardWidth={22}
+                    cardHeight={32}
+                    data={contentRecsByMovie[movie.showId] || []}
+                  />
+                ) : null
+              )}
+            </div>
+          )}
+          <Carousel
+            title="Trending Now"
+            cardWidth={22}
+            cardHeight={32}
+            data={trendingMovies}
+          />
+          <AllMovies />
+        </div>
+      )}
       <SimpleFooter />
     </div>
   );
