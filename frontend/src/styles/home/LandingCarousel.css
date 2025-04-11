@@ -8,7 +8,7 @@
   height: 80vh; /* Adjust the height */
   overflow: hidden; /* Hide anything outside of the container */
   margin-top: 11rem;
-  margin-bottom: -100px;
+  margin-bottom: -150px;
   overflow-y: hidden;
 }
 
@@ -38,7 +38,6 @@
   white-space: nowrap; /* Optional: Helps horizontal flow */
 }
 
-
 /* The container that holds the items */
 .carousel-container {
   display: flex;
@@ -49,7 +48,7 @@
 .card-item {
   flex-shrink: 0;
   min-width: 19rem; /* Ensure card width */
-  height: 19rem; /* Ensure card height */
+  height: 21rem; /* Ensure card height */
   margin-right: 1rem; /* Space between cards */
   cursor: pointer;
 }

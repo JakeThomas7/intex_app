@@ -28,8 +28,8 @@ const Carousel = ({
   const carouselRef = useRef<HTMLDivElement | null>(null);
   const [scrollDistance, setScrollDistance] = useState(0);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -37,7 +37,6 @@ const Carousel = ({
         setScrollDistance(window.innerWidth * 0.66);
       }
     };
-
     updateDimensions();
     window.addEventListener('resize', updateDimensions);
     return () => window.removeEventListener('resize', updateDimensions);
@@ -51,14 +50,12 @@ const Carousel = ({
           if (item.title) {
             const sanitized = sanitizeTitleForURL(item.title);
             const testUrl = `https://intex2movieposters.blob.core.windows.net/movie-postersv2/${sanitized}.jpg`;
-
             const isValid = await new Promise<boolean>((resolve) => {
               const img = new Image();
               img.src = testUrl;
               img.onload = () => resolve(true);
               img.onerror = () => resolve(false);
             });
-
             return isValid ? testUrl : fallbackImage;
           } else {
             return fallbackImage;
@@ -66,16 +63,15 @@ const Carousel = ({
         })
       );
       setImageUrls(urls);
-      setLoading(false); // ✅ Done loading
+      setLoading(false);
     };
-
     preloadImages();
   }, [data]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
       carouselRef.current.scrollBy({
-        left: direction === 'right' ? scrollDistance : -scrollDistance,
+        left: direction === 'right' ? 300 : -300,
         behavior: 'smooth',
       });
     }
@@ -84,7 +80,6 @@ const Carousel = ({
   return (
     <div className="carousel-section position-relative pt-4">
       <h3 className="section-padding">{title}</h3>
-
       {loading ? (
         <div className="text-center py-5">
           <div className="spinner-border text-light" role="status">
@@ -99,7 +94,6 @@ const Carousel = ({
           >
             <i className="fa-solid fa-chevron-left fa-lg px-2 py-5"></i>
           </button>
-
           <div
             ref={carouselRef}
             className="d-flex overflow-x-auto pt-2 pb-4 scrollbar-hidden section-padding"
@@ -120,39 +114,18 @@ const Carousel = ({
                 onClick={() => navigate(`/details/${item.showId}`)}
               >
                 <div
-                  className="shadow grow-sm h-100 d-flex flex-column justify-content-between position-relative"
+                  className="shadow grow-sm h-100 d-flex flex-column position-relative"
                   style={{
                     borderRadius: '18px',
                     backgroundColor: 'black',
                     color: 'white',
                     border: '2px solid white',
                     overflow: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column',
                   }}
                 >
-                  <div
-                    className="rank-badge"
-                    style={{
-                      position: 'absolute',
-                      top: '50%',
-                      left: '-2rem',
-                      transform: 'translateY(-50%)',
-                      width: '3rem',
-                      height: '5rem',
-                      border: '2px solid white',
-                      borderRadius: '8px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '1.5rem',
-                      backgroundColor: 'black',
-                      color: 'white',
-                    }}
-                  >
-                    {item.rank}
-                  </div>
-
-                  {/* Image (75% height) */}
-                  <div style={{ height: '75%' }}>
+                  <div style={{ height: '85%' }}>
                     <img
                       src={imageUrls[index] || fallbackImage}
                       alt={item.title}
@@ -164,12 +137,10 @@ const Carousel = ({
                       }}
                     />
                   </div>
-
-                  {/* Text (25% height) */}
                   <div
                     className="px-3 py-2 text-center"
                     style={{
-                      height: '25%',
+                      height: '15%',
                       backgroundColor: '#111',
                       display: 'flex',
                       flexDirection: 'column',
@@ -200,10 +171,8 @@ const Carousel = ({
                 </div>
               </div>
             ))}
-
             <div style={{ minWidth: '16px', flexShrink: 0 }}></div>
           </div>
-
           <button
             onClick={() => scroll('right')}
             className="btn btn-light position-absolute top-50 translate-middle-y end-0 me-3 carousel-controls d-none d-sm-block"

@@ -152,14 +152,14 @@ const ShopPage = () => {
       <SearchResults />
       <Carousel
         title="Users with similar tastes also liked:"
-        cardWidth={19}
-        cardHeight={19}
+        cardWidth={22}
+        cardHeight={32}
         data={similarUserRecs}
       />
       <Carousel
         title="Popular in your age group:"
         cardWidth={22}
-        cardHeight={21}
+        cardHeight={32}
         data={userDemographicRecs}
       />
       {topRatedMovies.map((movie) =>
@@ -168,7 +168,7 @@ const ShopPage = () => {
             key={movie.showId}
             title={`Because you liked '${movie.title}'`}
             cardWidth={22}
-            cardHeight={21}
+            cardHeight={32}
             data={contentRecsByMovie[movie.showId] || []}
           />
         ) : null
@@ -177,7 +177,7 @@ const ShopPage = () => {
       <Carousel
         title="Trending Now"
         cardWidth={22}
-        cardHeight={21}
+        cardHeight={32}
         data={trendingMovies}
       />
 
