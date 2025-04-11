@@ -57,7 +57,7 @@ const DetailsPage = () => {
         setUserId(result.user.userId); // This might be redundant
 
       } catch (err) {
-        console.error('❌ Error fetching movie details with rating:', err);
+        // console.error('❌ Error fetching movie details with rating:', err);
       } finally {
         setLoading(false);
       }
@@ -80,10 +80,10 @@ const DetailsPage = () => {
   };
 
   const handleSubmitRating = async () => {
-    console.log('Submit button clicked');
-    console.log('movie?.showId:', movie?.showId);
-    console.log('selectedRating:', selectedRating);
-    console.log('userId:', userId);
+    // console.log('Submit button clicked');
+    // console.log('movie?.showId:', movie?.showId);
+    // console.log('selectedRating:', selectedRating);
+    // console.log('userId:', userId);
     setRefreshTrigger(prev => {
       const newValue = prev + 1;
       return newValue;
@@ -96,14 +96,14 @@ const DetailsPage = () => {
       const response = await submitRating(userId, movie.showId, selectedRating);
       const data = await response.json(); // Parse the JSON response
 
-      console.log(data.message); // Log the response message (e.g., "Rating saved successfully.")
+      // console.log(data.message); // Log the response message (e.g., "Rating saved successfully.")
 
       window.location.reload(); // This reloads the page, fetching fresh data from the backend
 
       // Update userRating immediately after submitting
       setUserRating(selectedRating); // This will automatically trigger re-render with updated userRating
     } catch (err) {
-      console.error('Failed to submit rating:', err);
+      // console.error('Failed to submit rating:', err);
     }
 
   window.location.reload(); // This reloads the page, fetching fresh data from the backend
@@ -141,7 +141,7 @@ const DetailsPage = () => {
         }));
         setRecommendations(mapped);
       } catch (error) {
-        console.error('Error fetching hybrid recommendations:', error);
+        // console.error('Error fetching hybrid recommendations:', error);
       }
     };
 

@@ -52,7 +52,7 @@ const ChatbotPage = () => {
       const botMessage: ChatMessage = { role: "assistant", content: data.choices[0].message.content };
       setChatHistory((prev) => [...prev, botMessage]);
     } catch (error) {
-      console.error("Error fetching OpenAI response:", error);
+      // console.error("Error fetching OpenAI response:", error);
     }
 
     setUserInput(""); // Clear input field

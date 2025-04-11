@@ -100,7 +100,7 @@ namespace intex_app.API.Controllers
                 return BadRequest(new { message = "Email claim missing" });
             }
 
-            Console.WriteLine($"Email from claims: {email}"); // Debugging the extracted email
+            // Console.WriteLine($"Email from claims: {email}"); // Debugging the extracted email
 
             // Get user details from Identity
             var user = await _userManager.FindByEmailAsync(email);
@@ -109,7 +109,7 @@ namespace intex_app.API.Controllers
                 return NotFound(new { message = "User not found", email = email });
             }
 
-            Console.WriteLine($"Found Identity user: {user.Email}"); // Debugging the found user
+            // Console.WriteLine($"Found Identity user: {user.Email}"); // Debugging the found user
 
             // Fetch userId from the MovieUsers table based on the logged-in user's email
             var movieUser = await _context.MovieUsers
@@ -120,7 +120,7 @@ namespace intex_app.API.Controllers
                 return NotFound(new { message = "User not found in MovieUsers table" });
             }
 
-            Console.WriteLine($"Found MovieUser: UserId = {movieUser.UserId}"); // Debugging the MovieUser
+            // Console.WriteLine($"Found MovieUser: UserId = {movieUser.UserId}"); // Debugging the MovieUser
 
             // Check if TwoFa is enabled for the user
             var twoFaEnabled = await _twoFactorAuthService.CheckTwoFaEnabledAsync(email);

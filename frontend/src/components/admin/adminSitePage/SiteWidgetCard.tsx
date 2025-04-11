@@ -19,7 +19,7 @@ const SiteWidgetCard = ({ headline }: { headline: Headline }) => {
     try {
       await updateHeadline(id, newHeadline);
     } catch (error) {
-      console.error("Error updating headline:", error);
+      // console.error("Error updating headline:", error);
     }
   };
 

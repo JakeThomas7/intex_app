@@ -20,7 +20,7 @@ const MFAForm = () => {
   };
 
   useEffect(() => {
-    console.log("Checking if verified: ", isAuth);
+    // console.log("Checking if verified: ", isAuth);
   
     // Immediate check
     if (isAuth) {
@@ -31,7 +31,7 @@ const MFAForm = () => {
   
     // Set up interval for continuous checking
     const intervalId = setInterval(() => {
-      console.log("Periodic auth check");
+      // console.log("Periodic auth check");
       if (isAuth) {
         navigate('/browse');
       } else {

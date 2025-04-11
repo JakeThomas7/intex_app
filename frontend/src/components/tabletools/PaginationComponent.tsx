@@ -20,7 +20,7 @@ const PaginationComponent: React.FC<PaginationProps> = ({
   if (totalPages <= 1) {
     return null;
   }
-  console.log('TOTAL PAGES: ' + totalPages)
+  // console.log('TOTAL PAGES: ' + totalPages)
 
   const getVisiblePages = () => {
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
@@ -36,7 +36,7 @@ const PaginationComponent: React.FC<PaginationProps> = ({
 
   const visiblePages = getVisiblePages();
 
-  console.log('VISIBLE PAGES: ' + visiblePages)
+  // console.log('VISIBLE PAGES: ' + visiblePages)
 
   return (
     <div className="text-center my-3">

@@ -37,7 +37,7 @@ const AdminLayout = () => {
   }, [isMobile]);
 
   const toggleSidebar = () => {
-    console.log('sidebar Toggle')
+    // console.log('sidebar Toggle')
     setIsSidebarOpen(!isSidebarOpen);
   };
 

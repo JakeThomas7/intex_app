@@ -38,7 +38,7 @@ const RoleDropdown = ({ currentRole, onRoleChange }: any) => {
         } catch (error) {
             setSelectedRole(currentRole);
             //setError("Error assigning role")
-            console.error('Role update failed:', error);
+            // console.error('Role update failed:', error);
         } finally {
             setIsLoading(false);
             setIsOpen(false);

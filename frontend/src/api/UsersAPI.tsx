@@ -33,7 +33,7 @@ interface GetUsersParams {
 }
 
 export const getUsers = async (params: GetUsersParams): Promise<any> => {
-  console.log(params);
+  // console.log(params);
 
   // Create URLSearchParams object
   const queryParams = new URLSearchParams();
@@ -61,7 +61,7 @@ export const getUsers = async (params: GetUsersParams): Promise<any> => {
   //     }
   // }
 
-  console.log(queryParams.toString());
+  // console.log(queryParams.toString());
   const response = await fetch(
     `${API_URL}/Users/users?${queryParams.toString()}`,
     {

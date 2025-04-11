@@ -17,7 +17,7 @@ const SearchResults = ({isSearching, setIsSearching}: {isSearching: boolean, set
                 const data = await fetchGenres();
                 setGenres(data);
             } catch (error) {
-                console.error('Error fetching genres:', error);
+                // console.error('Error fetching genres:', error);
             }
         };
         getGenres();

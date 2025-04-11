@@ -49,7 +49,7 @@ const LoginForm = () => {
 
       await delay(500); // Delay for 500ms before first check
       await checkAuth();
-      console.log('First check - Login is auth', isAuth);
+      // console.log('First check - Login is auth', isAuth);
 
       if (isAuth) {
         navigate('/browse');

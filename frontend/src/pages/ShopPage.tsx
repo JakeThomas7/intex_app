@@ -25,7 +25,7 @@ interface CarouselMovie {
 
 const ShopPage = () => {
   const { user } = useAuth();
-  console.log('User: ', user);
+  // console.log('User: ', user);
   const [userId, setUserId] = useState(user?.userId || null); // Assuming userId is available in the user object
   const [similarUserRecs, setSimilarUserRecs] = useState<CarouselMovie[]>([]);
   const [userDemographicRecs, setUserDemographicRecs] = useState<
@@ -45,7 +45,7 @@ const ShopPage = () => {
     }
   }, [user]);
 
-  console.log('User ID:', userId);
+  // console.log('User ID:', userId);
 
   useEffect(() => {
     const fetchSimilarUserRecs = async () => {
@@ -66,7 +66,7 @@ const ShopPage = () => {
 
         setSimilarUserRecs(mapped);
       } catch (error) {
-        console.error('Error fetching similar user recommendations:', error);
+        // console.error('Error fetching similar user recommendations:', error);
       }
     };
 
@@ -110,7 +110,7 @@ const ShopPage = () => {
         // Step 1: Get top-rated movies
         const topMovies = await getUserTopRatedMovies(userId);
         setTopRatedMovies(topMovies);
-        console.log('Top movies: ', topMovies);
+        // console.log('Top movies: ', topMovies);
 
         // Step 2: For each movie, fetch content-based recs
         const recsByMovie: { [key: string]: CarouselMovie[] } = {};
@@ -130,7 +130,7 @@ const ShopPage = () => {
             showId: m.showId ?? `unknown-${idx}`,
           }));
         }
-        console.log('recsByMovie: ', recsByMovie);
+        // console.log('recsByMovie: ', recsByMovie);
         setContentRecsByMovie(recsByMovie);
       } catch (error) {
         console.error('Error fetching top-rated movie recs:', error);

@@ -18,13 +18,13 @@ export const register = async (
 
     try {
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
 
       if (data.errors) {
         errorMessage = Object.values(data.errors).flat().join('\n');
       }
     } catch (error) {
-      console.warn('Failed to parse error response', error);
+      // console.warn('Failed to parse error response', error);
     }
 
     throw new Error(errorMessage);
@@ -77,12 +77,12 @@ export const logout = async (): Promise<void> => {
       },
     });
     if (response.ok) {
-      console.log('logged out');
+      // console.log('logged out');
     } else {
-      console.error('Logout failed:', response.status);
+      // console.error('Logout failed:', response.status);
     }
   } catch (error) {
-    console.error('Logout error:', error);
+    // console.error('Logout error:', error);
   }
 };
 
