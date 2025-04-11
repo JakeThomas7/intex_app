@@ -131,7 +131,7 @@ const AdminAddTitlePage = () => {
               </label>
               <input
                 type="text"
-                maxLength={20}
+                maxLength={200}
                 className="form-control"
                 id="title"
                 required

@@ -97,7 +97,7 @@ const AdminEditTitlePage = () => {
                 className="form-control"
                 id="title"
                 value={formData.title}
-                maxLength={20}
+                maxLength={200}
                 required
                 onChange={handleChange}
               />
