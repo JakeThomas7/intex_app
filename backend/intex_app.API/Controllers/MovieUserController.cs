@@ -58,49 +58,37 @@ namespace intex_app.API.Controllers
             return Ok(response);
         }
         
-        [HttpPost("UpsertMovieUser")] // Consider using `[HttpPut]` for RESTful upsert semantics
-        public IActionResult UpsertMovieUser([FromBody] CreateMovieUserDto userDto)
+        [HttpPost("UpsertMovieUser")]
+        public async Task<IActionResult> UpsertMovieUser([FromBody] CreateMovieUserDto userDto)
         {
             try
             {
-                // Check for existing user by email
-                var existingUser = _context.MovieUsers
+                // Check for existing user by email (no tracking to prevent circular references)
+                var existingUser = await _context.MovieUsers
+                    .AsNoTracking()
                     .Include(u => u.MovieUserStreamingServices)
-                    .FirstOrDefault(u => u.Email == userDto.Email);
+                    .FirstOrDefaultAsync(u => u.Email == userDto.Email);
 
                 if (existingUser != null)
                 {
-                    // Update existing user
-                    existingUser.Name = userDto.Name;
-                    existingUser.Phone = userDto.Phone;
-                    existingUser.Age = userDto.Age;
-                    existingUser.Gender = userDto.Gender;
-                    existingUser.City = userDto.City;
-                    existingUser.State = userDto.State;
-                    existingUser.Zip = userDto.Zip;
-
-                    // Handle streaming services if provided
-                    if (userDto.StreamingServiceIds != null)
+                    // Update existing user via fresh entity
+                    var updatedUser = new MovieUser
                     {
-                        // Clear existing relationships
-                        existingUser.MovieUserStreamingServices.Clear();
+                        UserId = existingUser.UserId,
+                        Name = userDto.Name,
+                        Email = userDto.Email,
+                        Phone = userDto.Phone,
+                        Age = userDto.Age,
+                        Gender = userDto.Gender,
+                        City = userDto.City,
+                        State = userDto.State,
+                        Zip = userDto.Zip
+                    };
 
-                        // Add new relationships
-                        var validServices = _context.StreamingServices
-                            .Where(s => userDto.StreamingServiceIds.Contains(s.StreamingServiceId))
-                            .ToList();
-
-                        foreach (var service in validServices)
-                        {
-                            existingUser.MovieUserStreamingServices.Add(new MovieUserStreamingService
-                            {
-                                StreamingServiceId = service.StreamingServiceId
-                            });
-                        }
-                    }
-
-                    _context.SaveChanges();
-                    return Ok(existingUser);
+                    // Handle streaming services
+                    await UpdateUserStreamingServices(updatedUser.UserId, userDto.StreamingServiceIds);
+                    
+                    _context.MovieUsers.Update(updatedUser);
                 }
                 else
                 {
@@ -114,34 +102,59 @@ namespace intex_app.API.Controllers
                         Gender = userDto.Gender,
                         City = userDto.City,
                         State = userDto.State,
-                        Zip = userDto.Zip,
-                        MovieUserStreamingServices = new List<MovieUserStreamingService>()
+                        Zip = userDto.Zip
                     };
 
-                    if (userDto.StreamingServiceIds != null && userDto.StreamingServiceIds.Any())
-                    {
-                        var validServices = _context.StreamingServices
-                            .Where(s => userDto.StreamingServiceIds.Contains(s.StreamingServiceId))
-                            .ToList();
-
-                        foreach (var service in validServices)
-                        {
-                            newUser.MovieUserStreamingServices.Add(new MovieUserStreamingService
-                            {
-                                StreamingServiceId = service.StreamingServiceId
-                            });
-                        }
-                    }
-
                     _context.MovieUsers.Add(newUser);
-                    _context.SaveChanges();
-                    return Ok(newUser);
+                    await _context.SaveChangesAsync(); // Save first to get ID
+                    
+                    // Handle streaming services after we have an ID
+                    await UpdateUserStreamingServices(newUser.UserId, userDto.StreamingServiceIds);
                 }
+
+                await _context.SaveChangesAsync();
+                return Ok(new { Success = true });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(500, new { 
+                    Success = false, 
+                    Message = "Internal server error",
+                    Error = ex.Message 
+                });
             }
+        }
+
+        private async Task UpdateUserStreamingServices(int movieUserId, List<int>? streamingServiceIds)
+        {
+            if (streamingServiceIds == null || !streamingServiceIds.Any())
+            {
+                // Clear all relationships if no services provided
+                await _context.MovieUserStreamingServices
+                    .Where(x => x.UserId == movieUserId)
+                    .ExecuteDeleteAsync();
+                return;
+            }
+
+            // Get valid service IDs
+            var validServiceIds = await _context.StreamingServices
+                .Where(s => streamingServiceIds.Contains(s.StreamingServiceId))
+                .Select(s => s.StreamingServiceId)
+                .ToListAsync();
+
+            // Clear existing relationships
+            await _context.MovieUserStreamingServices
+                .Where(x => x.UserId == movieUserId)
+                .ExecuteDeleteAsync();
+
+            // Add new relationships (IDs only, no navigation properties)
+            var newRelationships = validServiceIds.Select(id => new MovieUserStreamingService
+            {
+                UserId = movieUserId,
+                StreamingServiceId = id
+            }).ToList();
+
+            await _context.MovieUserStreamingServices.AddRangeAsync(newRelationships);
         }
         
         

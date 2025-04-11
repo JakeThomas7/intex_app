@@ -1,7 +1,7 @@
 import MovieUser from '../types/MovieUser';
 
 const API_URL = 'https://api2.byjacobthomas.com';
-// const API_URL = 'https://localhost:5000';
+//const API_URL = 'https://localhost:5000';
 
 export const addMovieUser = async (movieUser: MovieUser) => {
   console.log(movieUser);
