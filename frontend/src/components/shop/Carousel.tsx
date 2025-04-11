@@ -125,10 +125,10 @@ const Carousel = ({
                 style={{
                   position: 'absolute',
                   top: '50%',
-                  left: '-2rem',
+                  left: '-0.1rem',
                   transform: 'translateY(-50%)',
-                  width: '3rem',
-                  height: '5rem',
+                  width: '2.5rem',
+                  height: '4.4rem',
                   border: '2px solid white',
                   borderRadius: '8px',
                   display: 'flex',
