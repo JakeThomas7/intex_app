@@ -15,7 +15,7 @@ const TitleSection = () => {
           className="lead mb-4"
           style={{ fontSize: '1.5rem', fontWeight: 500 }}
         >
-          Unlock Hidden Stories, Just for You.
+          Unlock Hidden Stories, Picked Just for You.
         </p>
         <div className="d-grid gap-2 d-sm-flex justify-content-center">
           {!isAuth && (
