@@ -37,7 +37,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Email;
 
     options.Password.RequireDigit = true;
-    options.Password.RequiredLength = 12;
+    options.Password.RequiredLength = 15;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false;
