@@ -19,47 +19,49 @@ public class MovieRatingController : ControllerBase
     }
 
     [HttpPost("MakeRating")]
-    [Authorize]
-    public IActionResult MakeRating([FromBody] MovieRatingDto movieRating)
+[Authorize]
+public IActionResult MakeRating([FromBody] MovieRatingDto movieRating)
+{
+    if (movieRating == null)
+        return BadRequest(new { message = "Invalid rating." });
+
+    // Use the userId passed directly from the frontend (no need for claims-based userId extraction)
+    int userId = movieRating.UserId;
+
+    // Check if the movie exists in the database
+    var movie = _context.Movies.FirstOrDefault(m => m.ShowId == movieRating.ShowId);
+    if (movie == null)
+        return NotFound(new { message = $"Movie with ShowId '{movieRating.ShowId}' not found." });
+
+    // Look for an existing rating by this user for this movie
+    var existingRating = _context.MovieRatings
+        .FirstOrDefault(r => r.ShowId == movieRating.ShowId && r.UserId == userId);
+
+    if (existingRating == null)
     {
-        if (movieRating == null)
-            return BadRequest("Invalid rating.");
-
-        // Use the userId passed directly from the frontend (no need for claims-based userId extraction)
-        int userId = movieRating.UserId;
-
-        // Check if the movie exists in the database
-        var movie = _context.Movies.FirstOrDefault(m => m.ShowId == movieRating.ShowId);
-        if (movie == null)
-            return NotFound($"Movie with ShowId '{movieRating.ShowId}' not found.");
-
-        // Look for an existing rating by this user for this movie
-        var existingRating = _context.MovieRatings
-            .FirstOrDefault(r => r.ShowId == movieRating.ShowId && r.UserId == userId);
-
-        if (existingRating == null)
+        // If no rating exists, add a new rating entry
+        var newMovieRating = new MovieRating
         {
-            // If no rating exists, add a new rating entry
-            var newMovieRating = new MovieRating
-            {
-                ShowId = movieRating.ShowId,
-                UserId = userId,
-                Rating = movieRating.Rating
-            };
+            ShowId = movieRating.ShowId,
+            UserId = userId,
+            Rating = movieRating.Rating
+        };
 
-            _context.MovieRatings.Add(newMovieRating);
-        }
-        else
-        {
-            // If a rating exists, update the existing rating
-            existingRating.Rating = movieRating.Rating;
-        }
-
-        // Save the changes to the database
-        _context.SaveChanges();
-
-        return Ok("Rating saved successfully.");
+        _context.MovieRatings.Add(newMovieRating);
     }
+    else
+    {
+        // If a rating exists, update the existing rating
+        existingRating.Rating = movieRating.Rating;
+    }
+
+    // Save the changes to the database
+    _context.SaveChanges();
+
+    // Return a JSON response with a success message
+    return Ok(new { message = "Rating saved successfully." });
+}
+
 
     [HttpPost("GetMovieDetailsPage/{ShowId}")]
     [Authorize]

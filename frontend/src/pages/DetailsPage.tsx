@@ -85,9 +85,13 @@ const DetailsPage = () => {
     if (!movie?.showId || !selectedRating || userId === null) return;
 
     try {
-      await submitRating(userId, movie.showId, selectedRating);
+      const response = await submitRating(userId, movie.showId, selectedRating);
+      const data = await response.json(); // Parse the JSON response
+
+      console.log(data.message); // Log the response message (e.g., "Rating saved successfully.")
+
       setUserRating(selectedRating);
-      alert('Rating submitted successfully!');
+      alert(data.message); // Display the response message in the alert
     } catch (err) {
       console.error('Failed to submit rating:', err);
       alert('Error submitting rating.');
