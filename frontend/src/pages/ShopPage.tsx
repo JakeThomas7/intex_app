@@ -37,12 +37,14 @@ const ShopPage = () => {
   const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
-    if (user?.userId) {
+    if (user?.userId && user.userId < 200) {
       setUserId(user.userId);
     } else {
-      setUserId(100);
+      setUserId(null);
     }
   }, [user]);
+
+  console.log('User ID:', userId);
 
   useEffect(() => {
     const fetchSimilarUserRecs = async () => {
@@ -150,29 +152,37 @@ const ShopPage = () => {
     <div>
       <Navbar />
       <SearchResults />
-      <Carousel
-        title="Users with similar tastes also liked:"
-        cardWidth={22}
-        cardHeight={32}
-        data={similarUserRecs}
-      />
-      <Carousel
-        title="Popular in your age group:"
-        cardWidth={22}
-        cardHeight={32}
-        data={userDemographicRecs}
-      />
-      {topRatedMovies.map((movie) =>
-        movie.showId ? (
-          <Carousel
-            key={movie.showId}
-            title={`Because you liked '${movie.title}'`}
-            cardWidth={22}
-            cardHeight={32}
-            data={contentRecsByMovie[movie.showId] || []}
-          />
-        ) : null
+
+      {userId && (
+        <Carousel
+          title="Users with similar tastes also liked:"
+          cardWidth={22}
+          cardHeight={32}
+          data={similarUserRecs}
+        />
       )}
+
+      {userId && (
+        <Carousel
+          title="Popular in your age group:"
+          cardWidth={22}
+          cardHeight={32}
+          data={userDemographicRecs}
+        />
+      )}
+
+      {userId &&
+        topRatedMovies.map((movie) =>
+          movie.showId ? (
+            <Carousel
+              key={movie.showId}
+              title={`Because you liked '${movie.title}'`}
+              cardWidth={22}
+              cardHeight={32}
+              data={contentRecsByMovie[movie.showId] || []}
+            />
+          ) : null
+        )}
 
       <Carousel
         title="Trending Now"
