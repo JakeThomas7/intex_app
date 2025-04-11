@@ -26,6 +26,7 @@ public class UsersController : ControllerBase
     
     // Update User Profile Endpoint
     [HttpPut("updateUserProfile")]
+    [Authorize]
     public async Task<ObjectResult> UpdateUserProfile([FromBody] User request)
     {
         // Validate the request
