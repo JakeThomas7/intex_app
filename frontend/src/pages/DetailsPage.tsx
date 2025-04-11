@@ -12,6 +12,7 @@ import {
 import { fetchMovieDetailsWithRating, submitRating } from '../api/MoviesAPI';
 import CookieFavoriteGenre from '../components/all_pages/CookieRecorder/CookieFavoriteGenre';
 import { useAuth } from '../components/context/AuthContext';
+
 interface CarouselMovie {
   title: string;
   imagePath: string;
@@ -32,17 +33,17 @@ const DetailsPage = () => {
   const { showId } = useParams();
   const [movie, setMovie] = useState<Movie | null>(null);
   const [loading, setLoading] = useState(true);
-  const [selectedRating, setSelectedRating] = useState<number>(0);
+  const [selectedRating, setSelectedRating] = useState<number>(1); // Default to 1
   const [recommendations, setRecommendations] = useState<CarouselMovie[]>([]);
   const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
   const [userRating, setUserRating] = useState<number | null>(null);
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>(
     'https://intex2movieposters.blob.core.windows.net/movie-postersv2/NO%20POSTER.jpg'
   );
-  // ✅ Get userId from AuthContext
+
   const { user } = useAuth();
-  console.log('User from AuthContext:', user); // Log the entire user object
-  const [userId, setUserId] = useState(user?.userId || null); // Assuming userId is available in the user object
+  const [userId, setUserId] = useState(user?.userId || null);
+
   useEffect(() => {
     const fetchDetails = async () => {
       if (!showId) return;
@@ -85,16 +86,22 @@ const DetailsPage = () => {
     if (!movie?.showId || !selectedRating || userId === null) return;
 
     try {
-      await submitRating(userId, movie.showId, selectedRating);
-      setUserRating(selectedRating);
-      alert('Rating submitted successfully!');
+      const response = await submitRating(userId, movie.showId, selectedRating);
+      const data = await response.json(); // Parse the JSON response
+
+      console.log(data.message); // Log the response message (e.g., "Rating saved successfully.")
+
+      window.location.reload(); // This reloads the page, fetching fresh data from the backend
+
+      // Update userRating immediately after submitting
+      setUserRating(selectedRating); // This will automatically trigger re-render with updated userRating
     } catch (err) {
       console.error('Failed to submit rating:', err);
-      alert('Error submitting rating.');
     }
+
+    window.location.reload(); // This reloads the page, fetching fresh data from the backend
   };
 
-  // ✅ Dynamically check image existence
   useEffect(() => {
     if (movie?.title) {
       const sanitized = sanitizeTitleForURL(movie.title);
@@ -152,14 +159,31 @@ const DetailsPage = () => {
               <h1 className="movie-title">{movie?.title || 'Movie Title'}</h1>
 
               <div className="movie-stats d-flex align-items-center gap-3 flex-wrap mb-3">
+                {/* Display user rating */}
+                <span className="stat-pill d-flex align-items-center gap-2">
+                  <i className="fas fa-thumbs-up me-1"></i>
+                  {userRating === null ? (
+                    <span className="text-white">N/A</span> // Rating not set
+                  ) : (
+                    <span className="text-white">{userRating}</span> // Show the user's rating
+                  )}
+                </span>
+
+                {/* Average rating */}
                 <span className="stat-pill">
                   <i className="fas fa-star me-1 text-warning"></i>
-                  {movie?.averageRating?.toFixed(1) ?? 'N/A'}
+                  {movie?.averageRating && movie.averageRating !== 0
+                    ? movie.averageRating.toFixed(1)
+                    : 'N/A'}
                 </span>
+
+                {/* Release year */}
                 <span className="stat-pill">
                   <i className="fas fa-calendar-alt me-1"></i>
                   {movie?.releaseYear || 'N/A'}
                 </span>
+
+                {/* Duration */}
                 <span className="stat-pill">
                   <i className="fas fa-clock me-1"></i>
                   {movie?.duration || 'N/A'}
@@ -190,11 +214,6 @@ const DetailsPage = () => {
                 >
                   <i className="fas fa-star me-2"></i>Rate
                 </button>
-                {userRating !== null && (
-                  <p className="text-white mt-2">
-                    Your Rating: ⭐ {userRating}
-                  </p>
-                )}
               </div>
             </>
           )}
@@ -251,6 +270,7 @@ const DetailsPage = () => {
                 ></i>
               ))}
             </div>
+
             <div className="modal-footer">
               <button
                 type="button"
@@ -263,6 +283,7 @@ const DetailsPage = () => {
                 type="button"
                 className="btn btn-primary"
                 onClick={handleSubmitRating}
+                data-bs-dismiss="modal"
               >
                 Submit
               </button>
