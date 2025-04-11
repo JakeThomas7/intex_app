@@ -67,7 +67,7 @@ const NavBar = () => {
                       navigate(`/details/s${randomNumber}`);
                     }}
                   >
-                    Spin the Reel!
+                    Spin the Reel
                   </a>
                 </li>
               </>
