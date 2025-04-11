@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../api/AuthenticationAPI';
 import { useAuth } from '../context/AuthContext';
+import { useState } from 'react';
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -48,8 +49,19 @@ const NavBar = () => {
                 </li>
                 <li className="nav-item me-3">
                   <a
-                    className="nav-link active"
-                    aria-current="page"
+                    className="nav-link active fw-bold text-warning"
+                    style={{
+                      display: 'inline-block',
+                      transition:
+                        'transform 0.2s ease-in-out, color 0.2s ease-in-out',
+                      cursor: 'pointer',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'scale(1.2)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'scale(1)';
+                    }}
                     onClick={() => {
                       const randomNumber = Math.floor(Math.random() * 8500) + 1;
                       navigate(`/details/s${randomNumber}`);
@@ -84,11 +96,6 @@ const NavBar = () => {
                     Sign out
                   </a>
                 </li>
-                {/* <li className="nav-item me-lg-3 mb-2 mb-lg-0 d-flex align-items-center">
-                  <button className='btn btn-dark text-white grow' onClick={()=>navigate('/account')}>
-                    My Account
-                  </button>
-                </li> */}
               </>
             )}
             {!isAuth && (
